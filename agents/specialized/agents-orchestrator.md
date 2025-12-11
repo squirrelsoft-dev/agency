@@ -470,7 +470,7 @@ The following agents are available for orchestration based on task requirements:
 - **brand-guardian**: Brand identity development, consistency maintenance, strategic positioning
 - **visual-storyteller**: Visual narratives, multimedia content, brand storytelling
 - **whimsy-injector**: Personality, delight, and playful brand elements
-- **XR Interface Architect**: Spatial interaction design for immersive environments
+- **xr-interface-architect**: Spatial interaction design for immersive environments
 
 ### 💻 Engineering Agents
 - **frontend-developer**: Modern web technologies, React/Vue/Angular, UI implementation
@@ -480,9 +480,17 @@ The following agents are available for orchestration based on task requirements:
 - **mobile-app-builder**: Native iOS/Android and cross-platform development
 - **devops-automator**: Infrastructure automation, CI/CD, cloud operations
 - **rapid-prototyper**: Ultra-fast proof-of-concept and MVP creation
-- **XR Immersive Developer**: WebXR and immersive technology development
-- **LSP/Index Engineer**: Language server protocols and semantic indexing
-- **macOS Spatial/Metal Engineer**: Swift and Metal for macOS and Vision Pro
+
+### 🌐 Spatial Computing Agents
+- **xr-interface-architect**: Spatial interaction design for immersive AR/VR/XR environments
+- **xr-immersive-developer**: WebXR and immersive technology development
+- **xr-cockpit-interaction-specialist**: Cockpit-based control systems for XR environments
+- **macos-spatial-metal-engineer**: Swift and Metal for macOS and Vision Pro spatial computing
+- **visionos-spatial-engineer**: visionOS SDK and Vision Pro spatial development
+- **terminal-integration-specialist**: Terminal integration and spatial developer tools
+
+### 🔧 Specialized Engineering Agents
+- **lsp-index-engineer**: Language server protocols and semantic indexing
 
 ### 📈 Marketing Agents
 - **growth-hacker**: Rapid user acquisition through data-driven experimentation
@@ -507,6 +515,7 @@ The following agents are available for orchestration based on task requirements:
 ### 🛠️ Support & Operations Agents
 - **support-responder**: Customer service, issue resolution, user experience optimization
 - **analytics-reporter**: Data analysis, dashboards, KPI tracking, decision support
+- **executive-summary-generator**: Consultant-grade executive summaries using McKinsey/BCG frameworks
 - **finance-tracker**: Financial planning, budget management, business performance analysis
 - **infrastructure-maintainer**: System reliability, performance optimization, operations
 - **legal-compliance-checker**: Legal compliance, data handling, regulatory standards
@@ -521,7 +530,6 @@ The following agents are available for orchestration based on task requirements:
 - **tool-evaluator**: Technology assessment, platform recommendations, productivity tools
 
 ### 🎯 Specialized Agents
-- **XR Cockpit Interaction Specialist**: Immersive cockpit-based control systems
 - **data-analytics-reporter**: Raw data transformation into business insights
 
 ---

@@ -267,7 +267,7 @@ grep -i "story\|narrative\|message" ai/memory-bank/*.md
   - **Format**: Design system documentation, component libraries
 
 ### Downstream Deliverables (Provides To)
-- **engineering-senior-developer** → Visual assets, animation specifications, multimedia content
+- **senior-developer** → Visual assets, animation specifications, multimedia content
   - **Deliverable**: Optimized images, video files, animation code, interactive elements
   - **Format**: SVG, PNG, MP4, CSS animations, JavaScript interactions
   - **Quality Gate**: Performance optimized, accessibility validated, cross-browser tested
@@ -302,7 +302,7 @@ grep -i "story\|narrative\|message" ai/memory-bank/*.md
 3. Align with visual system from ui-designer (colors, typography, patterns)
 4. Create visual narratives (storyboards, multimedia, data visualizations)
 5. Coordinate with whimsy-injector for personality enhancements
-6. Deliver optimized assets to engineering-senior-developer
+6. Deliver optimized assets to senior-developer
 7. Provide content schedules to project-manager-senior
 8. Review implementations with brand-guardian for consistency
 ```

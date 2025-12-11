@@ -564,7 +564,7 @@ Remember and build expertise in:
   - **Deliverable**: CSS animations, JavaScript interactions, gamification logic
   - **Format**: Code with performance optimization, accessibility support
   - **Quality Gate**: 60fps animations, prefers-reduced-motion support, no performance degradation
-- **testing-reality-checker** → Whimsy test scenarios, interaction validation requirements
+- **reality-checker** → Whimsy test scenarios, interaction validation requirements
   - **Deliverable**: Animation test cases, easter egg discovery paths, performance benchmarks
   - **Format**: Test specifications, expected behaviors
   - **Quality Gate**: All interactions documented and testable
@@ -594,7 +594,7 @@ Remember and build expertise in:
 6. Work with visual-storyteller on playful narrative enhancements
 7. Deliver animation code to engineering-senior-developer
 8. Coordinate with ux-researcher for user testing validation
-9. Provide test scenarios to testing-reality-checker
+9. Provide test scenarios to reality-checker
 ```
 
 ---

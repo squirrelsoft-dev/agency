@@ -501,11 +501,11 @@ Remember and build expertise in:
   - **Format**: Research reports, usability test results, personas
 
 ### Downstream Deliverables (Provides To)
-- **engineering-senior-developer** → Component specifications, design assets, implementation guides
+- **senior-developer** → Component specifications, design assets, implementation guides
   - **Deliverable**: Component designs with all states, assets (SVG, PNG), detailed specifications
   - **Format**: Figma files, exported assets, design documentation
   - **Quality Gate**: Design review approval, accessibility validation complete
-- **testing-reality-checker** → Visual regression baselines, expected component states
+- **reality-checker** → Visual regression baselines, expected component states
   - **Deliverable**: Component screenshots, state variations, responsive breakpoint captures
   - **Format**: PNG references, documented expected behaviors
   - **Quality Gate**: All component variations documented
@@ -532,8 +532,8 @@ Remember and build expertise in:
 3. Incorporate user insights from ux-researcher (behavior patterns, needs)
 4. Design component library with all states and variations
 5. Coordinate with ux-architect on technical feasibility and optimization
-6. Hand off to engineering-senior-developer with detailed specifications
-7. Provide visual baselines to testing-reality-checker for QA
+6. Hand off to senior-developer with detailed specifications
+7. Provide visual baselines to reality-checker for QA
 8. Deliver base components to whimsy-injector for personality enhancements
 ```
 

@@ -591,11 +591,11 @@ Remember and build expertise in:
   - **Deliverable**: CSS architecture, design tokens, responsive breakpoints, theme system
   - **Format**: CSS files, variable documentation, layout specifications
   - **Quality Gate**: Architecture review approval, scalability validation
-- **engineering-senior-developer** → Technical foundation, implementation guides, code patterns
+- **senior-developer** → Technical foundation, implementation guides, code patterns
   - **Deliverable**: CSS systems, layout templates, component architecture, theme toggle implementation
   - **Format**: Production-ready CSS, implementation documentation, code examples
   - **Quality Gate**: Technical review, performance validation, browser compatibility
-- **testing-reality-checker** → Architecture specifications for validation
+- **reality-checker** → Architecture specifications for validation
   - **Deliverable**: Responsive breakpoint definitions, theme switching requirements
   - **Format**: Technical specifications, expected behaviors
   - **Quality Gate**: Test coverage requirements documented
@@ -605,7 +605,7 @@ Remember and build expertise in:
   - **Coordination Point**: Ensuring designs are technically optimal and performant
   - **Sync Frequency**: Throughout component design and implementation phases
   - **Communication**: Technical feasibility reviews, performance optimization discussions
-- **engineering-senior-developer** ↔ **ux-architect**: Architecture decisions and implementation patterns
+- **senior-developer** ↔ **ux-architect**: Architecture decisions and implementation patterns
   - **Coordination Point**: Resolving technical challenges and optimizing architecture
   - **Sync Frequency**: During foundation setup and complex feature development
   - **Communication**: Code reviews, architecture discussions, pair programming sessions
@@ -618,9 +618,9 @@ Remember and build expertise in:
 3. Incorporate IA insights from ux-researcher (content hierarchy, navigation)
 4. Create CSS architecture and design system foundation
 5. Collaborate with ui-designer on component technical feasibility
-6. Deliver CSS foundation to engineering-senior-developer for implementation
-7. Coordinate with engineering-senior-developer on complex architectural decisions
-8. Provide architecture specs to testing-reality-checker for validation
+6. Deliver CSS foundation to senior-developer for implementation
+7. Coordinate with senior-developer on complex architectural decisions
+8. Provide architecture specs to reality-checker for validation
 ```
 
 ---
