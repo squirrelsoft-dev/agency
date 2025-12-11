@@ -1,0 +1,346 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agency.squirrelsoft.io/schemas/settings.json",
+  "title": "Agency Plugin Settings",
+  "description": "Configuration schema for Agency plugin settings",
+  "type": "object",
+  "properties": {
+    "models": {
+      "type": "object",
+      "description": "Default Claude models for different agent types",
+      "properties": {
+        "orchestrator": {
+          "type": "string",
+          "enum": ["haiku", "sonnet", "opus"],
+          "default": "sonnet",
+          "description": "Model for orchestrator agent"
+        },
+        "planning_agents": {
+          "type": "string",
+          "enum": ["haiku", "sonnet", "opus"],
+          "default": "sonnet",
+          "description": "Model for planning agents"
+        },
+        "implementation_agents": {
+          "type": "string",
+          "enum": ["haiku", "sonnet", "opus"],
+          "default": "haiku",
+          "description": "Model for implementation agents"
+        },
+        "review_agents": {
+          "type": "string",
+          "enum": ["haiku", "sonnet", "opus"],
+          "default": "opus",
+          "description": "Model for review agents"
+        }
+      }
+    },
+    "github": {
+      "type": "object",
+      "description": "GitHub integration settings",
+      "properties": {
+        "default_branch": {
+          "type": "string",
+          "default": "main",
+          "description": "Primary branch for PRs"
+        },
+        "branch_prefix": {
+          "type": "string",
+          "default": "feature/",
+          "pattern": "^[a-z-]+/$",
+          "description": "Prefix for feature branches"
+        },
+        "auto_create_pr": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-create PRs after implementation"
+        },
+        "pr_template": {
+          "type": "string",
+          "default": ".github/pull_request_template.md",
+          "description": "Path to PR template"
+        },
+        "auto_assign_reviewers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-assign reviewers from CODEOWNERS"
+        }
+      }
+    },
+    "jira": {
+      "type": "object",
+      "description": "Jira integration settings",
+      "properties": {
+        "jira_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Jira instance URL"
+        },
+        "default_project": {
+          "type": "string",
+          "pattern": "^[A-Z]+$",
+          "description": "Default Jira project key"
+        },
+        "transition_on_pr": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-transition issues on PR"
+        },
+        "pr_transition_status": {
+          "type": "string",
+          "default": "In Review",
+          "description": "Status to transition to"
+        }
+      }
+    },
+    "linear": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "auto_create_branch": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "gitlab": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "default_branch": {
+          "type": "string",
+          "default": "main"
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "description": "Workflow automation preferences",
+      "properties": {
+        "auto_approve_simple_plans": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip approval for simple plans"
+        },
+        "parallel_execution": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable parallel agent execution"
+        },
+        "auto_run_tests": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-run tests after implementation"
+        },
+        "auto_commit": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-commit after verification"
+        }
+      }
+    },
+    "quality_gates": {
+      "type": "object",
+      "description": "Quality requirements and thresholds",
+      "properties": {
+        "require_tests": {
+          "type": "boolean",
+          "default": true,
+          "description": "Require tests to pass"
+        },
+        "min_coverage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 80,
+          "description": "Minimum test coverage percentage"
+        },
+        "require_build_pass": {
+          "type": "boolean",
+          "default": true,
+          "description": "Require build to succeed"
+        },
+        "require_lint_pass": {
+          "type": "boolean",
+          "default": false,
+          "description": "Require lint to pass"
+        },
+        "require_type_check": {
+          "type": "boolean",
+          "default": true,
+          "description": "Require type checking to pass"
+        },
+        "block_on_security_issues": {
+          "type": "boolean",
+          "default": true,
+          "description": "Block on security vulnerabilities"
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "description": "Test framework and execution settings",
+      "properties": {
+        "test_framework": {
+          "type": "string",
+          "enum": ["auto-detect", "jest", "vitest", "pytest", "cargo-test"],
+          "default": "auto-detect",
+          "description": "Test framework to use"
+        },
+        "test_command": {
+          "type": "string",
+          "default": "npm test",
+          "description": "Command to run tests"
+        },
+        "coverage_command": {
+          "type": "string",
+          "default": "npm run test:coverage",
+          "description": "Command to generate coverage"
+        },
+        "test_timeout": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 3600,
+          "default": 300,
+          "description": "Test timeout in seconds"
+        },
+        "run_e2e_tests": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include E2E tests"
+        }
+      }
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Hook enablement settings",
+      "properties": {
+        "enable_auto_format": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable auto-format hook"
+        },
+        "enable_pre_commit_validation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable pre-commit validation"
+        },
+        "enable_auto_lint": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable auto-lint hook"
+        },
+        "enable_build_verification": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable build verification"
+        },
+        "enable_test_auto_run": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable test auto-run"
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "description": "Notification preferences",
+      "properties": {
+        "desktop_notifications": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show desktop notifications"
+        },
+        "progress_updates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show progress updates"
+        },
+        "completion_summary": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show completion summary"
+        },
+        "error_notifications": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show error notifications"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Context management settings",
+      "properties": {
+        "max_orchestrator_context": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 10000,
+          "default": 6000,
+          "description": "Max tokens in orchestrator context"
+        },
+        "enable_context_cleanup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-clean old context"
+        }
+      }
+    },
+    "agents": {
+      "type": "object",
+      "description": "Agent spawning and execution settings",
+      "properties": {
+        "max_parallel_agents": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 4,
+          "description": "Max parallel agents"
+        },
+        "agent_timeout": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 3600,
+          "default": 600,
+          "description": "Agent timeout in seconds"
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "description": "Logging configuration",
+      "properties": {
+        "log_level": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info",
+          "description": "Log level"
+        },
+        "log_file": {
+          "type": "string",
+          "default": ".agency/logs/agency.log",
+          "description": "Log file path"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Settings validation mode",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["strict", "lenient", "silent"],
+          "default": "lenient",
+          "description": "Validation mode"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

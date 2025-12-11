@@ -39,22 +39,58 @@ Runs type checking after TypeScript/JavaScript edits.
 **Command**: `tsc --noEmit` or equivalent
 **Performance**: Slow (5-30 seconds)
 
+### Test Auto-Run (Default: Disabled - Opt-in)
+Runs tests after code changes.
+
+**Event**: PostToolUse on Edit tool
+**Command**: Auto-detected (npm test, pytest, go test, cargo test)
+**Performance**: Very slow (30+ seconds)
+
 ## Hook Configuration
 
-Hooks are configured in `hooks/hooks.json` (not yet implemented).
+Hooks are configured in `hooks/hooks.json`. All 5 hooks are registered and controlled via settings (see `settings/defaults.yaml`).
+
+### Hook Files
+
+- **Configuration**: `hooks/hooks.json` - Registers hooks with Claude Code
+- **Implementations**:
+  - `hooks/auto-format.sh` - Auto-formatter (enabled)
+  - `hooks/pre-commit-validation.sh` - Pre-commit validation (enabled)
+  - `hooks/auto-lint.sh` - Auto-linter (opt-in)
+  - `hooks/build-verification.sh` - Build checker (opt-in)
+  - `hooks/test-auto-run.sh` - Test runner (opt-in)
+- **Libraries**:
+  - `hooks/lib/common.sh` - Shared utilities
+  - `hooks/lib/project-detection.sh` - Project type detection
+  - `hooks/lib/settings-reader.sh` - Settings cascade reader
+
+### Enabling/Disabling Hooks
+
+Hooks are controlled via settings files. Create `.claude/agency.local.yaml` (project) or `~/.claude/agency.local.yaml` (user):
+
+```yaml
+hooks:
+  enable_auto_format: true              # Default: true
+  enable_pre_commit_validation: true    # Default: true
+  enable_auto_lint: true                # Default: false (enable this)
+  enable_build_verification: true       # Default: false (enable this)
+  enable_test_auto_run: true            # Default: false (enable this)
+```
+
+See `settings/README.md` for complete settings documentation.
 
 ## Implementation Status
 
-### Phase 1 (Planned)
-- [ ] Auto-format on edit (prettier/black/rustfmt)
-- [ ] Pre-commit validation
+### Phase 1 (✅ Complete)
+- [x] Auto-format on edit (prettier/black/rustfmt)
+- [x] Pre-commit validation
 
-### Phase 2 (Planned)
-- [ ] Auto-lint (opt-in)
-- [ ] Build verification (opt-in)
+### Phase 2 (✅ Complete)
+- [x] Auto-lint (opt-in)
+- [x] Build verification (opt-in)
+- [x] Test auto-run (opt-in)
 
 ### Phase 3 (Future)
-- [ ] Test auto-run (opt-in)
 - [ ] Desktop notifications
 - [ ] Progress tracking for long operations
 

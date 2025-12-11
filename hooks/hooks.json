@@ -1,0 +1,65 @@
+{
+  "$schema": "https://claude.ai/schemas/hooks.json",
+  "comment": "Agency Quality Hooks - Automated quality checks and formatting",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "comment": "Hook 1: Auto-format files after editing (enabled by default)",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "comment": "Format files with project-specific formatter",
+            "command": "bash ${PLUGIN_ROOT}/hooks/auto-format.sh"
+          }
+        ]
+      },
+      {
+        "comment": "Hook 3: Auto-lint verification (opt-in, disabled by default)",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "comment": "Run linter and report issues",
+            "command": "bash ${PLUGIN_ROOT}/hooks/auto-lint.sh"
+          }
+        ]
+      },
+      {
+        "comment": "Hook 4: Build verification (opt-in, disabled by default)",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "comment": "Verify TypeScript/build after changes",
+            "command": "bash ${PLUGIN_ROOT}/hooks/build-verification.sh"
+          }
+        ]
+      },
+      {
+        "comment": "Hook 5: Test auto-run (opt-in, disabled by default)",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "comment": "Run relevant tests after code changes",
+            "command": "bash ${PLUGIN_ROOT}/hooks/test-auto-run.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "comment": "Hook 2: Pre-commit validation (enabled by default)",
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "comment": "Validate build, lint, and tests before git commit",
+            "command": "bash ${PLUGIN_ROOT}/hooks/pre-commit-validation.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

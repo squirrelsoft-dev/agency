@@ -1,0 +1,164 @@
+# Agency Plugin Default Settings
+# All settings are optional with smart defaults
+# Override at: ~/.claude/agency.local.md (user) or .claude/agency.local.md (project)
+
+# ============================================================================
+# Default Models
+# ============================================================================
+models:
+  orchestrator: sonnet
+    # Balance of speed and strategic intelligence for coordination
+  planning_agents: sonnet
+    # Strategic thinking and architecture planning
+  implementation_agents: haiku
+    # Fast execution for straightforward coding tasks (use sonnet for complex work)
+  review_agents: opus
+    # Maximum thoroughness for quality review (use sonnet for speed/quality balance)
+
+# Available models: haiku, sonnet, opus
+
+# ============================================================================
+# Provider Configuration
+# ============================================================================
+
+# GitHub Settings
+github:
+  default_branch: main
+    # Primary branch to pull from and create PRs against
+  branch_prefix: feature/
+    # Prefix for feature branches (feature/, bugfix/, hotfix/)
+  auto_create_pr: true
+    # Automatically create PRs after implementing issues
+  pr_template: .github/pull_request_template.md
+    # Path to PR template (if exists)
+  auto_assign_reviewers: false
+    # Automatically assign reviewers based on CODEOWNERS
+
+# Jira Settings
+jira:
+  jira_url: ""
+    # Your Jira instance URL (e.g., https://company.atlassian.net)
+  default_project: ""
+    # Default Jira project key (e.g., PROJ)
+  transition_on_pr: true
+    # Automatically transition Jira issues when PR is created
+  pr_transition_status: "In Review"
+    # Jira status to transition to when PR is created
+
+# Linear Settings
+linear:
+  enabled: false
+  auto_create_branch: true
+
+# GitLab Settings
+gitlab:
+  enabled: false
+  default_branch: main
+
+# ============================================================================
+# Workflow Preferences
+# ============================================================================
+workflow:
+  auto_approve_simple_plans: false
+    # Skip user approval for simple plans (< 20 LOC changes)
+    # Recommended: false for safety
+  parallel_execution: true
+    # Enable parallel agent execution when possible
+  auto_run_tests: true
+    # Automatically run tests after implementation
+  auto_commit: false
+    # Automatically commit after successful verification
+    # Recommended: false for safety
+
+# ============================================================================
+# Quality Gates
+# ============================================================================
+quality_gates:
+  require_tests: true
+    # Fail if tests don't pass
+  min_coverage: 80
+    # Minimum test coverage percentage (0-100)
+  require_build_pass: true
+    # Fail if build doesn't complete successfully
+  require_lint_pass: false
+    # Fail if linting has errors (warnings OK)
+  require_type_check: true
+    # Fail if TypeScript type checking has errors
+  block_on_security_issues: true
+    # Fail if security vulnerabilities detected
+
+# ============================================================================
+# Testing Configuration
+# ============================================================================
+testing:
+  test_framework: auto-detect
+    # Options: auto-detect, jest, vitest, pytest, cargo-test
+  test_command: npm test
+    # Command to run tests
+  coverage_command: npm run test:coverage
+    # Command to generate coverage report
+  test_timeout: 300
+    # Test execution timeout in seconds
+  run_e2e_tests: false
+    # Include E2E tests in verification (can be slow)
+
+# ============================================================================
+# Hook Settings
+# ============================================================================
+hooks:
+  enable_auto_format: true
+    # Run formatter after edits (< 1s, high value)
+  enable_pre_commit_validation: true
+    # Validate before commits (10-30s, critical quality gate)
+  enable_auto_lint: false
+    # Run linter after edits (2-5s, can be noisy)
+  enable_build_verification: false
+    # Run build after edits (5-30s, too slow for every edit)
+  enable_test_auto_run: false
+    # Run tests after relevant changes (30s+, very slow)
+
+# ============================================================================
+# Notification Preferences
+# ============================================================================
+notifications:
+  desktop_notifications: false
+    # Show desktop notifications for completed workflows
+  progress_updates: true
+    # Show progress updates for long-running tasks (> 2 minutes)
+  completion_summary: true
+    # Show detailed summary when workflow completes
+  error_notifications: true
+    # Show notifications when errors occur
+
+# ============================================================================
+# Advanced Settings
+# ============================================================================
+
+# Context Management
+context:
+  max_orchestrator_context: 6000
+    # Maximum tokens in orchestrator context
+  enable_context_cleanup: true
+    # Automatically clean up old context
+
+# Agent Spawning
+agents:
+  max_parallel_agents: 4
+    # Maximum agents to run simultaneously
+  agent_timeout: 600
+    # Agent execution timeout in seconds
+
+# Logging
+logging:
+  log_level: info
+    # Options: debug, info, warn, error
+  log_file: .agency/logs/agency.log
+    # Path to log file
+
+# Validation
+validation:
+  mode: lenient
+    # Options: strict, lenient, silent
+    # strict: Fail on invalid settings
+    # lenient: Use defaults with warnings (recommended)
+    # silent: Use defaults without warnings

@@ -1,0 +1,4819 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2025-12-11",
+  "total_agents": 52,
+  "agents": [
+    {
+      "id": "brand-guardian",
+      "name": "brand-guardian",
+      "display_name": "Brand Guardian",
+      "category": "design",
+      "file_path": "agents/design/brand-guardian.md",
+      "description": "Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and strategic brand positioning",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring brand strategy, visual identity, brand positioning, consistency",
+        "Issues with keywords: brand, identity, logo, guidelines, trademark, positioning"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Brand strategy review and identity validation during planning",
+            "selection_criteria": "Issues requiring brand strategy, visual identity, brand positioning, consistency",
+            "responsibilities": "Review brand alignment, validate identity systems, ensure strategic positioning"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Brand system creation and guideline implementation",
+            "selection_criteria": "Issues with keywords: brand, identity, logo, guidelines, trademark, positioning",
+            "responsibilities": "Develop brand foundations, create visual identity, establish brand systems"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "brand-strategy-frameworks"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "figma-design-systems",
+          "brand-strategy-frameworks"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Tailwind CSS",
+        "shadcn/ui"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "devops"
+      ]
+    },
+    {
+      "id": "ui-designer",
+      "name": "ui-designer",
+      "display_name": "Ui Designer",
+      "category": "design",
+      "file_path": "agents/design/ui-designer.md",
+      "description": "Expert UI designer specializing in visual design systems, component libraries, and pixel-perfect interface creation. Creates beautiful, consistent, accessible user interfaces that enhance UX and reflect brand identity",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring UI design, component libraries, design systems, visual interfaces",
+        "Issues with keywords: UI, design system, components, interface, visual, accessibility"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Design system review and component architecture planning",
+            "selection_criteria": "Issues requiring UI design, component libraries, design systems, visual interfaces",
+            "responsibilities": "Review component designs, validate design systems, ensure accessibility compliance"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "UI component creation and design system implementation",
+            "selection_criteria": "Issues with keywords: UI, design system, components, interface, visual, accessibility",
+            "responsibilities": "Create component libraries, design interfaces, implement design tokens"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "figma-component-design",
+          "accessibility-wcag-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Tailwind CSS",
+        "shadcn/ui"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "ux-architect",
+      "name": "ux-architect",
+      "display_name": "Ux Architect",
+      "category": "design",
+      "file_path": "agents/design/ux-architect.md",
+      "description": "Technical architecture and UX specialist who provides developers with solid foundations, CSS systems, and clear implementation guidance",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring technical architecture, CSS systems, layout frameworks, responsive design",
+        "Issues with keywords: architecture, CSS, layout, framework, responsive, foundation, theme"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Technical architecture review and CSS system planning",
+            "selection_criteria": "Issues requiring technical architecture, CSS systems, layout frameworks, responsive design",
+            "responsibilities": "Review technical feasibility, validate architecture decisions, ensure scalability"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Foundation implementation and UX structure creation",
+            "selection_criteria": "Issues with keywords: architecture, CSS, layout, framework, responsive, foundation, theme",
+            "responsibilities": "Create CSS systems, implement layout frameworks, establish technical foundations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "tailwindcss-4-expert",
+          "nextjs-16-expert",
+          "typescript-5-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "tailwindcss-4-expert",
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "css-architecture-patterns"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Tailwind CSS",
+        "Next.js",
+        "TypeScript"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "ux-researcher",
+      "name": "ux-researcher",
+      "display_name": "Ux Researcher",
+      "category": "design",
+      "file_path": "agents/design/ux-researcher.md",
+      "description": "Expert user experience researcher specializing in user behavior analysis, usability testing, and data-driven design insights. Provides actionable research findings that improve product usability and user satisfaction",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring user insights, behavior analysis, usability validation, research",
+        "Issues with keywords: research, users, testing, survey, interview, analytics, behavior"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "User research planning and methodology design",
+            "selection_criteria": "Issues requiring user insights, behavior analysis, usability validation, research",
+            "responsibilities": "Design research studies, validate assumptions, provide user insights"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Research execution and insight delivery",
+            "selection_criteria": "Issues with keywords: research, users, testing, survey, interview, analytics, behavior",
+            "responsibilities": "Execute research studies, analyze data, deliver actionable insights"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "usability-testing-frameworks"
+        ],
+        "quality": [
+          "usability-testing-frameworks"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "user-research-methodologies",
+          "statistical-analysis",
+          "usability-testing-frameworks",
+          "accessibility-research"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design"
+      ]
+    },
+    {
+      "id": "visual-storyteller",
+      "name": "visual-storyteller",
+      "display_name": "Visual Storyteller",
+      "category": "design",
+      "file_path": "agents/design/visual-storyteller.md",
+      "description": "Expert visual communication specialist focused on creating compelling visual narratives, multimedia content, and brand storytelling through design. Specializes in transforming complex information into engaging visual stories that connect with audiences and drive emotional engagement.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring visual content, storytelling, multimedia, data visualization, brand narrative",
+        "Issues with keywords: story, visual, narrative, video, animation, infographic, multimedia"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Visual storytelling strategy and narrative planning",
+            "selection_criteria": "Issues requiring visual content, storytelling, multimedia, data visualization, brand narrative",
+            "responsibilities": "Plan visual narratives, design story arcs, strategize content approach"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Visual content creation and narrative implementation",
+            "selection_criteria": "Issues with keywords: story, visual, narrative, video, animation, infographic, multimedia",
+            "responsibilities": "Create visual stories, design multimedia content, develop data visualizations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "visual-narrative-design",
+          "multimedia-content-creation",
+          "data-visualization",
+          "accessibility-wcag-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "whimsy-injector",
+      "name": "whimsy-injector",
+      "display_name": "Whimsy Injector",
+      "category": "design",
+      "file_path": "agents/design/whimsy-injector.md",
+      "description": "Expert creative specialist focused on adding personality, delight, and playful elements to brand experiences. Creates memorable, joyful interactions that differentiate brands through unexpected moments of whimsy",
+      "color": "pink",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring personality, delight, playfulness, gamification, micro-interactions",
+        "Issues with keywords: whimsy, delight, playful, personality, animation, gamification, easter egg"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Personality strategy and delight planning",
+            "selection_criteria": "Issues requiring personality, delight, playfulness, gamification, micro-interactions",
+            "responsibilities": "Plan whimsy strategy, design personality systems, ensure brand alignment"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Whimsy implementation and personality enhancement",
+            "selection_criteria": "Issues with keywords: whimsy, delight, playful, personality, animation, gamification, easter egg",
+            "responsibilities": "Create micro-interactions, add playful elements, implement gamification"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "micro-interaction-design",
+          "animation-principles",
+          "gamification-strategies",
+          "accessibility-wcag-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "ai-engineer",
+      "name": "ai-engineer",
+      "display_name": "Ai Engineer",
+      "category": "engineering",
+      "file_path": "agents/engineering/ai-engineer.md",
+      "description": "Expert AI/ML engineer specializing in machine learning model development, deployment, and integration into production systems. Focused on building intelligent features, data pipelines, and AI-powered applications with emphasis on practical, scalable solutions.",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues involving machine learning, AI integration, LLM features, data pipelines, or intelligent automation",
+        "When architectural plan involves AI/ML components requiring specialized implementation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "AI/ML feature development and model implementation",
+            "selection_criteria": "Issues involving machine learning, AI integration, LLM features, data pipelines, or intelligent automation",
+            "responsibilities": "Design ML architecture, implement models, deploy to production, ensure ethical AI practices"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute AI implementation from architecture plan",
+            "selection_criteria": "When architectural plan involves AI/ML components requiring specialized implementation",
+            "responsibilities": "Implement model training pipelines, integrate with production systems, set up monitoring"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "ai-5-expert",
+          "mastra-latest-expert",
+          "pixeltable-0-expert"
+        ],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "ai-5-expert",
+          "mastra-latest-expert",
+          "pixeltable-0-expert",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Vercel AI SDK",
+        "Mastra",
+        "Pixeltable"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "backend-architect",
+      "name": "backend-architect",
+      "display_name": "Backend Architect",
+      "category": "engineering",
+      "file_path": "agents/engineering/backend-architect.md",
+      "description": "Senior backend architect specializing in scalable system design, database architecture, API development, and cloud infrastructure. Builds robust, secure, performant server-side applications and microservices",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues involving backend services, database design, API development, or system architecture",
+        "Complex backend systems requiring architectural design or scalability assessment"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Backend system and API development",
+            "selection_criteria": "Issues involving backend services, database design, API development, or system architecture",
+            "responsibilities": "Design scalable architecture, implement APIs, optimize database performance, ensure security"
+          },
+          {
+            "command": "/agency:plan [issue]",
+            "description": "System architecture review and planning",
+            "selection_criteria": "Complex backend systems requiring architectural design or scalability assessment",
+            "responsibilities": "Create system architecture, review database schemas, design API contracts, plan scaling strategy"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "supabase-latest-expert",
+          "prisma-latest-expert",
+          "drizzle-0-expert"
+        ],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "supabase-latest-expert",
+          "prisma-latest-expert",
+          "drizzle-0-expert",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Supabase",
+        "Prisma",
+        "Drizzle ORM"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "devops-automator",
+      "name": "devops-automator",
+      "display_name": "Devops Automator",
+      "category": "engineering",
+      "file_path": "agents/engineering/devops-automator.md",
+      "description": "Expert DevOps engineer specializing in infrastructure automation, CI/CD pipeline development, and cloud operations",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues involving infrastructure, deployment pipelines, monitoring, or cloud operations",
+        "When infrastructure plan needs implementation with IaC and automation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Infrastructure automation and CI/CD development",
+            "selection_criteria": "Issues involving infrastructure, deployment pipelines, monitoring, or cloud operations",
+            "responsibilities": "Design CI/CD pipelines, automate infrastructure, implement monitoring, ensure reliability"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute infrastructure implementation from plan",
+            "selection_criteria": "When infrastructure plan needs implementation with IaC and automation",
+            "responsibilities": "Implement infrastructure as code, configure pipelines, set up monitoring and alerting"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          "Docker",
+          "Kubernetes",
+          "Terraform"
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "frontend-developer",
+      "name": "frontend-developer",
+      "display_name": "Frontend Developer",
+      "category": "engineering",
+      "file_path": "agents/engineering/frontend-developer.md",
+      "description": "Expert frontend developer specializing in modern web technologies, React/Vue/Angular frameworks, UI implementation, and performance optimization",
+      "color": "cyan",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues involving React/Vue/Angular UI, component development, performance optimization, or accessibility",
+        "When design specifications need frontend implementation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Frontend UI and user experience development",
+            "selection_criteria": "Issues involving React/Vue/Angular UI, component development, performance optimization, or accessibility",
+            "responsibilities": "Implement pixel-perfect UIs, optimize performance, ensure accessibility, create responsive designs"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute frontend implementation from design specs",
+            "selection_criteria": "When design specifications need frontend implementation",
+            "responsibilities": "Build components from designs, integrate with APIs, optimize performance, test across browsers"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert"
+        ],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "mobile-app-builder",
+      "name": "mobile-app-builder",
+      "display_name": "Mobile App Builder",
+      "category": "engineering",
+      "file_path": "agents/engineering/mobile-app-builder.md",
+      "description": "Specialized mobile application developer with expertise in native iOS/Android development and cross-platform frameworks",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues involving iOS/Android apps, mobile UI, platform integrations, or app performance",
+        "When mobile app specifications need platform-specific implementation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Mobile application development and optimization",
+            "selection_criteria": "Issues involving iOS/Android apps, mobile UI, platform integrations, or app performance",
+            "responsibilities": "Build native/cross-platform apps, optimize performance, implement platform features, ensure UX quality"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute mobile implementation from specifications",
+            "selection_criteria": "When mobile app specifications need platform-specific implementation",
+            "responsibilities": "Build app from specs, integrate platform APIs, optimize performance, test on devices"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "rapid-prototyper",
+      "name": "rapid-prototyper",
+      "display_name": "Rapid Prototyper",
+      "category": "engineering",
+      "file_path": "agents/engineering/rapid-prototyper.md",
+      "description": "Specialized in ultra-fast proof-of-concept development and MVP creation using efficient tools and frameworks",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring quick validation, MVPs, proof-of-concepts, or rapid prototypes",
+        "When quick implementation is needed to test ideas"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Rapid MVP and prototype development",
+            "selection_criteria": "Issues requiring quick validation, MVPs, proof-of-concepts, or rapid prototypes",
+            "responsibilities": "Build functional prototypes in < 3 days, validate hypotheses, gather user feedback quickly"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute rapid implementation from concept",
+            "selection_criteria": "When quick implementation is needed to test ideas",
+            "responsibilities": "Build MVPs with speed-first approach, integrate feedback systems, deploy quickly"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "shadcn-latest-expert",
+          "supabase-latest-expert"
+        ],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "shadcn-latest-expert",
+          "supabase-latest-expert",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "shadcn/ui",
+        "Supabase"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "senior-developer",
+      "name": "senior-developer",
+      "display_name": "Senior Developer",
+      "category": "engineering",
+      "file_path": "agents/engineering/senior-developer.md",
+      "description": "Premium implementation specialist - Masters Laravel/Livewire/FluxUI, advanced CSS, Three.js integration",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring complex architecture, cross-cutting concerns, or senior-level problem solving",
+        "When architectural plans need expert implementation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Complex feature development requiring senior expertise",
+            "selection_criteria": "Issues requiring complex architecture, cross-cutting concerns, or senior-level problem solving",
+            "responsibilities": "Architect solutions, implement complex features, mentor through code quality, ensure best practices"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute complex implementation from architecture",
+            "selection_criteria": "When architectural plans need expert implementation",
+            "responsibilities": "Implement according to architecture, ensure quality, handle edge cases comprehensively"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "supabase-latest-expert",
+          "prisma-latest-expert"
+        ],
+        "quality": [
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "nextjs-16-expert",
+          "typescript-5-expert",
+          "tailwindcss-4-expert",
+          "shadcn-latest-expert",
+          "supabase-latest-expert",
+          "prisma-latest-expert",
+          "code-review-standards"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Supabase",
+        "Prisma"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "app-store-optimizer",
+      "name": "app-store-optimizer",
+      "display_name": "App Store Optimizer",
+      "category": "marketing",
+      "file_path": "agents/marketing/app-store-optimizer.md",
+      "description": "Expert app store marketing specialist focused on App Store Optimization (ASO), conversion rate optimization, and app discoverability",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring app store optimization, keyword strategy, conversion rate improvement, app discoverability enhancement",
+        "Issues with keywords: ASO, app store, optimization, keywords, conversion, discoverability, rankings, metadata"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "ASO strategy review, keyword validation, conversion optimization planning",
+            "selection_criteria": "Issues requiring app store optimization, keyword strategy, conversion rate improvement, app discoverability enhancement",
+            "responsibilities": "Review ASO strategy, validate keyword opportunities, plan A/B testing roadmap, assess competitive positioning"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "ASO implementation, metadata optimization, visual asset testing, performance tracking",
+            "selection_criteria": "Issues with keywords: ASO, app store, optimization, keywords, conversion, discoverability, rankings, metadata",
+            "responsibilities": "Execute keyword optimization, create visual asset tests, implement metadata changes, monitor performance analytics"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "app-store-optimization",
+          "conversion-optimization",
+          "mobile-marketing"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "content-creator",
+      "name": "content-creator",
+      "display_name": "Content Creator",
+      "category": "marketing",
+      "file_path": "agents/marketing/content-creator.md",
+      "description": "Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates compelling copy, manages brand storytelling, and optimizes content for engagement across all digital channels.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring content strategy, editorial planning, brand storytelling, multi-platform campaigns",
+        "Issues with keywords: content, blog, copy, storytelling, editorial, video script, social posts, SEO"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Content strategy planning, editorial calendar development, campaign ideation",
+            "selection_criteria": "Issues requiring content strategy, editorial planning, brand storytelling, multi-platform campaigns",
+            "responsibilities": "Review content strategy, plan editorial calendars, validate messaging frameworks, assess content mix"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Content creation, copywriting, video scripting, content optimization",
+            "selection_criteria": "Issues with keywords: content, blog, copy, storytelling, editorial, video script, social posts, SEO",
+            "responsibilities": "Create blog posts, write video scripts, develop social content, optimize for SEO, track engagement"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "content-strategy",
+          "brand-storytelling",
+          "seo-content-writing"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "growth-hacker",
+      "name": "growth-hacker",
+      "display_name": "Growth Hacker",
+      "category": "marketing",
+      "file_path": "agents/marketing/growth-hacker.md",
+      "description": "Expert growth strategist specializing in rapid user acquisition through data-driven experimentation. Develops viral loops, optimizes conversion funnels, and finds scalable growth channels for exponential business growth.",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring growth strategy, user acquisition, viral mechanics, conversion funnel optimization",
+        "Issues with keywords: growth, acquisition, viral, funnel, conversion, experimentation, retention, CAC, LTV"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Growth strategy development, funnel optimization planning, experimentation roadmap",
+            "selection_criteria": "Issues requiring growth strategy, user acquisition, viral mechanics, conversion funnel optimization",
+            "responsibilities": "Review growth strategy, plan experiment frameworks, validate acquisition channels, assess viral potential"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Growth experiment execution, funnel optimization, viral campaign implementation, analytics tracking",
+            "selection_criteria": "Issues with keywords: growth, acquisition, viral, funnel, conversion, experimentation, retention, CAC, LTV",
+            "responsibilities": "Execute growth experiments, optimize conversion funnels, implement viral mechanics, track performance metrics"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "growth-marketing",
+          "data-analytics",
+          "conversion-optimization",
+          "viral-marketing"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "instagram-curator",
+      "name": "instagram-curator",
+      "display_name": "Instagram Curator",
+      "category": "marketing",
+      "file_path": "agents/marketing/instagram-curator.md",
+      "description": "Expert Instagram marketing specialist focused on visual storytelling, community building, and multi-format content optimization. Masters aesthetic development and drives meaningful engagement.",
+      "color": "pink",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring Instagram strategy, visual brand development, multi-format planning, community growth",
+        "Issues with keywords: Instagram, Reels, Stories, visual, aesthetic, community, engagement, Shopping, UGC"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Instagram strategy planning, aesthetic development, content calendar creation",
+            "selection_criteria": "Issues requiring Instagram strategy, visual brand development, multi-format planning, community growth",
+            "responsibilities": "Review Instagram strategy, plan aesthetic frameworks, validate content mix, assess engagement tactics"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Content creation, post scheduling, community engagement, Shopping optimization",
+            "selection_criteria": "Issues with keywords: Instagram, Reels, Stories, visual, aesthetic, community, engagement, Shopping, UGC",
+            "responsibilities": "Create Instagram content, curate visual feeds, engage community, optimize Shopping features, track performance"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "instagram-marketing",
+          "visual-storytelling",
+          "community-building"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "reddit-community-builder",
+      "name": "reddit-community-builder",
+      "display_name": "Reddit Community Builder",
+      "category": "marketing",
+      "file_path": "agents/marketing/reddit-community-builder.md",
+      "description": "Expert Reddit marketing specialist focused on authentic community engagement, value-driven content creation, and long-term relationship building. Masters Reddit culture navigation.",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring Reddit community strategy, authentic engagement planning, reputation building",
+        "Issues with keywords: Reddit, community, engagement, AMA, reputation, subreddit, value-add, authentic"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Reddit strategy planning, subreddit research, value-add content ideation",
+            "selection_criteria": "Issues requiring Reddit community strategy, authentic engagement planning, reputation building",
+            "responsibilities": "Review Reddit strategy, plan subreddit participation, validate value-first approach, assess community fit"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Community participation, helpful content creation, AMA execution, reputation monitoring",
+            "selection_criteria": "Issues with keywords: Reddit, community, engagement, AMA, reputation, subreddit, value-add, authentic",
+            "responsibilities": "Create helpful content, participate in discussions, execute AMAs, monitor brand mentions, build trust"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "reddit-marketing",
+          "community-engagement",
+          "value-first-content"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "orchestration",
+        "frontend",
+        "testing",
+        "analytics"
+      ]
+    },
+    {
+      "id": "social-media-strategist",
+      "name": "social-media-strategist",
+      "display_name": "Social Media Strategist",
+      "category": "marketing",
+      "file_path": "agents/marketing/social-media-strategist.md",
+      "description": "Expert social media strategist for Twitter, LinkedIn, and professional platforms. Creates viral campaigns, builds communities, manages real-time engagement, and develops thought leadership strategies.",
+      "color": "cyan",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring social media strategy, viral campaign planning, thought leadership positioning, multi-platform coordination",
+        "Issues with keywords: social media, Twitter, LinkedIn, threads, viral, engagement, thought leadership, community"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Social media strategy planning, campaign ideation, thought leadership development",
+            "selection_criteria": "Issues requiring social media strategy, viral campaign planning, thought leadership positioning, multi-platform coordination",
+            "responsibilities": "Review social strategy, plan campaigns, validate messaging, assess platform fit, coordinate multi-channel approach"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Campaign execution, content creation, real-time engagement, community management",
+            "selection_criteria": "Issues with keywords: social media, Twitter, LinkedIn, threads, viral, engagement, thought leadership, community",
+            "responsibilities": "Execute campaigns, create threads/posts, engage in real-time, manage communities, track performance"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "social-media-strategy",
+          "thought-leadership",
+          "multi-platform-campaigns"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "tiktok-strategist",
+      "name": "tiktok-strategist",
+      "display_name": "Tiktok Strategist",
+      "category": "marketing",
+      "file_path": "agents/marketing/tiktok-strategist.md",
+      "description": "Expert TikTok marketing specialist focused on viral content creation, algorithm optimization, and community building. Masters TikTok's unique culture and features for brand growth.",
+      "color": "red",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring TikTok strategy, viral content planning, algorithm optimization, creator collaborations",
+        "Issues with keywords: TikTok, viral, Reels, short video, trending audio, creator, UGC, algorithm"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "TikTok strategy planning, viral content ideation, creator partnership development",
+            "selection_criteria": "Issues requiring TikTok strategy, viral content planning, algorithm optimization, creator collaborations",
+            "responsibilities": "Review TikTok strategy, plan viral content, validate trend alignment, assess creator partnerships"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Viral content creation, trend participation, creator management, campaign execution",
+            "selection_criteria": "Issues with keywords: TikTok, viral, Reels, short video, trending audio, creator, UGC, algorithm",
+            "responsibilities": "Create viral content, execute trend participation, manage creator partnerships, track performance"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "tiktok-marketing",
+          "viral-content-creation",
+          "short-form-video",
+          "trend-analysis"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "twitter-engager",
+      "name": "twitter-engager",
+      "display_name": "Twitter Engager",
+      "category": "marketing",
+      "file_path": "agents/marketing/twitter-engager.md",
+      "description": "Expert Twitter marketing specialist focused on real-time engagement, thought leadership building, and community-driven growth. Masters LinkedIn campaigns and professional social media strategy.",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring Twitter strategy, thought leadership development, real-time engagement planning, crisis preparedness",
+        "Issues with keywords: Twitter, threads, engagement, real-time, Spaces, community, thought leadership, crisis"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Twitter strategy planning, thread ideation, Spaces scheduling, engagement tactics",
+            "selection_criteria": "Issues requiring Twitter strategy, thought leadership development, real-time engagement planning, crisis preparedness",
+            "responsibilities": "Review Twitter strategy, plan thread content, validate engagement approach, assess community growth tactics"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Thread creation, real-time engagement, Spaces hosting, community management, crisis response",
+            "selection_criteria": "Issues with keywords: Twitter, threads, engagement, real-time, Spaces, community, thought leadership, crisis",
+            "responsibilities": "Create threads, engage in conversations, host Spaces, manage community, monitor mentions, respond to crises"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "twitter-marketing",
+          "real-time-engagement",
+          "thread-creation",
+          "community-management"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "name": "orchestrator",
+      "display_name": "Orchestrator",
+      "category": "meta",
+      "file_path": "agents/orchestrator-agent.md",
+      "description": "Meta-agent that coordinates specialized subagents to accomplish complex development tasks while keeping the main context lean. Automatically invoked for multi-step tasks, GitHub/Jira issues, feature planning, or when explicit orchestration is requested.",
+      "color": "gray",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Multi-step tasks requiring agent coordination and strategic planning",
+        "Complete workflows, GitHub/Jira issues, feature implementation requests",
+        "User has approved plan and wants execution only"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Meta-orchestration planning for complex multi-step workflows",
+            "selection_criteria": "Multi-step tasks requiring agent coordination and strategic planning",
+            "responsibilities": "Analyze scope, create execution plan, identify required agents, define quality gates"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Full orchestration from planning through delivery",
+            "selection_criteria": "Complete workflows, GitHub/Jira issues, feature implementation requests",
+            "responsibilities": "Execute full pipeline (plan \u2192 implement \u2192 test \u2192 review \u2192 deliver)"
+          },
+          {
+            "command": "/agency:implement [plan-file]",
+            "description": "Execute from existing plan",
+            "selection_criteria": "User has approved plan and wants execution only",
+            "responsibilities": "Spawn agents per plan, manage quality gates, coordinate handoffs"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": []
+      },
+      "tools": {},
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "feedback-synthesizer",
+      "name": "feedback-synthesizer",
+      "display_name": "Feedback Synthesizer",
+      "category": "product",
+      "file_path": "agents/product/feedback-synthesizer.md",
+      "description": "Expert in collecting, analyzing, and synthesizing user feedback from multiple channels to extract actionable product insights. Transforms qualitative feedback into quantitative priorities and strategic recommendations.",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring user voice integration, feedback-driven feature validation, customer satisfaction analysis",
+        "Issues with keywords: feedback, user voice, satisfaction, NPS, customer sentiment, review analysis, support tickets, survey, pain points"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "User feedback strategy review, analysis framework validation, insight prioritization",
+            "selection_criteria": "Issues requiring user voice integration, feedback-driven feature validation, customer satisfaction analysis",
+            "responsibilities": "Review feedback collection strategies, validate analysis frameworks, prioritize user insights, assess satisfaction trends"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Feedback collection, sentiment analysis, insight synthesis, recommendation delivery",
+            "selection_criteria": "Issues with keywords: feedback, user voice, satisfaction, NPS, customer sentiment, review analysis, support tickets, survey, pain points",
+            "responsibilities": "Collect multi-channel feedback, analyze sentiment patterns, synthesize actionable insights, correlate with business metrics, deliver recommendations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "user-feedback-analysis",
+          "sentiment-analysis-techniques",
+          "qualitative-data-synthesis"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "sprint-prioritizer",
+      "name": "sprint-prioritizer",
+      "display_name": "Sprint Prioritizer",
+      "category": "product",
+      "file_path": "agents/product/sprint-prioritizer.md",
+      "description": "Expert product manager specializing in agile sprint planning, feature prioritization, and resource allocation. Focused on maximizing team velocity and business value delivery through data-driven prioritization frameworks.",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring sprint planning, feature prioritization, resource allocation, roadmap development",
+        "Issues with keywords: sprint, backlog, priority, roadmap, velocity, capacity, dependencies, agile, scrum, planning"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Sprint planning strategy, backlog prioritization framework, resource capacity review",
+            "selection_criteria": "Issues requiring sprint planning, feature prioritization, resource allocation, roadmap development",
+            "responsibilities": "Review backlog priorities, validate sprint capacity, assess dependencies, align stakeholder expectations"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Sprint execution, priority scoring, capacity planning, stakeholder coordination",
+            "selection_criteria": "Issues with keywords: sprint, backlog, priority, roadmap, velocity, capacity, dependencies, agile, scrum, planning",
+            "responsibilities": "Execute sprint planning, score feature priorities using RICE framework, manage dependencies, track velocity, deliver reports"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "prioritization-frameworks"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "agile-sprint-planning",
+          "prioritization-frameworks",
+          "resource-allocation-optimization"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "devops"
+      ]
+    },
+    {
+      "id": "trend-researcher",
+      "name": "trend-researcher",
+      "display_name": "Trend Researcher",
+      "category": "product",
+      "file_path": "agents/product/trend-researcher.md",
+      "description": "Expert market intelligence analyst specializing in identifying emerging trends, competitive analysis, and opportunity assessment. Focused on providing actionable insights that drive product strategy and innovation decisions.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring market opportunity assessment, competitive positioning, trend validation, investment thesis review",
+        "Issues with keywords: market, trend, competitive, opportunity, research, forecast, intelligence, industry, emerging, innovation"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Market research strategy, competitive analysis framework, trend validation methodology",
+            "selection_criteria": "Issues requiring market opportunity assessment, competitive positioning, trend validation, investment thesis review",
+            "responsibilities": "Review research methodologies, validate trend forecasts, assess market opportunities, align competitive strategies"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Market research execution, trend analysis, competitive intelligence, opportunity reporting",
+            "selection_criteria": "Issues with keywords: market, trend, competitive, opportunity, research, forecast, intelligence, industry, emerging, innovation",
+            "responsibilities": "Execute market research, analyze trends, gather competitive intelligence, size markets, forecast adoption, deliver insights"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "market-intelligence-analysis",
+          "competitive-research-methods",
+          "trend-forecasting-techniques"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "experiment-tracker",
+      "name": "experiment-tracker",
+      "display_name": "Experiment Tracker",
+      "category": "project-management",
+      "file_path": "agents/project-management/experiment-tracker.md",
+      "description": "Expert project manager specializing in experiment design, execution tracking, and data-driven decision making. Focused on managing A/B tests, feature experiments, and hypothesis validation through systematic experimentation and rigorous analysis.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring experiment design, A/B testing strategy, hypothesis validation, or data-driven decision frameworks",
+        "Issues with keywords: experiment, A/B test, hypothesis, testing, validation, metrics, analytics, data-driven"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Experiment planning, hypothesis formulation, and experimental design",
+            "selection_criteria": "Issues requiring experiment design, A/B testing strategy, hypothesis validation, or data-driven decision frameworks",
+            "responsibilities": "Define hypotheses, design experimental structure, calculate sample sizes, establish success criteria, plan data collection and analysis methodology"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Experiment execution, monitoring, and statistical analysis",
+            "selection_criteria": "Issues with keywords: experiment, A/B test, hypothesis, testing, validation, metrics, analytics, data-driven",
+            "responsibilities": "Execute experiment launches, monitor data quality, track statistical significance, perform rigorous analysis, deliver go/no-go recommendations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "acli-latest-expert"
+        ],
+        "quality": [
+          "statistical-testing"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "acli-latest-expert",
+          "github-workflow",
+          "data-analysis",
+          "statistical-testing"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Atlassian CLI"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops"
+      ]
+    },
+    {
+      "id": "project-shepherd",
+      "name": "project-shepherd",
+      "display_name": "Project Shepherd",
+      "category": "project-management",
+      "file_path": "agents/project-management/project-shepherd.md",
+      "description": "Expert project manager specializing in cross-functional project coordination, timeline management, and stakeholder alignment. Focused on shepherding projects from conception to completion while managing resources, risks, and communications across multiple teams and departments.",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring multi-team coordination, complex project orchestration, stakeholder alignment, or cross-functional delivery",
+        "Issues with keywords: project, coordination, cross-functional, stakeholders, timeline, milestone, delivery, integration"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Cross-functional project planning, timeline development, and resource allocation",
+            "selection_criteria": "Issues requiring multi-team coordination, complex project orchestration, stakeholder alignment, or cross-functional delivery",
+            "responsibilities": "Create project charters, develop timelines with dependencies, allocate resources, establish governance, plan risk mitigation"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Project execution, progress tracking, stakeholder communication, and delivery coordination",
+            "selection_criteria": "Issues with keywords: project, coordination, cross-functional, stakeholders, timeline, milestone, delivery, integration",
+            "responsibilities": "Monitor progress, resolve blockers, facilitate team collaboration, manage stakeholder communications, ensure quality delivery"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "acli-latest-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "acli-latest-expert",
+          "github-workflow",
+          "agile-scrum",
+          "stakeholder-management"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Atlassian CLI"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops"
+      ]
+    },
+    {
+      "id": "senior",
+      "name": "senior",
+      "display_name": "Senior",
+      "category": "project-management",
+      "file_path": "agents/project-management/senior.md",
+      "description": "Converts specs to tasks, remembers previous projects - Focused on realistic scope, no background processes, exact spec requirements",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring conversion of specifications into actionable development tasks",
+        "Issues with keywords: specification, task list, scope, breakdown, requirements, estimate, planning"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Specification analysis and task breakdown creation",
+            "selection_criteria": "Issues requiring conversion of specifications into actionable development tasks",
+            "responsibilities": "Analyze specs, create detailed task lists, define acceptance criteria, identify technical requirements, establish realistic timelines"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Task list refinement, scope validation, and developer support",
+            "selection_criteria": "Issues with keywords: specification, task list, scope, breakdown, requirements, estimate, planning",
+            "responsibilities": "Refine task details, validate scope realism, support developers with clarifications, track task completion"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "acli-latest-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "acli-latest-expert",
+          "github-workflow",
+          "task-breakdown",
+          "scope-estimation"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Atlassian CLI"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design"
+      ]
+    },
+    {
+      "id": "studio-operations",
+      "name": "studio-operations",
+      "display_name": "Studio Operations",
+      "category": "project-management",
+      "file_path": "agents/project-management/studio-operations.md",
+      "description": "Expert operations manager specializing in day-to-day studio efficiency, process optimization, and resource coordination. Focused on ensuring smooth operations, maintaining productivity standards, and supporting all teams with the tools and processes needed for success.",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring process improvement, operational workflow design, resource coordination planning, or system optimization",
+        "Issues with keywords: operations, process, efficiency, workflow, support, infrastructure, automation, optimization"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Process design, operational planning, and efficiency optimization",
+            "selection_criteria": "Issues requiring process improvement, operational workflow design, resource coordination planning, or system optimization",
+            "responsibilities": "Design standard operating procedures, plan resource allocation, optimize workflows, establish quality control processes"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Day-to-day operational support, issue resolution, and process execution",
+            "selection_criteria": "Issues with keywords: operations, process, efficiency, workflow, support, infrastructure, automation, optimization",
+            "responsibilities": "Resolve operational blockers, coordinate resources, maintain systems, provide administrative support, monitor performance"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "acli-latest-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "acli-latest-expert",
+          "github-workflow",
+          "process-optimization",
+          "lean-operations"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Atlassian CLI"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "studio-producer",
+      "name": "studio-producer",
+      "display_name": "Studio Producer",
+      "category": "project-management",
+      "file_path": "agents/project-management/studio-producer.md",
+      "description": "Senior strategic leader specializing in high-level creative and technical project orchestration, resource allocation, and multi-project portfolio management. Focused on aligning creative vision with business objectives while managing complex cross-functional initiatives and ensuring optimal studio operations.",
+      "color": "gold",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring executive-level strategic planning, multi-project portfolio coordination, business strategy alignment, or high-level resource allocation",
+        "Issues with keywords: portfolio, strategy, executive, business objectives, resource allocation, ROI, market positioning, leadership"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Strategic portfolio planning, resource allocation, and business alignment",
+            "selection_criteria": "Issues requiring executive-level strategic planning, multi-project portfolio coordination, business strategy alignment, or high-level resource allocation",
+            "responsibilities": "Define strategic priorities, allocate portfolio budget, plan resource capacity, align with business objectives, manage executive stakeholders"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Portfolio execution oversight, strategic decision-making, and business leadership",
+            "selection_criteria": "Issues with keywords: portfolio, strategy, executive, business objectives, resource allocation, ROI, market positioning, leadership",
+            "responsibilities": "Oversee portfolio delivery, make strategic decisions, manage senior stakeholders, drive business growth, optimize resource allocation"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "acli-latest-expert"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "acli-latest-expert",
+          "github-workflow",
+          "portfolio-management",
+          "strategic-planning"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Atlassian CLI"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "macos-spatial-metal-engineer",
+      "name": "macos-spatial-metal-engineer",
+      "display_name": "Macos Spatial Metal Engineer",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/macos-spatial-metal-engineer.md",
+      "description": "Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro",
+      "color": "cyan",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring native macOS/visionOS spatial computing, Metal shader optimization, 3D rendering architecture, GPU performance tuning",
+        "Issues with keywords: Metal, Swift, visionOS, Vision Pro, GPU, shader, spatial rendering, 3D graphics, stereo, CompositorServices"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Metal rendering architecture planning, GPU performance analysis, spatial computing design validation",
+            "selection_criteria": "Issues requiring native macOS/visionOS spatial computing, Metal shader optimization, 3D rendering architecture, GPU performance tuning",
+            "responsibilities": "Design Metal rendering pipelines, plan Vision Pro integration, architect GPU-accelerated graph layouts, validate stereoscopic rendering approaches"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Native Swift/Metal implementation, Vision Pro Compositor integration, GPU shader development",
+            "selection_criteria": "Issues with keywords: Metal, Swift, visionOS, Vision Pro, GPU, shader, spatial rendering, 3D graphics, stereo, CompositorServices",
+            "responsibilities": "Implement Metal rendering pipelines, develop GPU compute shaders, integrate Vision Pro streaming, optimize GPU performance, build spatial interaction systems"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "swift-metal-rendering",
+          "visionos-spatial-computing"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "terminal-integration-specialist",
+      "name": "terminal-integration-specialist",
+      "display_name": "Terminal Integration Specialist",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/terminal-integration-specialist.md",
+      "description": "Terminal emulation, text rendering optimization, and SwiftTerm integration specialist for modern Swift spatial applications",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring terminal emulator integration, SwiftTerm implementation, VT100/xterm protocol handling, text rendering optimization",
+        "Issues with keywords: SwiftTerm, terminal, VT100, xterm, ANSI, text rendering, SSH, terminal emulation, scrollback"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Terminal emulation architecture planning, SwiftTerm integration design, text rendering performance validation",
+            "selection_criteria": "Issues requiring terminal emulator integration, SwiftTerm implementation, VT100/xterm protocol handling, text rendering optimization",
+            "responsibilities": "Design terminal integration architecture, plan SwiftTerm view hierarchy, architect SSH I/O bridging, validate text rendering performance"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "SwiftTerm implementation, terminal protocol handling, text rendering optimization",
+            "selection_criteria": "Issues with keywords: SwiftTerm, terminal, VT100, xterm, ANSI, text rendering, SSH, terminal emulation, scrollback",
+            "responsibilities": "Implement SwiftTerm views, handle terminal input/output, optimize text rendering, integrate SSH streams, manage terminal sessions"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "swiftterm-integration",
+          "terminal-emulation-protocols"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "visionos-spatial-engineer",
+      "name": "visionos-spatial-engineer",
+      "display_name": "Visionos Spatial Engineer",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/visionos-spatial-engineer.md",
+      "description": "Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid Glass design implementation specialist",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring visionOS platform features, spatial SwiftUI layouts, RealityKit integration, volumetric content design",
+        "Issues with keywords: visionOS, SwiftUI spatial, RealityKit, Liquid Glass, volumetric, WindowGroup, spatial widgets, immersive space"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "visionOS spatial architecture planning, SwiftUI volumetric design, Liquid Glass implementation strategy",
+            "selection_criteria": "Issues requiring visionOS platform features, spatial SwiftUI layouts, RealityKit integration, volumetric content design",
+            "responsibilities": "Design visionOS app architecture, plan WindowGroup hierarchies, architect spatial UI layouts, validate Liquid Glass design patterns"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "visionOS SwiftUI implementation, RealityKit integration, spatial interaction development",
+            "selection_criteria": "Issues with keywords: visionOS, SwiftUI spatial, RealityKit, Liquid Glass, volumetric, WindowGroup, spatial widgets, immersive space",
+            "responsibilities": "Implement SwiftUI spatial views, integrate RealityKit entities, apply Liquid Glass effects, build spatial interactions, manage window hierarchies"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "visionos-swiftui-spatial",
+          "liquid-glass-design"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "xr-cockpit-interaction-specialist",
+      "name": "xr-cockpit-interaction-specialist",
+      "display_name": "Xr Cockpit Interaction Specialist",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/xr-cockpit-interaction-specialist.md",
+      "description": "Specialist in designing and developing immersive cockpit-based control systems for XR environments with seated interaction focus",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring seated XR interfaces, cockpit-style controls, simulator environments, vehicle interfaces",
+        "Issues with keywords: cockpit, simulator, vehicle interface, seated XR, control panel, dashboard, command center, flight controls"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Cockpit interaction design planning, ergonomic layout validation, control system architecture",
+            "selection_criteria": "Issues requiring seated XR interfaces, cockpit-style controls, simulator environments, vehicle interfaces",
+            "responsibilities": "Design cockpit layouts, plan control placement for ergonomics, architect multi-input systems, validate comfort for seated experiences"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Cockpit control implementation, seated interaction development, simulator environment building",
+            "selection_criteria": "Issues with keywords: cockpit, simulator, vehicle interface, seated XR, control panel, dashboard, command center, flight controls",
+            "responsibilities": "Implement 3D cockpit controls, build interactive dashboards, integrate gesture/voice/gaze input, optimize for seated comfort"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "xr-cockpit-design",
+          "seated-interaction-ux"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "xr-immersive-developer",
+      "name": "xr-immersive-developer",
+      "display_name": "Xr Immersive Developer",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/xr-immersive-developer.md",
+      "description": "Expert WebXR and immersive technology developer with specialization in browser-based AR/VR/XR applications",
+      "color": "cyan",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring browser-based XR, WebXR implementation, Three.js/A-Frame/Babylon.js architecture, cross-platform XR compatibility",
+        "Issues with keywords: WebXR, Three.js, A-Frame, Babylon.js, VR, AR, browser XR, immersive web, hand tracking, controller input"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "WebXR architecture planning, 3D framework selection, performance optimization strategy",
+            "selection_criteria": "Issues requiring browser-based XR, WebXR implementation, Three.js/A-Frame/Babylon.js architecture, cross-platform XR compatibility",
+            "responsibilities": "Design WebXR application architecture, select optimal 3D framework, plan device compatibility strategy, validate performance budgets"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "WebXR implementation, 3D scene development, XR interaction coding",
+            "selection_criteria": "Issues with keywords: WebXR, Three.js, A-Frame, Babylon.js, VR, AR, browser XR, immersive web, hand tracking, controller input",
+            "responsibilities": "Implement WebXR sessions, build 3D scenes, integrate hand/controller input, optimize rendering performance, ensure cross-device compatibility"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "webxr-development",
+          "threejs-aframe-babylon"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "xr-interface-architect",
+      "name": "xr-interface-architect",
+      "display_name": "Xr Interface Architect",
+      "category": "spatial-computing",
+      "file_path": "agents/spatial-computing/xr-interface-architect.md",
+      "description": "Spatial interaction designer and interface strategist for immersive AR/VR/XR environments with human-centered UX focus",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring spatial UI design, XR interaction patterns, ergonomic interface layouts, comfort-focused UX",
+        "Issues with keywords: spatial UI, XR UX, interaction design, ergonomics, gaze tracking, gesture input, spatial layout"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Spatial UX design planning, interaction pattern specification, ergonomic layout validation",
+            "selection_criteria": "Issues requiring spatial UI design, XR interaction patterns, ergonomic interface layouts, comfort-focused UX",
+            "responsibilities": "Design spatial UI layouts, specify interaction patterns, validate ergonomic comfort, plan multimodal input strategies"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Spatial UI specification creation, interaction flow documentation, UX guideline development",
+            "selection_criteria": "Issues with keywords: spatial UI, XR UX, interaction design, ergonomics, gaze tracking, gesture input, spatial layout",
+            "responsibilities": "Create spatial UI specifications, document interaction flows, design ergonomic layouts, specify comfort guidelines"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "spatial-ux-design",
+          "xr-interaction-patterns"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "agents-orchestrator",
+      "name": "agents-orchestrator",
+      "display_name": "Agents Orchestrator",
+      "category": "specialized",
+      "file_path": "agents/specialized/agents-orchestrator.md",
+      "description": "Autonomous pipeline manager that orchestrates the entire development workflow. You are the leader of this process.",
+      "color": "cyan",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring coordination of multiple specialists, complex pipelines, or workflow orchestration",
+        "Issues with keywords: pipeline, orchestrate, workflow, multi-agent, coordinate, integrate"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Meta-orchestration planning for complex multi-agent workflows",
+            "selection_criteria": "Issues requiring coordination of multiple specialists, complex pipelines, or workflow orchestration",
+            "responsibilities": "Analyze scope, identify required agents, plan handoff sequences, define quality gates"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Autonomous pipeline execution with continuous quality validation",
+            "selection_criteria": "Issues with keywords: pipeline, orchestrate, workflow, multi-agent, coordinate, integrate",
+            "responsibilities": "Spawn agents in sequence, manage Dev-QA loops, enforce quality gates, handle errors"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "multi-agent-coordination",
+          "pipeline-orchestration"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          "Task",
+          "TodoWrite"
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "data-analytics-reporter",
+      "name": "data-analytics-reporter",
+      "display_name": "Data Analytics Reporter",
+      "category": "specialized",
+      "file_path": "agents/specialized/data-analytics-reporter.md",
+      "description": "Expert data analyst transforming raw data into actionable business insights. Creates dashboards, performs statistical analysis, tracks KPIs, and provides strategic decision support through data visualization and reporting.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring analytics setup, KPI definition, dashboard planning, or reporting architecture",
+        "Issues with keywords: analytics, data, metrics, KPI, dashboard, report, insights, statistics"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Data analysis planning and reporting strategy",
+            "selection_criteria": "Issues requiring analytics setup, KPI definition, dashboard planning, or reporting architecture",
+            "responsibilities": "Design measurement frameworks, define KPIs, plan data collection, architect reporting systems"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Data analysis execution and report generation",
+            "selection_criteria": "Issues with keywords: analytics, data, metrics, KPI, dashboard, report, insights, statistics",
+            "responsibilities": "Extract data, perform analysis, create visualizations, generate reports, provide recommendations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "statistical-analysis",
+          "data-visualization"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "lsp-index-engineer",
+      "name": "lsp-index-engineer",
+      "display_name": "Lsp Index Engineer",
+      "category": "specialized",
+      "file_path": "agents/specialized/lsp-index-engineer.md",
+      "description": "Language Server Protocol specialist building unified code intelligence systems through LSP client orchestration and semantic indexing",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring code intelligence, semantic search, LSP integration, or graph-based code navigation",
+        "Issues with keywords: LSP, language server, code intelligence, semantic index, graph, navigation, goto-definition, references"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "LSP system architecture and semantic indexing strategy",
+            "selection_criteria": "Issues requiring code intelligence, semantic search, LSP integration, or graph-based code navigation",
+            "responsibilities": "Design LSP orchestration architecture, plan semantic graph schema, define performance targets, architect incremental update pipeline"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "LSP integration execution and semantic index implementation",
+            "selection_criteria": "Issues with keywords: LSP, language server, code intelligence, semantic index, graph, navigation, goto-definition, references",
+            "responsibilities": "Integrate language servers, build semantic graph, implement navigation APIs, optimize query performance, create real-time update pipelines"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "language-server-protocols",
+          "semantic-indexing",
+          "graph-algorithms"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "analytics-reporter",
+      "name": "analytics-reporter",
+      "display_name": "Analytics Reporter",
+      "category": "support",
+      "file_path": "agents/support/analytics-reporter.md",
+      "description": "Expert data analyst transforming raw data into actionable business insights. Creates dashboards, performs statistical analysis, tracks KPIs, and provides strategic decision support through data visualization and reporting.",
+      "color": "teal",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring data analysis, KPI tracking, dashboard creation, business intelligence",
+        "Issues with keywords: analytics, dashboard, report, KPI, metrics, data analysis, business intelligence, trends"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Analytics planning, data validation, reporting framework design",
+            "selection_criteria": "Issues requiring data analysis, KPI tracking, dashboard creation, business intelligence",
+            "responsibilities": "Design analytical methodology, validate data sources, create reporting frameworks, establish statistical significance thresholds"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Analytics execution, report generation, insight delivery",
+            "selection_criteria": "Issues with keywords: analytics, dashboard, report, KPI, metrics, data analysis, business intelligence, trends",
+            "responsibilities": "Execute statistical analysis, build dashboards, generate executive reports, provide actionable insights"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "statistical-modeling-expertise"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "data-analysis-best-practices",
+          "statistical-modeling-expertise"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "executive-summary-generator",
+      "name": "executive-summary-generator",
+      "display_name": "Executive Summary Generator",
+      "category": "support",
+      "file_path": "agents/support/executive-summary-generator.md",
+      "description": "Consultant-grade AI specialist trained to think and communicate like a senior strategy consultant. Transforms complex business inputs into concise, actionable executive summaries using McKinsey SCQA, BCG Pyramid Principle, and Bain frameworks for C-suite decision-makers.",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring executive communication, strategic synthesis, C-suite presentation",
+        "Issues with keywords: executive summary, board presentation, C-suite, strategic communication, decision memo"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Strategic synthesis planning, framework selection, stakeholder analysis",
+            "selection_criteria": "Issues requiring executive communication, strategic synthesis, C-suite presentation",
+            "responsibilities": "Select appropriate consulting framework (SCQA/Pyramid/Bain), structure complex information hierarchically, identify key decision points"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Executive summary generation, strategic communication delivery",
+            "selection_criteria": "Issues with keywords: executive summary, board presentation, C-suite, strategic communication, decision memo",
+            "responsibilities": "Transform complex analysis into concise summaries, quantify business impact, prioritize recommendations, enable 3-minute decision-making"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "consulting-frameworks-mastery"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "consulting-frameworks-mastery",
+          "executive-communication-best-practices"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "design",
+        "frontend",
+        "testing",
+        "analytics"
+      ]
+    },
+    {
+      "id": "finance-tracker",
+      "name": "finance-tracker",
+      "display_name": "Finance Tracker",
+      "category": "support",
+      "file_path": "agents/support/finance-tracker.md",
+      "description": "Expert financial analyst and controller specializing in financial planning, budget management, and business performance analysis. Maintains financial health, optimizes cash flow, and provides strategic financial insights for business growth.",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring financial analysis, budget planning, cash flow management, investment evaluation",
+        "Issues with keywords: budget, finance, cash flow, ROI, investment, cost, revenue, financial analysis, profitability"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Financial planning, budget design, investment analysis framework development",
+            "selection_criteria": "Issues requiring financial analysis, budget planning, cash flow management, investment evaluation",
+            "responsibilities": "Design budget frameworks, create financial models, assess investment opportunities, develop cash flow forecasts"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Financial execution, reporting, analysis delivery",
+            "selection_criteria": "Issues with keywords: budget, finance, cash flow, ROI, investment, cost, revenue, financial analysis, profitability",
+            "responsibilities": "Execute financial analysis, generate budget reports, track variances, optimize cash flow, calculate ROI"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "financial-modeling-expertise"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "financial-modeling-expertise",
+          "accounting-standards-compliance"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "infrastructure-maintainer",
+      "name": "infrastructure-maintainer",
+      "display_name": "Infrastructure Maintainer",
+      "category": "support",
+      "file_path": "agents/support/infrastructure-maintainer.md",
+      "description": "Expert infrastructure specialist focused on system reliability, performance optimization, and technical operations management. Maintains robust, scalable infrastructure supporting business operations with security, performance, and cost efficiency.",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring infrastructure design, capacity planning, security hardening, performance optimization",
+        "Issues with keywords: infrastructure, deployment, monitoring, performance, scaling, uptime, cloud, servers, security, DevOps"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Infrastructure planning, architecture design, scaling strategy, disaster recovery",
+            "selection_criteria": "Issues requiring infrastructure design, capacity planning, security hardening, performance optimization",
+            "responsibilities": "Design infrastructure architecture, plan scaling strategies, create monitoring frameworks, establish backup procedures"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Infrastructure execution, monitoring, optimization, incident response",
+            "selection_criteria": "Issues with keywords: infrastructure, deployment, monitoring, performance, scaling, uptime, cloud, servers, security, DevOps",
+            "responsibilities": "Execute infrastructure changes, implement monitoring, optimize performance, respond to incidents, automate operations"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "devops-automation-frameworks"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "cloud-infrastructure-best-practices",
+          "devops-automation-frameworks"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "legal-compliance-checker",
+      "name": "legal-compliance-checker",
+      "display_name": "Legal Compliance Checker",
+      "category": "support",
+      "file_path": "agents/support/legal-compliance-checker.md",
+      "description": "Expert legal and compliance specialist ensuring business operations, data handling, and content creation comply with relevant laws, regulations, and industry standards across multiple jurisdictions.",
+      "color": "red",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring legal review, compliance assessment, policy development, regulatory impact analysis",
+        "Issues with keywords: compliance, legal, privacy, GDPR, CCPA, contract, policy, regulation, data protection, audit"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Compliance planning, policy framework design, risk assessment, regulatory analysis",
+            "selection_criteria": "Issues requiring legal review, compliance assessment, policy development, regulatory impact analysis",
+            "responsibilities": "Design compliance frameworks, assess legal risks, create privacy policies, review regulatory requirements"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Compliance execution, policy implementation, contract review, audit preparation",
+            "selection_criteria": "Issues with keywords: compliance, legal, privacy, GDPR, CCPA, contract, policy, regulation, data protection, audit",
+            "responsibilities": "Execute compliance audits, implement privacy policies, review contracts, prepare audit documentation, ensure regulatory adherence"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "regulatory-compliance-frameworks",
+          "privacy-law-expertise"
+        ],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "regulatory-compliance-frameworks",
+          "privacy-law-expertise"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "support-responder",
+      "name": "support-responder",
+      "display_name": "Support Responder",
+      "category": "support",
+      "file_path": "agents/support/support-responder.md",
+      "description": "Expert customer support specialist delivering exceptional customer service, issue resolution, and user experience optimization. Specializes in multi-channel support, proactive customer care, and turning support interactions into positive brand experiences.",
+      "color": "blue",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring customer support process design, help documentation, training programs, service improvement",
+        "Issues with keywords: customer support, help desk, user issue, ticket, CSAT, customer service, troubleshooting, user experience"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Support process design, knowledge base planning, customer success strategy, escalation procedures",
+            "selection_criteria": "Issues requiring customer support process design, help documentation, training programs, service improvement",
+            "responsibilities": "Design support workflows, plan knowledge base structure, create escalation procedures, develop training programs"
+          },
+          {
+            "command": "/agency:work [issue]",
+            "description": "Customer support execution, issue resolution, satisfaction improvement, proactive outreach",
+            "selection_criteria": "Issues with keywords: customer support, help desk, user issue, ticket, CSAT, customer service, troubleshooting, user experience",
+            "responsibilities": "Resolve customer issues, provide multi-channel support, collect feedback, create knowledge articles, improve satisfaction"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [],
+        "all": [
+          "agency-workflow-patterns",
+          "customer-service-excellence",
+          "technical-troubleshooting-methods"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash"
+        ],
+        "optional": [
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "devops"
+      ]
+    },
+    {
+      "id": "api-tester",
+      "name": "api-tester",
+      "display_name": "Api Tester",
+      "category": "testing",
+      "file_path": "agents/testing/api-tester.md",
+      "description": "Expert API testing specialist focused on comprehensive API validation, performance testing, and quality assurance across all systems and third-party integrations",
+      "color": "purple",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring API testing, performance validation, or security assessment",
+        "Pull requests involving API changes, new endpoints, or integration modifications"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:test [component]",
+            "description": "Comprehensive API testing and validation",
+            "selection_criteria": "Issues requiring API testing, performance validation, or security assessment",
+            "responsibilities": "Execute API test suites, validate contracts, assess performance and security"
+          },
+          {
+            "command": "/agency:review [pr-number]",
+            "description": "API code review and quality assessment",
+            "selection_criteria": "Pull requests involving API changes, new endpoints, or integration modifications",
+            "responsibilities": "Review API contracts, security practices, performance implications, test coverage"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert"
+        ],
+        "quality": [
+          "testing-strategy",
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy",
+          "code-review-standards",
+          "nextjs-16-expert"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit",
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "evidence-collector",
+      "name": "evidence-collector",
+      "display_name": "Evidence Collector",
+      "category": "testing",
+      "file_path": "agents/testing/evidence-collector.md",
+      "description": "Screenshot-obsessed, fantasy-allergic QA specialist - Default to finding 3-5 issues, requires visual proof for everything",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring comprehensive QA testing with screenshot evidence",
+        "When visual proof and manual testing validation is required"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "QA validation with visual evidence collection",
+            "selection_criteria": "Issues requiring comprehensive QA testing with screenshot evidence",
+            "responsibilities": "Execute visual testing, collect evidence, validate against specifications"
+          },
+          {
+            "command": "/agency:test [component]",
+            "description": "Evidence-based component testing",
+            "selection_criteria": "When visual proof and manual testing validation is required",
+            "responsibilities": "Capture screenshots, test interactive elements, verify responsive design"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "testing-strategy"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "performance-benchmarker",
+      "name": "performance-benchmarker",
+      "display_name": "Performance Benchmarker",
+      "category": "testing",
+      "file_path": "agents/testing/performance-benchmarker.md",
+      "description": "Expert performance testing and optimization specialist focused on measuring, analyzing, and improving system performance across all applications and infrastructure",
+      "color": "orange",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring performance validation, load testing, or optimization assessment",
+        "Pull requests with potential performance implications or optimization changes"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:test [component]",
+            "description": "Comprehensive performance testing and benchmarking",
+            "selection_criteria": "Issues requiring performance validation, load testing, or optimization assessment",
+            "responsibilities": "Execute performance tests, analyze bottlenecks, provide optimization recommendations"
+          },
+          {
+            "command": "/agency:review [pr-number]",
+            "description": "Performance impact review and optimization assessment",
+            "selection_criteria": "Pull requests with potential performance implications or optimization changes",
+            "responsibilities": "Review performance impact, validate optimizations, assess scalability"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [
+          "nextjs-16-expert"
+        ],
+        "quality": [
+          "testing-strategy",
+          "code-review-standards"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy",
+          "code-review-standards",
+          "nextjs-16-expert"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit",
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [
+        "Next.js"
+      ],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "reality-checker",
+      "name": "reality-checker",
+      "display_name": "Reality Checker",
+      "category": "testing",
+      "file_path": "agents/testing/reality-checker.md",
+      "description": "Stops fantasy approvals, evidence-based certification - Default to \"NEEDS WORK\", requires overwhelming proof for production readiness",
+      "color": "red",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "Issues requiring end-to-end validation and production deployment approval",
+        "Pull requests requiring final approval before production deployment"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:work [issue]",
+            "description": "Final integration testing and production readiness certification",
+            "selection_criteria": "Issues requiring end-to-end validation and production deployment approval",
+            "responsibilities": "Execute comprehensive integration tests, validate all quality gates, certify production readiness"
+          },
+          {
+            "command": "/agency:review [pr-number]",
+            "description": "Production readiness review and quality certification",
+            "selection_criteria": "Pull requests requiring final approval before production deployment",
+            "responsibilities": "Cross-validate all testing evidence, challenge fantasy approvals, provide go/no-go decision"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "testing-strategy"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "test-results-analyzer",
+      "name": "test-results-analyzer",
+      "display_name": "Test Results Analyzer",
+      "category": "testing",
+      "file_path": "agents/testing/test-results-analyzer.md",
+      "description": "Expert test analysis specialist focused on comprehensive test result evaluation, quality metrics analysis, and actionable insight generation from testing activities",
+      "color": "indigo",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "After testing activities when analysis and insights are needed",
+        "Pull requests requiring quality metrics review and historical analysis"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:test [component]",
+            "description": "Test result analysis and quality insights",
+            "selection_criteria": "After testing activities when analysis and insights are needed",
+            "responsibilities": "Analyze test results, identify patterns, generate quality insights and recommendations"
+          },
+          {
+            "command": "/agency:review [pr-number]",
+            "description": "Quality assessment and trend analysis",
+            "selection_criteria": "Pull requests requiring quality metrics review and historical analysis",
+            "responsibilities": "Review test coverage trends, analyze quality metrics, assess improvement impact"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "testing-strategy"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit",
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "analytics",
+        "design",
+        "orchestration",
+        "api"
+      ]
+    },
+    {
+      "id": "tool-evaluator",
+      "name": "tool-evaluator",
+      "display_name": "Tool Evaluator",
+      "category": "testing",
+      "file_path": "agents/testing/tool-evaluator.md",
+      "description": "Expert technology assessment specialist focused on evaluating, testing, and recommending tools, software, and platforms for business use and productivity optimization",
+      "color": "teal",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "When tool selection, evaluation, or comparison is needed",
+        "When planning requires tool selection or technology stack decisions"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:review [tool/platform]",
+            "description": "Tool assessment and recommendation",
+            "selection_criteria": "When tool selection, evaluation, or comparison is needed",
+            "responsibilities": "Evaluate tools, conduct competitive analysis, provide recommendations with ROI"
+          },
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Tooling strategy and technology roadmap planning",
+            "selection_criteria": "When planning requires tool selection or technology stack decisions",
+            "responsibilities": "Assess current tooling, identify gaps, recommend strategic improvements"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "testing-strategy"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit",
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    },
+    {
+      "id": "workflow-optimizer",
+      "name": "workflow-optimizer",
+      "display_name": "Workflow Optimizer",
+      "category": "testing",
+      "file_path": "agents/testing/workflow-optimizer.md",
+      "description": "Expert process improvement specialist focused on analyzing, optimizing, and automating workflows across all business functions for maximum productivity and efficiency",
+      "color": "green",
+      "primary_use_cases": [],
+      "when_to_select": [
+        "When process improvement, workflow optimization, or automation planning is needed",
+        "When existing workflows need assessment and optimization recommendations"
+      ],
+      "commands": {
+        "primary": [
+          {
+            "command": "/agency:plan [issue]",
+            "description": "Workflow analysis and optimization planning",
+            "selection_criteria": "When process improvement, workflow optimization, or automation planning is needed",
+            "responsibilities": "Analyze workflows, identify bottlenecks, design optimizations, plan automation"
+          },
+          {
+            "command": "/agency:review [workflow]",
+            "description": "Process efficiency review and improvement assessment",
+            "selection_criteria": "When existing workflows need assessment and optimization recommendations",
+            "responsibilities": "Review process efficiency, identify waste, recommend improvements, calculate ROI"
+          }
+        ],
+        "secondary": []
+      },
+      "skills": {
+        "essential": [
+          "agency-workflow-patterns"
+        ],
+        "technology": [],
+        "quality": [
+          "testing-strategy"
+        ],
+        "all": [
+          "agency-workflow-patterns",
+          "testing-strategy"
+        ]
+      },
+      "tools": {
+        "essential": [
+          "Read",
+          "Bash",
+          "Grep",
+          "Glob"
+        ],
+        "optional": [
+          "Write",
+          "Edit",
+          "WebFetch",
+          "WebSearch"
+        ],
+        "specialized": [
+          ""
+        ]
+      },
+      "technologies": [],
+      "capabilities": [
+        "frontend",
+        "testing",
+        "mobile",
+        "analytics",
+        "design",
+        "orchestration",
+        "devops",
+        "api"
+      ]
+    }
+  ],
+  "indices": {
+    "by_category": {
+      "design": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector"
+      ],
+      "engineering": [
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "marketing": [
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager"
+      ],
+      "meta": [
+        "orchestrator"
+      ],
+      "product": [
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher"
+      ],
+      "project-management": [
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer"
+      ],
+      "spatial-computing": [
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect"
+      ],
+      "specialized": [
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer"
+      ],
+      "support": [
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder"
+      ],
+      "testing": [
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ]
+    },
+    "by_technology": {
+      "Tailwind CSS": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "frontend-developer",
+        "senior-developer"
+      ],
+      "shadcn/ui": [
+        "brand-guardian",
+        "ui-designer",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "Next.js": [
+        "ux-architect",
+        "backend-architect",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer",
+        "api-tester",
+        "performance-benchmarker"
+      ],
+      "TypeScript": [
+        "ux-architect",
+        "backend-architect",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "Vercel AI SDK": [
+        "ai-engineer"
+      ],
+      "Mastra": [
+        "ai-engineer"
+      ],
+      "Pixeltable": [
+        "ai-engineer"
+      ],
+      "Supabase": [
+        "backend-architect",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "Prisma": [
+        "backend-architect",
+        "senior-developer"
+      ],
+      "Drizzle ORM": [
+        "backend-architect"
+      ],
+      "Atlassian CLI": [
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer"
+      ]
+    },
+    "by_command": {
+      "/agency:plan [issue]": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "backend-architect",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "/agency:work [issue]": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "evidence-collector",
+        "reality-checker"
+      ],
+      "/agency:implement [plan-file]": [
+        "ai-engineer",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "orchestrator"
+      ],
+      "/agency:test [component]": [
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "test-results-analyzer"
+      ],
+      "/agency:review [pr-number]": [
+        "api-tester",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer"
+      ],
+      "/agency:review [tool/platform]": [
+        "tool-evaluator"
+      ],
+      "/agency:review [workflow]": [
+        "workflow-optimizer"
+      ]
+    },
+    "by_capability": {
+      "frontend": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "testing": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "mobile": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "tiktok-strategist",
+        "orchestrator",
+        "experiment-tracker",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "terminal-integration-specialist",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "analytics": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "design": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "devops": [
+        "brand-guardian",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "growth-hacker",
+        "orchestrator",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "studio-operations",
+        "studio-producer",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "orchestration": [
+        "ui-designer",
+        "ux-architect",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "orchestrator",
+        "feedback-synthesizer",
+        "experiment-tracker",
+        "project-shepherd",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "infrastructure-maintainer",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "api": [
+        "ux-architect",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "growth-hacker",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "orchestrator",
+        "feedback-synthesizer",
+        "trend-researcher",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ]
+    },
+    "by_skill": {
+      "agency-workflow-patterns": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "ux-researcher",
+        "visual-storyteller",
+        "whimsy-injector",
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "app-store-optimizer",
+        "content-creator",
+        "growth-hacker",
+        "instagram-curator",
+        "reddit-community-builder",
+        "social-media-strategist",
+        "tiktok-strategist",
+        "twitter-engager",
+        "feedback-synthesizer",
+        "sprint-prioritizer",
+        "trend-researcher",
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer",
+        "macos-spatial-metal-engineer",
+        "terminal-integration-specialist",
+        "visionos-spatial-engineer",
+        "xr-cockpit-interaction-specialist",
+        "xr-immersive-developer",
+        "xr-interface-architect",
+        "agents-orchestrator",
+        "data-analytics-reporter",
+        "lsp-index-engineer",
+        "analytics-reporter",
+        "executive-summary-generator",
+        "finance-tracker",
+        "infrastructure-maintainer",
+        "legal-compliance-checker",
+        "support-responder",
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ],
+      "tailwindcss-4-expert": [
+        "brand-guardian",
+        "ui-designer",
+        "ux-architect",
+        "frontend-developer",
+        "senior-developer"
+      ],
+      "shadcn-latest-expert": [
+        "brand-guardian",
+        "ui-designer",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "figma-design-systems": [
+        "brand-guardian"
+      ],
+      "brand-strategy-frameworks": [
+        "brand-guardian"
+      ],
+      "figma-component-design": [
+        "ui-designer"
+      ],
+      "accessibility-wcag-standards": [
+        "ui-designer",
+        "visual-storyteller",
+        "whimsy-injector"
+      ],
+      "nextjs-16-expert": [
+        "ux-architect",
+        "backend-architect",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer",
+        "api-tester",
+        "performance-benchmarker"
+      ],
+      "typescript-5-expert": [
+        "ux-architect",
+        "backend-architect",
+        "frontend-developer",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "css-architecture-patterns": [
+        "ux-architect"
+      ],
+      "user-research-methodologies": [
+        "ux-researcher"
+      ],
+      "statistical-analysis": [
+        "ux-researcher",
+        "data-analytics-reporter"
+      ],
+      "usability-testing-frameworks": [
+        "ux-researcher"
+      ],
+      "accessibility-research": [
+        "ux-researcher"
+      ],
+      "visual-narrative-design": [
+        "visual-storyteller"
+      ],
+      "multimedia-content-creation": [
+        "visual-storyteller"
+      ],
+      "data-visualization": [
+        "visual-storyteller",
+        "data-analytics-reporter"
+      ],
+      "micro-interaction-design": [
+        "whimsy-injector"
+      ],
+      "animation-principles": [
+        "whimsy-injector"
+      ],
+      "gamification-strategies": [
+        "whimsy-injector"
+      ],
+      "ai-5-expert": [
+        "ai-engineer"
+      ],
+      "mastra-latest-expert": [
+        "ai-engineer"
+      ],
+      "pixeltable-0-expert": [
+        "ai-engineer"
+      ],
+      "code-review-standards": [
+        "ai-engineer",
+        "backend-architect",
+        "devops-automator",
+        "frontend-developer",
+        "mobile-app-builder",
+        "rapid-prototyper",
+        "senior-developer",
+        "api-tester",
+        "performance-benchmarker"
+      ],
+      "supabase-latest-expert": [
+        "backend-architect",
+        "rapid-prototyper",
+        "senior-developer"
+      ],
+      "prisma-latest-expert": [
+        "backend-architect",
+        "senior-developer"
+      ],
+      "drizzle-0-expert": [
+        "backend-architect"
+      ],
+      "app-store-optimization": [
+        "app-store-optimizer"
+      ],
+      "conversion-optimization": [
+        "app-store-optimizer",
+        "growth-hacker"
+      ],
+      "mobile-marketing": [
+        "app-store-optimizer"
+      ],
+      "content-strategy": [
+        "content-creator"
+      ],
+      "brand-storytelling": [
+        "content-creator"
+      ],
+      "seo-content-writing": [
+        "content-creator"
+      ],
+      "growth-marketing": [
+        "growth-hacker"
+      ],
+      "data-analytics": [
+        "growth-hacker"
+      ],
+      "viral-marketing": [
+        "growth-hacker"
+      ],
+      "instagram-marketing": [
+        "instagram-curator"
+      ],
+      "visual-storytelling": [
+        "instagram-curator"
+      ],
+      "community-building": [
+        "instagram-curator"
+      ],
+      "reddit-marketing": [
+        "reddit-community-builder"
+      ],
+      "community-engagement": [
+        "reddit-community-builder"
+      ],
+      "value-first-content": [
+        "reddit-community-builder"
+      ],
+      "social-media-strategy": [
+        "social-media-strategist"
+      ],
+      "thought-leadership": [
+        "social-media-strategist"
+      ],
+      "multi-platform-campaigns": [
+        "social-media-strategist"
+      ],
+      "tiktok-marketing": [
+        "tiktok-strategist"
+      ],
+      "viral-content-creation": [
+        "tiktok-strategist"
+      ],
+      "short-form-video": [
+        "tiktok-strategist"
+      ],
+      "trend-analysis": [
+        "tiktok-strategist"
+      ],
+      "twitter-marketing": [
+        "twitter-engager"
+      ],
+      "real-time-engagement": [
+        "twitter-engager"
+      ],
+      "thread-creation": [
+        "twitter-engager"
+      ],
+      "community-management": [
+        "twitter-engager"
+      ],
+      "user-feedback-analysis": [
+        "feedback-synthesizer"
+      ],
+      "sentiment-analysis-techniques": [
+        "feedback-synthesizer"
+      ],
+      "qualitative-data-synthesis": [
+        "feedback-synthesizer"
+      ],
+      "agile-sprint-planning": [
+        "sprint-prioritizer"
+      ],
+      "prioritization-frameworks": [
+        "sprint-prioritizer"
+      ],
+      "resource-allocation-optimization": [
+        "sprint-prioritizer"
+      ],
+      "market-intelligence-analysis": [
+        "trend-researcher"
+      ],
+      "competitive-research-methods": [
+        "trend-researcher"
+      ],
+      "trend-forecasting-techniques": [
+        "trend-researcher"
+      ],
+      "acli-latest-expert": [
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer"
+      ],
+      "github-workflow": [
+        "experiment-tracker",
+        "project-shepherd",
+        "senior",
+        "studio-operations",
+        "studio-producer"
+      ],
+      "data-analysis": [
+        "experiment-tracker"
+      ],
+      "statistical-testing": [
+        "experiment-tracker"
+      ],
+      "agile-scrum": [
+        "project-shepherd"
+      ],
+      "stakeholder-management": [
+        "project-shepherd"
+      ],
+      "task-breakdown": [
+        "senior"
+      ],
+      "scope-estimation": [
+        "senior"
+      ],
+      "process-optimization": [
+        "studio-operations"
+      ],
+      "lean-operations": [
+        "studio-operations"
+      ],
+      "portfolio-management": [
+        "studio-producer"
+      ],
+      "strategic-planning": [
+        "studio-producer"
+      ],
+      "swift-metal-rendering": [
+        "macos-spatial-metal-engineer"
+      ],
+      "visionos-spatial-computing": [
+        "macos-spatial-metal-engineer"
+      ],
+      "swiftterm-integration": [
+        "terminal-integration-specialist"
+      ],
+      "terminal-emulation-protocols": [
+        "terminal-integration-specialist"
+      ],
+      "visionos-swiftui-spatial": [
+        "visionos-spatial-engineer"
+      ],
+      "liquid-glass-design": [
+        "visionos-spatial-engineer"
+      ],
+      "xr-cockpit-design": [
+        "xr-cockpit-interaction-specialist"
+      ],
+      "seated-interaction-ux": [
+        "xr-cockpit-interaction-specialist"
+      ],
+      "webxr-development": [
+        "xr-immersive-developer"
+      ],
+      "threejs-aframe-babylon": [
+        "xr-immersive-developer"
+      ],
+      "spatial-ux-design": [
+        "xr-interface-architect"
+      ],
+      "xr-interaction-patterns": [
+        "xr-interface-architect"
+      ],
+      "multi-agent-coordination": [
+        "agents-orchestrator"
+      ],
+      "pipeline-orchestration": [
+        "agents-orchestrator"
+      ],
+      "language-server-protocols": [
+        "lsp-index-engineer"
+      ],
+      "semantic-indexing": [
+        "lsp-index-engineer"
+      ],
+      "graph-algorithms": [
+        "lsp-index-engineer"
+      ],
+      "data-analysis-best-practices": [
+        "analytics-reporter"
+      ],
+      "statistical-modeling-expertise": [
+        "analytics-reporter"
+      ],
+      "consulting-frameworks-mastery": [
+        "executive-summary-generator"
+      ],
+      "executive-communication-best-practices": [
+        "executive-summary-generator"
+      ],
+      "financial-modeling-expertise": [
+        "finance-tracker"
+      ],
+      "accounting-standards-compliance": [
+        "finance-tracker"
+      ],
+      "cloud-infrastructure-best-practices": [
+        "infrastructure-maintainer"
+      ],
+      "devops-automation-frameworks": [
+        "infrastructure-maintainer"
+      ],
+      "regulatory-compliance-frameworks": [
+        "legal-compliance-checker"
+      ],
+      "privacy-law-expertise": [
+        "legal-compliance-checker"
+      ],
+      "customer-service-excellence": [
+        "support-responder"
+      ],
+      "technical-troubleshooting-methods": [
+        "support-responder"
+      ],
+      "testing-strategy": [
+        "api-tester",
+        "evidence-collector",
+        "performance-benchmarker",
+        "reality-checker",
+        "test-results-analyzer",
+        "tool-evaluator",
+        "workflow-optimizer"
+      ]
+    }
+  }
+}
