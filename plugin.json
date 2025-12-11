@@ -1,0 +1,36 @@
+{
+  "name": "agency",
+  "version": "0.1.0",
+  "description": "Comprehensive workflow automation toolkit for the complete software development lifecycle. Includes 51+ specialized agents, composable workflow commands, and intelligent orchestration for requirements gathering, planning, implementation, testing, and deployment.",
+  "author": {
+    "name": "Squirrelsoft Dev Tools",
+    "email": "dev@squirrelsoft.io",
+    "url": "https://github.com/squirrelsoft-dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/squirrelsoft-dev/squirrelsoft-marketplace"
+  },
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "automation",
+    "agents",
+    "orchestration",
+    "development",
+    "github",
+    "jira",
+    "project-management",
+    "code-review",
+    "testing"
+  ],
+  "categories": [
+    "workflow",
+    "development",
+    "automation"
+  ],
+  "homepage": "https://github.com/squirrelsoft-dev/squirrelsoft-marketplace/tree/main/plugins/agency",
+  "bugs": {
+    "url": "https://github.com/squirrelsoft-dev/squirrelsoft-marketplace/issues"
+  }
+}

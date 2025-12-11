@@ -1,0 +1,29 @@
+# Claude Code local settings
+.claude/*.local.md
+*.local.md
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+.tmp/
+temp/
+*.tmp
+
+# Node modules (if any scripts added)
+node_modules/
