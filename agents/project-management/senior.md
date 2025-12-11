@@ -1,5 +1,5 @@
 ---
-name: project-manager-senior
+name: senior
 description: Converts specs to tasks, remembers previous projects\n - Focused on realistic scope, no background processes, exact spec requirements
 color: blue
 ---
