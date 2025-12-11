@@ -59,13 +59,13 @@ Implement from existing plan
 
 ### GitHub Workflow Commands
 
-#### `/agency:gh-sprint`
+#### `/agency:sprint`
 Implement entire GitHub sprint
 
 **Usage**:
 ```bash
-/agency:gh-sprint                    # Current sprint
-/agency:gh-sprint milestone-name     # Specific milestone
+/agency:sprint                    # Current sprint
+/agency:sprint milestone-name     # Specific milestone
 ```
 
 **Flow**: Fetch Issues → Prioritize → Find Parallel → Execute Batches → Monitor
@@ -74,13 +74,13 @@ Implement entire GitHub sprint
 
 ---
 
-#### `/agency:gh-triage`
+#### `/agency:triage`
 Triage GitHub issues
 
 **Usage**:
 ```bash
-/agency:gh-triage                  # Triage open issues
-/agency:gh-triage label:bug        # Triage specific label
+/agency:triage                  # Triage open issues
+/agency:triage label:bug        # Triage specific label
 ```
 
 **Flow**: Fetch Issues → Analyze → Categorize → Prioritize → Update Labels
@@ -89,13 +89,13 @@ Triage GitHub issues
 
 ---
 
-#### `/agency:gh-parallel`
+#### `/agency:parallel`
 Find parallelizable GitHub issues
 
 **Usage**:
 ```bash
-/agency:gh-parallel              # Find all parallelizable work
-/agency:gh-parallel sprint       # Only in current sprint
+/agency:parallel              # Find all parallelizable work
+/agency:parallel sprint       # Only in current sprint
 ```
 
 **Flow**: Fetch Issues → Analyze Dependencies → Group Independent → Report
@@ -104,12 +104,12 @@ Find parallelizable GitHub issues
 
 ---
 
-#### `/agency:gh-worktree`
+#### `/agency:worktree`
 Create git worktree for issue
 
 **Usage**:
 ```bash
-/agency:gh-worktree 123          # Create worktree for issue #123
+/agency:worktree 123          # Create worktree for issue #123
 ```
 
 **Flow**: Fetch Issue → Create Branch → Create Worktree → Setup Environment
@@ -118,26 +118,26 @@ Create git worktree for issue
 
 ### Jira Workflow Commands
 
-#### `/agency:jira-sprint`
+#### `/agency:sprint`
 Implement entire Jira sprint
 
 **Usage**:
 ```bash
-/agency:jira-sprint                # Current sprint
-/agency:jira-sprint SPRINT-123     # Specific sprint
+/agency:sprint                # Current sprint
+/agency:sprint SPRINT-123     # Specific sprint
 ```
 
 **Flow**: Fetch Issues → Prioritize → Find Parallel → Execute Batches → Monitor
 
 ---
 
-#### `/agency:jira-triage`
+#### `/agency:triage`
 Triage Jira issues
 
 **Usage**:
 ```bash
-/agency:jira-triage               # Triage backlog
-/agency:jira-triage project-key   # Specific project
+/agency:triage               # Triage backlog
+/agency:triage project-key   # Specific project
 ```
 
 **Flow**: Fetch Issues → Analyze → Categorize → Prioritize → Update Jira
@@ -258,9 +258,9 @@ Create Architecture Decision Record
 - [ ] `/agency:review` - Code review
 
 ### Phase 2
-- [ ] `/agency:gh-sprint` - Sprint automation
-- [ ] `/agency:gh-triage` - Issue triage
-- [ ] `/agency:gh-parallel` - Parallel work finder
+- [ ] `/agency:sprint` - Sprint automation
+- [ ] `/agency:triage` - Issue triage
+- [ ] `/agency:parallel` - Parallel work finder
 - [ ] `/agency:test` - Test generation
 
 ### Phase 3
@@ -270,9 +270,7 @@ Create Architecture Decision Record
 - [ ] `/agency:document` - Documentation generation
 
 ### Phase 4
-- [ ] `/agency:gh-worktree` - Worktree creation
-- [ ] `/agency:jira-sprint` - Jira sprint automation
-- [ ] `/agency:jira-triage` - Jira triage
+- [ ] `/agency:worktree` - Worktree creation
 - [ ] `/agency:security` - Security audit
 - [ ] `/agency:adr` - ADR creation
 
@@ -346,4 +344,3 @@ See existing commands for examples.
 - `skills/github-workflow-best-practices/` - GitHub workflows
 - `agents/orchestrator.md` - Orchestrator agent
 - `enhancements/outstanding-questions/` - Design decisions
-
