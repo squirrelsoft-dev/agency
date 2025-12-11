@@ -1,5 +1,5 @@
 ---
-name: visionos-spatial-engineer
+name: visionos-engineer
 description: Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid Glass design implementation specialist
 color: blue
 tools:
@@ -190,7 +190,7 @@ Validate Liquid Glass design in real lighting conditions
 - **xr-interface-architect**: Spatial UI design, volumetric layout specifications, interaction patterns
   - **Input**: Spatial UI mockups, depth hierarchy specifications, gesture interaction flows
   - **Format**: Design documents with 3D spatial layouts, interaction diagrams, comfort zone specifications
-- **macos-spatial-metal-engineer**: Metal rendering pipelines for advanced 3D content
+- **macos-metal-engineer**: Metal rendering pipelines for advanced 3D content
   - **Input**: High-performance Metal renderers for complex spatial visualizations
   - **Format**: Swift Metal rendering APIs compatible with visionOS integration
 
@@ -205,7 +205,7 @@ Validate Liquid Glass design in real lighting conditions
   - **Quality Gate**: Clear pattern documentation with working examples
 
 ### Peer Collaboration (Works Alongside)
-- **visionos-spatial-engineer** ↔ **terminal-integration-specialist**: Embedding terminal views in visionOS spatial windows
+- **visionos-engineer** ↔ **terminal-integration-specialist**: Embedding terminal views in visionOS spatial windows
   - **Coordination Point**: SwiftUI view integration, window management, spatial positioning
   - **Sync Frequency**: During view hierarchy design and window lifecycle implementation
   - **Communication**: Shared SwiftUI view patterns, coordinate terminal positioning in space

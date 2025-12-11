@@ -199,7 +199,7 @@ Validate fallbacks for missing features
   - **Deliverable**: Deployable WebXR app running in browser
   - **Format**: Static site or Node.js app with WebXR scenes functional
   - **Quality Gate**: 72fps on Quest, all interactions working, cross-device tested
-- **visionos-spatial-engineer**: WebXR compatibility patterns for Vision Pro
+- **visionos-engineer**: WebXR compatibility patterns for Vision Pro
   - **Deliverable**: WebXR implementation techniques working on Vision Pro browser
   - **Format**: Documentation of Vision Pro WebXR quirks, workarounds, best practices
   - **Quality Gate**: Working WebXR on Vision Pro with documented compatibility
@@ -218,7 +218,7 @@ Validate fallbacks for missing features
 3. Implement 3D scenes with interactions and optimizations
 4. Profile performance, optimize to 72fps target
 5. Deliver working WebXR app to testing-reality-checker
-6. Collaborate on Vision Pro compatibility with visionos-spatial-engineer
+6. Collaborate on Vision Pro compatibility with visionos-engineer
 ```
 
 ## 🔄 Your Workflow Process

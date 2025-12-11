@@ -28,7 +28,7 @@
 | **Code Review** | reality-checker | senior-developer | code-quality, security-review |
 | **Marketing Campaign** | content-creator | social-media-strategist | copywriting, multi-platform |
 | **Spatial/XR** | xr-immersive-developer | xr-interface-architect | webxr, three-js, spatial-design |
-| **visionOS** | visionos-spatial-engineer | macos-spatial-metal-engineer | swiftui, realitykit, liquid-glass |
+| **visionOS** | visionos-engineer | macos-metal-engineer | swiftui, realitykit, liquid-glass |
 
 ### By Technology Stack
 
@@ -46,8 +46,8 @@
 | **React Native** | mobile-app-builder | react-native, mobile-ux, ios-android |
 | **Three.js** | senior-developer, xr-immersive-developer | threejs-expert, webgl, 3d-graphics |
 | **WebXR** | xr-immersive-developer | webxr-api, immersive-web |
-| **Swift + Metal** | macos-spatial-metal-engineer | swift-metal-expert, realitykit |
-| **visionOS** | visionos-spatial-engineer | visionos-sdk, spatial-computing |
+| **Swift + Metal** | macos-metal-engineer | swift-metal-expert, realitykit |
+| **visionOS** | visionos-engineer | visionos-sdk, spatial-computing |
 | **AI/ML** | ai-engineer | ai-5-expert, ml-pipelines, pixeltable-0-expert |
 | **FastMCP** | backend-architect, senior-developer | fastmcp-2-expert, mcp-servers |
 | **Mastra** | ai-engineer, backend-architect | mastra-latest-expert, ai-agents |
@@ -219,16 +219,16 @@
 - **Key Skills**: cockpit-design, spatial-controls, dashboard-ux, xr-interaction
 - **Tools**: Read, Write, Edit, Bash, Grep, Glob
 
-#### macos-spatial-metal-engineer
-- **File**: `agents/spatial-computing/macos-spatial-metal-engineer.md`
+#### macos-metal-engineer
+- **File**: `agents/spatial-computing/macos-metal-engineer.md`
 - **Description**: Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro
 - **Best For**: macOS spatial apps, Metal rendering, high-performance 3D, Vision Pro integration
 - **Commands**: `/agency:plan`, `/agency:work`, `/agency:implement`
 - **Key Skills**: swift-metal-expert, realitykit, macos-spatial, vision-pro-integration
 - **Tools**: Read, Write, Edit, Bash, Grep, Glob
 
-#### visionos-spatial-engineer
-- **File**: `agents/spatial-computing/visionos-spatial-engineer.md`
+#### visionos-engineer
+- **File**: `agents/spatial-computing/visionos-engineer.md`
 - **Description**: visionOS SDK and Vision Pro spatial development specialist
 - **Best For**: visionOS apps, Vision Pro experiences, spatial computing, liquid glass design
 - **Commands**: `/agency:plan`, `/agency:work`, `/agency:implement`

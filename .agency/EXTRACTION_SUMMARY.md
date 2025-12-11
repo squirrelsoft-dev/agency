@@ -31,7 +31,7 @@ Successfully extracted metadata from all 52 agent files and created a comprehens
 | **meta** | 1 | orchestrator |
 | **product** | 3 | feedback-synthesizer, sprint-prioritizer, trend-researcher |
 | **project-management** | 5 | experiment-tracker, project-shepherd, senior, studio-operations, studio-producer |
-| **spatial-computing** | 6 | macos-spatial-metal-engineer, terminal-integration-specialist, visionos-spatial-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect |
+| **spatial-computing** | 6 | macos-metal-engineer, terminal-integration-specialist, visionos-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect |
 | **specialized** | 3 | agents-orchestrator, data-analytics-reporter, lsp-index-engineer |
 | **support** | 6 | analytics-reporter, executive-summary-generator, finance-tracker, infrastructure-maintainer, legal-compliance-checker, support-responder |
 | **testing** | 7 | api-tester, evidence-collector, performance-benchmarker, reality-checker, test-results-analyzer, tool-evaluator, workflow-optimizer |

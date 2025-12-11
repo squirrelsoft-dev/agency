@@ -104,9 +104,9 @@ All 52 agents organized by their 10 categories.
 
 | Agent | Primary Use Case | Commands | Key Tech | Tools |
 |-------|------------------|----------|----------|-------|
-| macos-spatial-metal-engineer | Native Swift and Metal specialist building high-performance 3D rendering syst... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
+| macos-metal-engineer | Native Swift and Metal specialist building high-performance 3D rendering syst... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
 | terminal-integration-specialist | Terminal emulation, text rendering optimization, and SwiftTerm integration sp... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
-| visionos-spatial-engineer | Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid ... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
+| visionos-engineer | Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid ... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
 | xr-cockpit-interaction-specialist | Specialist in designing and developing immersive cockpit-based control system... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
 | xr-immersive-developer | Expert WebXR and immersive technology developer with specialization in browse... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
 | xr-interface-architect | Spatial interaction designer and interface strategist for immersive AR/VR/XR ... | /agency:plan, /agency:work | N/A | Read, Write, Edit, Bash |
@@ -231,7 +231,7 @@ Agents grouped by the commands they respond to.
 **Product**: feedback-synthesizer, sprint-prioritizer, trend-researcher
 **Project Management**: experiment-tracker, project-shepherd, senior, studio-operations, studio-producer
 **Support**: analytics-reporter, executive-summary-generator, finance-tracker, infrastructure-maintainer, legal-compliance-checker, support-responder
-**Spatial Computing**: macos-spatial-metal-engineer, terminal-integration-specialist, visionos-spatial-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect
+**Spatial Computing**: macos-metal-engineer, terminal-integration-specialist, visionos-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect
 **Specialized**: agents-orchestrator, data-analytics-reporter, lsp-index-engineer
 **Meta**: orchestrator
 
@@ -244,7 +244,7 @@ Agents grouped by the commands they respond to.
 **Product**: feedback-synthesizer, sprint-prioritizer, trend-researcher
 **Project Management**: experiment-tracker, project-shepherd, senior, studio-operations, studio-producer
 **Support**: analytics-reporter, executive-summary-generator, finance-tracker, infrastructure-maintainer, legal-compliance-checker, support-responder
-**Spatial Computing**: macos-spatial-metal-engineer, terminal-integration-specialist, visionos-spatial-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect
+**Spatial Computing**: macos-metal-engineer, terminal-integration-specialist, visionos-engineer, xr-cockpit-interaction-specialist, xr-immersive-developer, xr-interface-architect
 **Specialized**: agents-orchestrator, data-analytics-reporter, lsp-index-engineer
 **Meta**: orchestrator
 
@@ -342,9 +342,9 @@ test-results-analyzer (/agency:test) - Analyze existing test coverage
 
 ```
 xr-interface-architect (/agency:plan) - Design spatial UX
-  → visionos-spatial-engineer (/agency:plan) - Plan visionOS implementation
+  → visionos-engineer (/agency:plan) - Plan visionOS implementation
   → xr-immersive-developer (/agency:implement) - Build WebXR components
-  → visionos-spatial-engineer (/agency:implement) - Implement native features
+  → visionos-engineer (/agency:implement) - Implement native features
   → xr-cockpit-interaction-specialist (/agency:review) - Validate interactions
   → reality-checker (/agency:test) - Test in spatial environments
 ```
@@ -376,7 +376,7 @@ Agents that frequently work together:
 - **accessibility-advocate** ↔ **ui-designer** - accessible interface design
 - **reality-checker** ↔ **evidence-collector** - comprehensive testing
 - **project-shepherd** ↔ **scrum-facilitator** - project management
-- **visionos-spatial-engineer** ↔ **xr-interface-architect** - spatial computing
+- **visionos-engineer** ↔ **xr-interface-architect** - spatial computing
 - **legal-compliance-checker** ↔ **documentation-specialist** - compliance documentation
 
 #### Upstream Hubs
@@ -1254,9 +1254,9 @@ Complete profiles for all 52 agents (alphabetically).
 
 ### Macos Spatial Metal Engineer
 
-**ID**: `macos-spatial-metal-engineer`  
+**ID**: `macos-metal-engineer`  
 **Category**: Spatial Computing  
-**File**: `agents/spatial-computing/macos-spatial-metal-engineer.md`  
+**File**: `agents/spatial-computing/macos-metal-engineer.md`  
 **Color**: cyan  
 
 **Description**: Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro
@@ -2215,9 +2215,9 @@ Complete profiles for all 52 agents (alphabetically).
 
 ### Visionos Spatial Engineer
 
-**ID**: `visionos-spatial-engineer`  
+**ID**: `visionos-engineer`  
 **Category**: Spatial Computing  
-**File**: `agents/spatial-computing/visionos-spatial-engineer.md`  
+**File**: `agents/spatial-computing/visionos-engineer.md`  
 **Color**: blue  
 
 **Description**: Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid Glass design implementation specialist

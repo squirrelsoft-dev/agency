@@ -2220,11 +2220,11 @@
       ]
     },
     {
-      "id": "macos-spatial-metal-engineer",
-      "name": "macos-spatial-metal-engineer",
+      "id": "macos-metal-engineer",
+      "name": "macos-metal-engineer",
       "display_name": "Macos Spatial Metal Engineer",
       "category": "spatial-computing",
-      "file_path": "agents/spatial-computing/macos-spatial-metal-engineer.md",
+      "file_path": "agents/spatial-computing/macos-metal-engineer.md",
       "description": "Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro",
       "color": "cyan",
       "primary_use_cases": [],
@@ -2359,11 +2359,11 @@
       ]
     },
     {
-      "id": "visionos-spatial-engineer",
-      "name": "visionos-spatial-engineer",
+      "id": "visionos-engineer",
+      "name": "visionos-engineer",
       "display_name": "Visionos Spatial Engineer",
       "category": "spatial-computing",
-      "file_path": "agents/spatial-computing/visionos-spatial-engineer.md",
+      "file_path": "agents/spatial-computing/visionos-engineer.md",
       "description": "Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid Glass design implementation specialist",
       "color": "blue",
       "primary_use_cases": [],
@@ -3826,9 +3826,9 @@
         "studio-producer"
       ],
       "spatial-computing": [
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect"
@@ -3942,9 +3942,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -3991,9 +3991,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4069,9 +4069,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4122,9 +4122,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4211,9 +4211,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4262,9 +4262,9 @@
         "project-shepherd",
         "senior",
         "studio-operations",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4302,7 +4302,7 @@
         "project-shepherd",
         "studio-operations",
         "studio-producer",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "agents-orchestrator",
@@ -4345,9 +4345,9 @@
         "project-shepherd",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4381,9 +4381,9 @@
         "trend-researcher",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4434,9 +4434,9 @@
         "senior",
         "studio-operations",
         "studio-producer",
-        "macos-spatial-metal-engineer",
+        "macos-metal-engineer",
         "terminal-integration-specialist",
-        "visionos-spatial-engineer",
+        "visionos-engineer",
         "xr-cockpit-interaction-specialist",
         "xr-immersive-developer",
         "xr-interface-architect",
@@ -4719,10 +4719,10 @@
         "studio-producer"
       ],
       "swift-metal-rendering": [
-        "macos-spatial-metal-engineer"
+        "macos-metal-engineer"
       ],
       "visionos-spatial-computing": [
-        "macos-spatial-metal-engineer"
+        "macos-metal-engineer"
       ],
       "swiftterm-integration": [
         "terminal-integration-specialist"
@@ -4731,10 +4731,10 @@
         "terminal-integration-specialist"
       ],
       "visionos-swiftui-spatial": [
-        "visionos-spatial-engineer"
+        "visionos-engineer"
       ],
       "liquid-glass-design": [
-        "visionos-spatial-engineer"
+        "visionos-engineer"
       ],
       "xr-cockpit-design": [
         "xr-cockpit-interaction-specialist"

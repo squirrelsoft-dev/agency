@@ -1,5 +1,5 @@
 ---
-name: macos-spatial-metal-engineer
+name: macos-metal-engineer
 description: Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro
 color: cyan
 tools:
@@ -431,7 +431,7 @@ Remember and build expertise in:
   - **Format**: UI mockups with depth specifications, interaction flow diagrams, comfort zone definitions
 
 ### Downstream Deliverables (Provides To)
-- **visionos-spatial-engineer**: Working Metal rendering engine for SwiftUI integration
+- **visionos-engineer**: Working Metal rendering engine for SwiftUI integration
   - **Deliverable**: Metal renderer with Swift API, GPU buffers, shader pipeline ready for SwiftUI embedding
   - **Format**: Swift framework with MTLDevice management, rendering callbacks, state synchronization
   - **Quality Gate**: 90fps+ performance verified, all shaders compiled, Instruments profiling clean
@@ -441,7 +441,7 @@ Remember and build expertise in:
   - **Quality Gate**: Documented performance characteristics, reusable rendering patterns
 
 ### Peer Collaboration (Works Alongside)
-- **terminal-integration-specialist** ↔ **macos-spatial-metal-engineer**: Shared Metal rendering context for terminal visualization
+- **terminal-integration-specialist** ↔ **macos-metal-engineer**: Shared Metal rendering context for terminal visualization
   - **Coordination Point**: Synchronizing Metal device usage, texture sharing for terminal overlays
   - **Sync Frequency**: During rendering pipeline initialization and resource allocation
   - **Communication**: Shared Metal resource pools, coordinate GPU command buffer submission
@@ -453,7 +453,7 @@ Remember and build expertise in:
 2. Design Metal rendering pipeline architecture
 3. Implement GPU shaders and Swift rendering code
 4. Profile with Instruments, optimize to 90fps target
-5. Deliver rendering engine to visionos-spatial-engineer
+5. Deliver rendering engine to visionos-engineer
 6. Collaborate on Vision Pro CompositorServices integration
 ```
 

@@ -191,17 +191,17 @@ Bash: ssh test@server # Test real terminal sessions
   - **Format**: UI mockups for terminal placement, interaction flow for spatial terminal usage
 
 ### Downstream Deliverables (Provides To)
-- **macos-spatial-metal-engineer**: Terminal text content for Metal-rendered overlays
+- **macos-metal-engineer**: Terminal text content for Metal-rendered overlays
   - **Deliverable**: Terminal text buffer access, cursor position updates, color/style metadata
   - **Format**: Efficient text buffer API with change notifications, rendering metadata
   - **Quality Gate**: 60fps text updates verified, proper synchronization with Metal renderer
-- **visionos-spatial-engineer**: Working SwiftTerm views for SwiftUI spatial embedding
+- **visionos-engineer**: Working SwiftTerm views for SwiftUI spatial embedding
   - **Deliverable**: SwiftTerm UIViewRepresentable/NSViewRepresentable wrappers for SwiftUI
   - **Format**: SwiftUI-compatible terminal views with proper state binding and lifecycle
   - **Quality Gate**: Terminal works in SwiftUI windows/volumes, all input methods functional
 
 ### Peer Collaboration (Works Alongside)
-- **terminal-integration-specialist** ↔ **macos-spatial-metal-engineer**: Coordinated text rendering for spatial terminal visualization
+- **terminal-integration-specialist** ↔ **macos-metal-engineer**: Coordinated text rendering for spatial terminal visualization
   - **Coordination Point**: Synchronizing text buffer updates with Metal rendering frame timing
   - **Sync Frequency**: Every terminal update cycle (character input, scroll events)
   - **Communication**: Shared text buffer access, coordinate frame synchronization
@@ -213,8 +213,8 @@ Bash: ssh test@server # Test real terminal sessions
 2. Design SwiftTerm integration architecture
 3. Implement terminal views with SSH I/O bridging
 4. Profile text rendering performance, optimize to 60fps
-5. Deliver terminal views to visionos-spatial-engineer
-6. Collaborate on spatial terminal overlay with macos-spatial-metal-engineer
+5. Deliver terminal views to visionos-engineer
+6. Collaborate on spatial terminal overlay with macos-metal-engineer
 ```
 
 ## 🔄 Your Workflow Process

@@ -200,11 +200,11 @@ Specify accessibility requirements and testing criteria
   - **Deliverable**: Cockpit UI layouts with ergonomic reach zones and viewing angle specifications
   - **Format**: Design mockups with 3D positioning, ergonomic rationale, interaction flows
   - **Quality Gate**: All designs validated against ergonomic comfort standards
-- **visionos-spatial-engineer**: visionOS spatial UI designs, WindowGroup layout specifications, Liquid Glass guidance
+- **visionos-engineer**: visionOS spatial UI designs, WindowGroup layout specifications, Liquid Glass guidance
   - **Deliverable**: visionOS-specific UI designs following Liquid Glass principles
   - **Format**: Design specifications with visionOS APIs, spatial layouts, accessibility requirements
   - **Quality Gate**: Designs align with visionOS Human Interface Guidelines
-- **macos-spatial-metal-engineer**: Visual design requirements for 3D rendered UI elements
+- **macos-metal-engineer**: Visual design requirements for 3D rendered UI elements
   - **Deliverable**: Visual specifications for Metal-rendered spatial UI components
   - **Format**: Design documents with rendering requirements, visual effects, animation specs
   - **Quality Gate**: Complete visual specifications ready for GPU implementation
