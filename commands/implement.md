@@ -1,6 +1,6 @@
 ---
 description: Execute implementation from an existing plan file
-argument-hint: plan-file path
+argument-hint: plan-file path [--branch]
 allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion
 ---
 
@@ -12,7 +12,33 @@ Execute implementation from an existing plan file with specialist delegation and
 
 Implement the plan from: **$ARGUMENTS**
 
-Follow the implementation lifecycle: validate plan → select specialist → implement → verify → review → report.
+Follow the implementation lifecycle: validate plan → [branch creation] → select specialist → implement → [commit] → verify → review → [commit fixes] → report → [create PR].
+
+## Parse Arguments
+
+**Extract flags and plan file path**:
+
+```bash
+# Check if --branch flag is present
+BRANCH_FLAG=false
+PLAN_FILE=""
+
+if [[ "$ARGUMENTS" == *"--branch"* ]]; then
+  BRANCH_FLAG=true
+  # Remove --branch flag to get plan file path
+  PLAN_FILE=$(echo "$ARGUMENTS" | sed 's/--branch//g' | xargs)
+else
+  PLAN_FILE="$ARGUMENTS"
+fi
+```
+
+**Flag Behavior**:
+- `--branch`: Enables full git workflow:
+  - **Phase 1.5**: Create git branch after plan validation
+  - **Phase 3.5**: Commit implementation changes
+  - **Phase 5.5**: Commit code review fixes (if any)
+  - **Phase 7**: Push branch and create pull request
+  - Complete end-to-end: branch → implement → commit → PR
 
 ---
 
@@ -34,15 +60,15 @@ This skill contains critical orchestration patterns, agent selection guidelines,
 ### Read Plan File
 
 **Plan File Location**:
-- If `$ARGUMENTS` is a full path: Read directly
-- If `$ARGUMENTS` is just a filename: Look in `.agency/plans/`
-- If `$ARGUMENTS` doesn't include `.md`: Add `.md` extension
+- If `$PLAN_FILE` is a full path: Read directly
+- If `$PLAN_FILE` is just a filename: Look in `.agency/plans/`
+- If `$PLAN_FILE` doesn't include `.md`: Add `.md` extension
 
 ```bash
 # Example paths to check:
-# 1. $ARGUMENTS (if full path)
-# 2. .agency/plans/$ARGUMENTS (if filename)
-# 3. .agency/plans/$ARGUMENTS.md (if no extension)
+# 1. $PLAN_FILE (if full path)
+# 2. .agency/plans/$PLAN_FILE (if filename)
+# 3. .agency/plans/$PLAN_FILE.md (if no extension)
 ```
 
 Use the Read tool to load the plan file contents.
@@ -83,6 +109,176 @@ Use AskUserQuestion tool to clarify:
 ```
 
 **Do NOT proceed** if plan validation fails. Get user input first.
+
+---
+
+## Phase 1.5: Branch Creation (if --branch flag present) (1-2 min)
+
+**ONLY execute this phase if `$BRANCH_FLAG` is true.**
+
+Follow the branch creation workflow from `prompts/git/branch-creation.md`:
+
+### Step 1: Get Default Branch
+
+Determine the repository's default branch:
+
+```bash
+# Get default branch name from git config
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+
+# Fallback: check common branch names
+if [ -z "$DEFAULT_BRANCH" ]; then
+  if git show-ref --verify --quiet refs/heads/main; then
+    DEFAULT_BRANCH="main"
+  elif git show-ref --verify --quiet refs/heads/master; then
+    DEFAULT_BRANCH="master"
+  else
+    # Ask user for default branch
+    Use AskUserQuestion tool:
+    "What is your default branch? (main/master/other)"
+  fi
+fi
+```
+
+### Step 2: Check Current Branch
+
+Verify if we're on the default branch:
+
+```bash
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
+  echo "⚠️ Not on default branch. Currently on: $CURRENT_BRANCH"
+  echo "Need to switch to $DEFAULT_BRANCH first."
+fi
+```
+
+### Step 3: Checkout Default Branch and Pull (if needed)
+
+If not on default branch:
+
+```bash
+# Check for uncommitted changes
+if [ -n "$(git status --porcelain)" ]; then
+  Use AskUserQuestion tool:
+  "You have uncommitted changes. What would you like to do?
+
+  Options:
+  1. Stash changes and switch to $DEFAULT_BRANCH (Recommended)
+  2. Commit changes first
+  3. Cancel branch creation"
+
+  # Handle response:
+  # Option 1: git stash push -m "WIP before branch creation"
+  # Option 2: Guide user through commit process
+  # Option 3: Exit Phase 1.5, skip to Phase 2
+fi
+
+# Checkout default branch
+git checkout $DEFAULT_BRANCH
+
+# Pull latest changes
+git pull origin $DEFAULT_BRANCH
+```
+
+**Quality Gate**: Must be on default branch with latest changes before creating new branch.
+
+### Step 4: Generate Branch Name
+
+Extract feature name from plan file and create branch name:
+
+```bash
+# Extract feature name from plan filename
+# Example: plan-user-authentication.md → user-authentication
+FEATURE_NAME=$(basename "$PLAN_FILE" .md | sed 's/^plan-//')
+
+# Determine branch type from plan content or keywords
+# Scan plan for keywords to determine type:
+BRANCH_TYPE="feat"  # Default
+
+# Check plan content for type indicators:
+if grep -qi "fix\|bug" "$PLAN_FILE_PATH"; then
+  BRANCH_TYPE="fix"
+elif grep -qi "refactor" "$PLAN_FILE_PATH"; then
+  BRANCH_TYPE="refactor"
+elif grep -qi "docs\|documentation" "$PLAN_FILE_PATH"; then
+  BRANCH_TYPE="docs"
+elif grep -qi "test" "$PLAN_FILE_PATH"; then
+  BRANCH_TYPE="test"
+elif grep -qi "chore" "$PLAN_FILE_PATH"; then
+  BRANCH_TYPE="chore"
+fi
+
+# Construct branch name
+BRANCH_NAME="${BRANCH_TYPE}/${FEATURE_NAME}"
+
+# Extract issue number if present in plan
+if [[ "$FEATURE_NAME" =~ issue-([0-9]+) ]]; then
+  ISSUE_NUM="${BASH_REMATCH[1]}"
+  # Already included in feature name, keep as is
+fi
+```
+
+**Present branch name to user**:
+
+```
+Use AskUserQuestion tool:
+"Ready to create branch: $BRANCH_NAME
+
+Based on:
+- Plan file: $PLAN_FILE
+- Base branch: $DEFAULT_BRANCH
+- Branch type: $BRANCH_TYPE
+
+Proceed with this branch name?"
+
+Options:
+- Yes, create branch (Recommended)
+- Use different branch name
+```
+
+### Step 5: Create Branch
+
+Create and checkout the new branch:
+
+```bash
+# Create and switch to new branch
+git checkout -b "$BRANCH_NAME"
+
+# Verify branch created successfully
+CREATED_BRANCH=$(git branch --show-current)
+
+if [[ "$CREATED_BRANCH" == "$BRANCH_NAME" ]]; then
+  echo "✅ Branch created successfully: $BRANCH_NAME"
+  echo "📍 Base: $DEFAULT_BRANCH ($(git rev-parse --short HEAD))"
+else
+  echo "❌ Branch creation failed"
+  # Ask user how to proceed
+fi
+```
+
+### Step 6: Branch Creation Report
+
+```markdown
+## Branch Created
+
+**Branch Name**: $BRANCH_NAME
+**Base Branch**: $DEFAULT_BRANCH
+**Created From**: [commit hash] ([commit message])
+**Status**: ✅ Clean working directory
+**Remote Tracking**: ⚠️ Not yet pushed (will push after implementation)
+
+**Next Steps**:
+1. Continue with Phase 2: Specialist Selection
+2. Implementation will occur on this branch
+3. Branch will be pushed during PR creation in Phase 6
+```
+
+**Store branch name for later phases**:
+```bash
+IMPLEMENTATION_BRANCH="$BRANCH_NAME"
+# This will be used in Phase 6 when creating PRs
+```
 
 ---
 
@@ -297,7 +493,7 @@ The specialist will work autonomously. You can:
 - The specialist may use AskUserQuestion for clarifications
 - Respond to any interactive confirmations for destructive operations
 
-**After specialist completes**: Proceed to **Phase 4: Verification & Quality Gates**
+**After specialist completes**: Proceed to **Phase 3.5: Commit Implementation Changes** (if `--branch` flag used)
 
 ---
 
@@ -549,7 +745,176 @@ After 3 iterations:
    3. Skip this specialist (fail the feature)"
 ```
 
-**After Phase 3 completes**: All specialists finished and verified, proceed to **Phase 4: Verification & Quality Gates**
+**After Phase 3 completes**: All specialists finished and verified, proceed to **Phase 3.5: Commit Implementation Changes** (if `--branch` flag used)
+
+---
+
+## Phase 3.5: Commit Implementation Changes (if --branch flag present) (1-2 min)
+
+**ONLY execute this phase if `$BRANCH_FLAG` is true.**
+
+After implementation is complete, commit the changes following conventional commit standards from `prompts/git/commit-formatting.md`.
+
+### Step 1: Check for Changes
+
+Verify there are changes to commit:
+
+```bash
+# Check if there are any changes
+if [ -z "$(git status --porcelain)" ]; then
+  echo "ℹ️ No changes to commit, skipping Phase 3.5"
+  # Skip to Phase 4
+else
+  echo "📝 Changes detected, proceeding with commit"
+fi
+```
+
+### Step 2: Review Changes
+
+Show what will be committed:
+
+```bash
+# Show all changes
+git status
+
+# Show detailed diff
+git diff
+```
+
+### Step 3: Analyze Changes for Commit Message
+
+Analyze the implementation to generate appropriate commit message:
+
+```bash
+# Determine commit type based on plan and changes
+COMMIT_TYPE="feat"  # Default
+
+# Check plan file for type indicators (same logic as branch naming)
+if grep -qi "fix\|bug" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="fix"
+elif grep -qi "refactor" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="refactor"
+elif grep -qi "docs\|documentation" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="docs"
+elif grep -qi "test" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="test"
+elif grep -qi "chore" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="chore"
+elif grep -qi "perf\|performance" "$PLAN_FILE_PATH"; then
+  COMMIT_TYPE="perf"
+fi
+
+# Extract feature name from plan
+FEATURE_NAME=$(basename "$PLAN_FILE" .md | sed 's/^plan-//' | sed 's/^issue-[0-9]*-//')
+
+# Determine scope (optional) from files changed
+# Look at which directories/modules were modified
+CHANGED_DIRS=$(git diff --name-only | cut -d'/' -f1-2 | sort -u)
+# If changes are concentrated in one area, use as scope
+
+# Generate commit subject
+COMMIT_SUBJECT="${COMMIT_TYPE}: ${FEATURE_NAME}"
+
+# If issue number present, include reference in body
+ISSUE_REF=""
+if [[ "$PLAN_FILE" =~ issue-([0-9]+) ]]; then
+  ISSUE_NUM="${BASH_REMATCH[1]}"
+  ISSUE_REF="Closes #${ISSUE_NUM}"
+fi
+```
+
+### Step 4: Generate Commit Body
+
+Create detailed commit body based on implementation:
+
+```bash
+# Extract requirements from plan that were implemented
+# This should summarize what was completed
+
+COMMIT_BODY="Implement ${FEATURE_NAME} as specified in plan.
+
+Changes:
+- [List key files created/modified]
+- [List main functional changes]
+
+${ISSUE_REF}"
+```
+
+### Step 5: Stage Changes
+
+Stage all implementation changes:
+
+```bash
+# Stage all changes
+git add .
+
+# Verify staged changes
+git diff --staged --stat
+```
+
+### Step 6: Present Commit Message for Approval
+
+Show the proposed commit message:
+
+```
+Use AskUserQuestion tool:
+"Ready to commit implementation changes:
+
+Commit message:
+─────────────────────
+${COMMIT_SUBJECT}
+
+${COMMIT_BODY}
+─────────────────────
+
+Files to commit: [X] files changed, [Y] insertions(+), [Z] deletions(-)
+
+Proceed with this commit message?"
+
+Options:
+- Yes, commit with this message (Recommended)
+- Edit commit message
+- Skip commit (continue without committing)
+```
+
+### Step 7: Create Commit
+
+Create the commit using conventional format:
+
+```bash
+# Create commit with heredoc for proper formatting
+git commit -m "$(cat <<EOF
+${COMMIT_SUBJECT}
+
+${COMMIT_BODY}
+EOF
+)"
+
+# Verify commit created
+COMMIT_HASH=$(git rev-parse --short HEAD)
+echo "✅ Commit created: ${COMMIT_HASH}"
+```
+
+### Step 8: Commit Report
+
+```markdown
+## Implementation Committed
+
+**Commit Hash**: ${COMMIT_HASH}
+**Branch**: ${IMPLEMENTATION_BRANCH}
+**Type**: ${COMMIT_TYPE}
+**Message**: ${COMMIT_SUBJECT}
+
+**Files Changed**: [X] files (+[Y], -[Z] lines)
+
+**Status**: ✅ Changes committed successfully
+**Remote**: ⚠️ Not yet pushed (will push during PR creation)
+
+**Next Steps**:
+1. Continue to Phase 4: Verification & Quality Gates
+2. Run build and tests to validate commit
+3. Additional commits may be created after Phase 5 if fixes needed
+```
 
 ---
 
@@ -831,6 +1196,163 @@ If integrated review finds CRITICAL or HIGH issues:
 
 ---
 
+## Phase 5.5: Commit Code Review Fixes (if --branch flag present) (1-2 min)
+
+**ONLY execute this phase if `$BRANCH_FLAG` is true AND fixes were made after code review.**
+
+After addressing code review issues, commit the fixes following conventional commit standards from `prompts/git/commit-formatting.md`.
+
+### Step 1: Check for Changes Since Last Commit
+
+Verify there are new changes to commit:
+
+```bash
+# Check if there are any uncommitted changes
+if [ -z "$(git status --porcelain)" ]; then
+  echo "ℹ️ No new changes since last commit, skipping Phase 5.5"
+  # Skip to Phase 6
+else
+  echo "📝 Code review fixes detected, proceeding with commit"
+fi
+```
+
+### Step 2: Review Fix Changes
+
+Show what fixes will be committed:
+
+```bash
+# Show changes since last commit
+git status
+
+# Show detailed diff
+git diff
+```
+
+### Step 3: Analyze Fixes for Commit Message
+
+Generate commit message based on fixes applied:
+
+```bash
+# Commit type is typically 'fix' for code review fixes
+COMMIT_TYPE="fix"
+
+# Extract feature name from plan (same as before)
+FEATURE_NAME=$(basename "$PLAN_FILE" .md | sed 's/^plan-//' | sed 's/^issue-[0-9]*-//')
+
+# Generate commit subject based on what was fixed
+# Examples:
+# - "fix: address code review findings"
+# - "fix: resolve security vulnerabilities"
+# - "fix: correct type errors and linting issues"
+
+COMMIT_SUBJECT="${COMMIT_TYPE}: address code review findings for ${FEATURE_NAME}"
+```
+
+### Step 4: Generate Commit Body from Review Findings
+
+Create detailed commit body based on fixes:
+
+```bash
+# List what was fixed from code review
+# Examples:
+# - Fixed CRITICAL: SQL injection vulnerability in user query
+# - Fixed HIGH: Missing input validation on login form
+# - Fixed HIGH: Incorrect error handling in API endpoint
+
+COMMIT_BODY="Address code review findings:
+
+Fixes applied:
+- [List critical issues fixed]
+- [List high priority issues fixed]
+
+Security:
+- [List security fixes if any]
+
+Code quality:
+- [List quality improvements if any]"
+```
+
+### Step 5: Stage Fix Changes
+
+Stage all fix changes:
+
+```bash
+# Stage all changes
+git add .
+
+# Verify staged changes
+git diff --staged --stat
+```
+
+### Step 6: Present Commit Message for Approval
+
+Show the proposed commit message:
+
+```
+Use AskUserQuestion tool:
+"Ready to commit code review fixes:
+
+Commit message:
+─────────────────────
+${COMMIT_SUBJECT}
+
+${COMMIT_BODY}
+─────────────────────
+
+Files to commit: [X] files changed, [Y] insertions(+), [Z] deletions(-)
+
+Proceed with this commit message?"
+
+Options:
+- Yes, commit with this message (Recommended)
+- Edit commit message
+- Skip commit (continue without committing)
+```
+
+### Step 7: Create Commit
+
+Create the commit using conventional format:
+
+```bash
+# Create commit with heredoc for proper formatting
+git commit -m "$(cat <<EOF
+${COMMIT_SUBJECT}
+
+${COMMIT_BODY}
+EOF
+)"
+
+# Verify commit created
+COMMIT_HASH=$(git rev-parse --short HEAD)
+echo "✅ Commit created: ${COMMIT_HASH}"
+```
+
+### Step 8: Commit Report
+
+```markdown
+## Code Review Fixes Committed
+
+**Commit Hash**: ${COMMIT_HASH}
+**Branch**: ${IMPLEMENTATION_BRANCH}
+**Type**: fix
+**Message**: ${COMMIT_SUBJECT}
+
+**Files Changed**: [X] files (+[Y], -[Z] lines)
+
+**Status**: ✅ Code review fixes committed successfully
+**Remote**: ⚠️ Not yet pushed (will push during PR creation)
+
+**Commits Summary**:
+1. Implementation commit (Phase 3.5)
+2. Code review fixes commit (Phase 5.5) ← Current
+
+**Next Steps**:
+1. Continue to Phase 6: Completion & Reporting
+2. Branch ready for PR creation with clean commit history
+```
+
+---
+
 ## Phase 6: Completion & Reporting (2-3 min)
 
 ### Save Implementation Summary
@@ -1046,6 +1568,212 @@ Mark all implementation tasks as completed in TodoWrite.
 
 ---
 
+## Phase 7: Pull Request Creation (if --branch flag present) (2-3 min)
+
+**ONLY execute this phase if `$BRANCH_FLAG` is true.**
+
+After implementation is complete and verified, offer to create a pull request.
+
+### Step 1: Ask User About PR Creation
+
+Present PR creation option:
+
+```
+Use AskUserQuestion tool:
+"Implementation complete! Ready to create a pull request?
+
+Branch: ${IMPLEMENTATION_BRANCH}
+Commits: [X] commits
+- [commit 1 message]
+- [commit 2 message]
+
+This will:
+1. Push branch to remote
+2. Create pull request
+3. Link to issue (if applicable)
+
+Create pull request now?"
+
+Options:
+- Yes, create PR now (Recommended)
+- No, I'll create it manually later
+```
+
+**If user selects "No"**: Skip to completion, provide manual instructions
+
+**If user selects "Yes"**: Continue with PR creation
+
+---
+
+### Step 2: Push Branch to Remote
+
+Push the branch with all commits:
+
+```bash
+# Push branch to remote with tracking
+git push -u origin ${IMPLEMENTATION_BRANCH}
+
+# Verify push succeeded
+if [ $? -eq 0 ]; then
+  echo "✅ Branch pushed to remote: ${IMPLEMENTATION_BRANCH}"
+else
+  echo "❌ Push failed"
+  # Ask user how to proceed:
+  # 1. Retry push
+  # 2. Skip PR creation
+  # 3. Manual intervention needed
+fi
+```
+
+### Step 3: Generate PR Title and Description
+
+Create PR title and description from plan and commits:
+
+```bash
+# PR Title format: "[Type] Feature name" or "Feature name"
+# Extract from first commit or plan
+
+# If issue number present, include in title
+if [[ "$PLAN_FILE" =~ issue-([0-9]+) ]]; then
+  ISSUE_NUM="${BASH_REMATCH[1]}"
+  PR_TITLE="[#${ISSUE_NUM}] ${FEATURE_NAME}"
+else
+  PR_TITLE="${FEATURE_NAME}"
+fi
+
+# Generate PR description
+PR_DESCRIPTION="## Summary
+
+Implements ${FEATURE_NAME} as specified in plan: \`${PLAN_FILE}\`
+
+## Changes
+
+$(git log origin/$(git_default_branch)..HEAD --oneline)
+
+## Implementation Details
+
+- **Specialist(s)**: [List specialists used]
+- **Files Changed**: [X] created, [Y] modified, [Z] deleted
+- **Tests**: [Status from Phase 4]
+- **Build**: [Status from Phase 4]
+- **Code Review**: [Status from Phase 5]
+
+## Verification
+
+- [x] All requirements implemented
+- [x] Tests pass
+- [x] Build succeeds
+- [x] Code review completed
+- [x] No critical issues
+
+## Related
+
+"
+
+# Add issue reference if present
+if [[ -n "$ISSUE_NUM" ]]; then
+  PR_DESCRIPTION+="Closes #${ISSUE_NUM}"
+fi
+```
+
+### Step 4: Create Pull Request
+
+Use GitHub CLI to create the PR:
+
+```bash
+# Create PR using gh CLI
+gh pr create \
+  --title "${PR_TITLE}" \
+  --body "$(cat <<EOF
+${PR_DESCRIPTION}
+EOF
+)" \
+  --base $(git_default_branch) \
+  --head ${IMPLEMENTATION_BRANCH}
+
+# Capture PR URL
+PR_URL=$(gh pr view --json url --jq .url)
+
+if [ -n "$PR_URL" ]; then
+  echo "✅ Pull request created: ${PR_URL}"
+else
+  echo "❌ Failed to create pull request"
+  # Provide manual instructions
+fi
+```
+
+### Step 5: PR Creation Report
+
+```markdown
+## Pull Request Created
+
+**PR URL**: ${PR_URL}
+**Title**: ${PR_TITLE}
+**Branch**: ${IMPLEMENTATION_BRANCH} → $(git_default_branch)
+**Status**: ✅ PR created successfully
+
+**Commits Included**:
+1. ${COMMIT_1_MESSAGE}
+2. ${COMMIT_2_MESSAGE}
+[... additional commits ...]
+
+**PR Description**:
+- Summary of changes
+- Implementation details
+- Verification checklist
+- Issue reference (if applicable)
+
+**Next Steps**:
+1. Review PR on GitHub: ${PR_URL}
+2. Request reviews from team members
+3. Address any CI/CD feedback
+4. Merge when approved
+```
+
+### Step 6: Fallback - Manual PR Instructions
+
+If PR creation fails or user declines, provide manual instructions:
+
+```markdown
+## Create Pull Request Manually
+
+Your implementation is complete and ready for PR creation!
+
+**Branch**: ${IMPLEMENTATION_BRANCH}
+**Commits**: [X] commits
+**Status**: ✅ Pushed to remote
+
+### Manual PR Creation Steps:
+
+1. **Via GitHub CLI**:
+   ```bash
+   gh pr create --title "${PR_TITLE}" --body "..."
+   ```
+
+2. **Via GitHub Web**:
+   - Visit: https://github.com/[owner]/[repo]/compare/${IMPLEMENTATION_BRANCH}
+   - Click "Create pull request"
+   - Fill in title and description
+   - Submit PR
+
+3. **Suggested PR Title**:
+   ```
+   ${PR_TITLE}
+   ```
+
+4. **Suggested PR Description**:
+   ```
+   ${PR_DESCRIPTION}
+   ```
+
+**Next Steps**:
+- Create PR manually using above instructions
+- Link to issue #${ISSUE_NUM} (if applicable)
+- Request reviews
+```
+
+---
+
 ## Interactive Mode Guidelines
 
 Throughout the implementation:
@@ -1125,6 +1853,70 @@ User guidance needed:
 [Specific question]
 ```
 
+### If Branch Creation Fails (when --branch flag used)
+
+```
+Error: Failed to create branch: [BRANCH_NAME]
+
+Possible causes:
+- Branch already exists
+- Not on default branch and couldn't switch
+- Uncommitted changes blocking checkout
+- Permission issues
+
+Attempted:
+[List attempted solutions]
+
+Options:
+1. Skip branch creation and continue with current branch
+2. Manually create branch and re-run command
+3. Abort implementation
+```
+
+### If Push to Remote Fails (when --branch flag used)
+
+```
+Error: Failed to push branch to remote: [BRANCH_NAME]
+
+Possible causes:
+- No remote configured
+- Network connectivity issues
+- Permission/authentication issues
+- Branch protection rules
+- Remote branch already exists with conflicts
+
+Attempted:
+[List attempted solutions]
+
+Options:
+1. Retry push after resolving issue
+2. Skip PR creation, create manually later
+3. Force push (only if safe and authorized)
+```
+
+### If PR Creation Fails (when --branch flag used)
+
+```
+Error: Failed to create pull request
+
+Possible causes:
+- GitHub CLI (gh) not installed or not authenticated
+- Network connectivity issues
+- Repository permissions insufficient
+- Pull request already exists for this branch
+- Invalid PR title or description format
+
+Attempted:
+[List attempted solutions]
+
+Fallback:
+Providing manual PR creation instructions with:
+- Branch name
+- Suggested PR title
+- Generated PR description
+- Direct GitHub URL for manual PR creation
+```
+
 ---
 
 ## Success Indicators
@@ -1181,6 +1973,26 @@ Implementation is successful when:
 # After creating a plan
 /agency:plan 123
 /agency:implement plan-issue-123-20241210
+
+# With automatic branch creation
+/agency:implement feature-user-authentication --branch
+
+# Create branch and implement from full path
+/agency:implement .agency/plans/add-dark-mode-support.md --branch
+
+# Typical workflow with branch creation and PR
+/agency:plan 123
+/agency:implement plan-issue-123-20241210 --branch
+# This will:
+# 1. Validate the plan
+# 2. Create a branch (e.g., feat/issue-123-description)
+# 3. Implement on that branch
+# 4. Commit implementation changes
+# 5. Run quality gates (build, tests, linting)
+# 6. Code review
+# 7. Commit any fixes from code review
+# 8. Generate implementation report
+# 9. Push branch and create PR (if approved)
 ```
 
 ---
