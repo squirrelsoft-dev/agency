@@ -22,12 +22,19 @@
         "testing"
     ],
     "commands": [
-        "./commands/help.md",
-        "./commands/implement.md",
+        "./commands/work.md",
         "./commands/plan.md",
+        "./commands/implement.md",
         "./commands/review.md",
         "./commands/test.md",
-        "./commands/work.md"
+        "./commands/help.md",
+        "./commands/sprint.md",
+        "./commands/refactor.md",
+        "./commands/optimize.md",
+        "./commands/document.md",
+        "./commands/security.md",
+        "./commands/adr.md",
+        "./commands/deploy.md"
     ],
     "agents": [
         "./agents/orchestrator-agent.md",
