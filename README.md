@@ -37,37 +37,118 @@ cc plugin link .
 
 ## Quick Start
 
-### Work on a GitHub Issue
+### Work on a Single Issue
 
 ```bash
-# Work on issue #123
+# Work on issue #123 (GitHub or Jira)
 /agency:work 123
+
+# Work on Jira issue
+/agency:work PROJ-456
 
 # Work on next available issue
 /agency:work next
 ```
 
-### Implement an Entire Sprint
+### Implement an Entire Sprint ✨ NEW
 
 ```bash
-# Implement all issues in current sprint
-/agency:gh-sprint
+# Implement entire sprint with dependency resolution
+/agency:sprint milestone-name        # GitHub milestone
+/agency:sprint PROJ-Sprint-12        # Jira sprint
+/agency:sprint 2024-Q4-Sprint-3      # Linear cycle
 
-# Triage issues first
-/agency:gh-triage
+# Features:
+# - Auto-detects provider (GitHub/Jira/Linear)
+# - Resolves issue dependencies
+# - Parallel execution (max 3 concurrent)
+# - Integration testing across PRs
+# - Comprehensive sprint report
 ```
 
-### Code Review & Quality
+### Refactor Code Safely ✨ NEW
+
+```bash
+# Refactor specific file
+/agency:refactor src/components/Button.tsx
+
+# Refactor directory
+/agency:refactor src/lib/auth
+
+# Refactor by component name
+/agency:refactor UserProfile
+
+# Refactor by pattern
+/agency:refactor "*.service.ts"
+
+# Features:
+# - Code quality analysis (complexity, duplication)
+# - Incremental execution with git checkpoints
+# - Automatic rollback on test failures
+# - Before/after metrics comparison
+```
+
+### Optimize Performance ✨ NEW
+
+```bash
+# Optimize bundle size
+/agency:optimize bundle
+
+# Optimize database queries
+/agency:optimize database
+
+# Optimize rendering performance
+/agency:optimize rendering
+
+# Optimize API performance
+/agency:optimize api
+
+# Auto-detect optimization targets
+/agency:optimize auto
+
+# Features:
+# - Profiling and baseline measurement
+# - Incremental optimization with benchmarking
+# - Before/after metrics comparison
+# - Rollback if no improvement
+```
+
+### Generate Documentation ✨ NEW
+
+```bash
+# Generate API documentation
+/agency:document api
+
+# Create Architecture Decision Record
+/agency:document architecture
+
+# Document React components
+/agency:document component
+
+# Document feature with user guide
+/agency:document authentication
+
+# Generate inline code docs (JSDoc/TypeDoc)
+/agency:document code
+
+# Features:
+# - Template-based generation
+# - Code example validation
+# - Link checking
+# - Quality review
+```
+
+### Code Review & Testing
 
 ```bash
 # Comprehensive code review
-/agency:review
+/agency:review PR-123
 
-# Generate tests for current changes
-/agency:test
+# Generate tests for component
+/agency:test src/components/Button.tsx
 
-# Security audit
-/agency:security
+# Help with commands
+/agency:help sprint
 ```
 
 ## Agent Categories
@@ -143,33 +224,216 @@ cc plugin link .
 
 ## Available Commands
 
-### Core Workflow
-- `/agency:work` - Work any issue (auto-detects GitHub/Jira)
-- `/agency:plan` - Create implementation plan only
-- `/agency:implement` - Implement from existing plan
+### Phase 1: Core Workflow (Provider-Agnostic)
+- `/agency:work [issue]` - Work any issue end-to-end (auto-detects GitHub/Jira)
+- `/agency:plan [issue]` - Create implementation plan without execution
+- `/agency:implement [plan-file]` - Execute from existing plan file
+- `/agency:review [pr]` - Comprehensive multi-aspect code review
+- `/agency:test [component]` - Generate comprehensive test suite
+- `/agency:help [command|agent]` - Get help for commands and agents
 
-### GitHub Workflows
-- `/agency:gh-sprint` - Implement entire GitHub sprint
-- `/agency:gh-triage` - Triage GitHub issues
-- `/agency:gh-parallel` - Find parallelizable issues
-- `/agency:gh-worktree` - Create worktree for issue
+### Phase 2: Advanced Workflows ✨ NEW
+- **`/agency:sprint [sprint-id]`** - Implement entire sprint with dependency resolution and parallel execution (GitHub milestones, Jira sprints, Linear cycles)
+- **`/agency:refactor [scope]`** - Safe refactoring with code analysis, incremental execution, and test preservation
+- **`/agency:optimize [target]`** - Performance optimization with profiling, benchmarking, and measurable improvements (bundle/database/rendering/api/memory)
+- **`/agency:document [topic]`** - Generate comprehensive documentation with templates and validation (api/architecture/component/feature/code)
+- **`/agency:security [scope]`** - Comprehensive security audit with vulnerability scanning, OWASP Top 10 checks, and remediation guidance
+- **`/agency:adr [decision]`** - Create Architecture Decision Records documenting technical decisions with context, alternatives, and consequences
+- **`/agency:deploy [environment]`** - Provider-agnostic deployment with pre-flight checks, health verification, and rollback capability
 
-### Jira Workflows
-- `/agency:jira-sprint` - Implement entire Jira sprint
-- `/agency:jira-triage` - Triage Jira issues
+---
 
-### Quality & Review
-- `/agency:review` - Comprehensive code review
-- `/agency:test` - Generate comprehensive tests
-- `/agency:security` - Security audit workflow
+## Phase 2 Commands Deep Dive
 
-### Optimization
-- `/agency:optimize` - Performance optimization
-- `/agency:refactor` - Refactoring workflow
+### `/agency:sprint [sprint-id]` - Sprint Automation
 
-### Documentation
-- `/agency:document` - Generate documentation
-- `/agency:adr` - Create Architecture Decision Record
+Execute entire sprints with intelligent dependency resolution and parallel batch execution.
+
+**Features**:
+- ✅ **Provider-Agnostic**: Works with GitHub milestones, Jira sprints, Linear cycles
+- ✅ **Dependency Resolution**: Builds dependency graph from issue links, executes in correct order
+- ✅ **Parallel Execution**: Runs up to 3 issues concurrently when no dependencies
+- ✅ **Integration Testing**: Creates integration branch to test all PRs together
+- ✅ **Quality Verification**: Ensures all PRs pass tests, build, and security checks
+- ✅ **Sprint Reporting**: Comprehensive completion report with metrics and learnings
+
+**Example Workflows**:
+```bash
+# GitHub: Implement all issues in milestone "v2.0"
+/agency:sprint v2.0
+
+# Jira: Implement all issues in sprint "PROJ-Sprint-12"
+/agency:sprint PROJ-Sprint-12
+
+# Linear: Implement all issues in cycle "2024-Q4-Sprint-3"
+/agency:sprint 2024-Q4-Sprint-3
+```
+
+**Phases** (8 total):
+1. **Sprint Detection & Fetching**: Auto-detect provider, fetch all issues
+2. **Dependency Analysis**: Build dependency graph, calculate execution batches
+3. **Project Context Detection**: Detect framework/language for agent selection
+4. **Batch Execution**: Execute issues in parallel batches (max 3 concurrent)
+5. **Quality Verification**: Verify all PRs pass quality gates
+6. **Integration Testing**: Merge all PRs to integration branch and test
+7. **PR Review & Merging**: User selects merge strategy, automated merging
+8. **Sprint Report**: Generate comprehensive completion report
+
+**Outputs**:
+- Sprint completion report: `.agency/sprints/sprint-[ID]-report-[date].md`
+- Execution tracking: `.agency/sprints/sprint-[ID]-tracking.json`
+
+---
+
+### `/agency:refactor [scope]` - Safe Refactoring
+
+Guided refactoring with safety verification, test preservation, and metrics comparison.
+
+**Features**:
+- ✅ **Code Quality Analysis**: Complexity, duplication, type coverage metrics
+- ✅ **Incremental Execution**: Git checkpoints before each step, rollback on failure
+- ✅ **Test Preservation**: Coverage must not decrease, tests run after each step
+- ✅ **Automatic Rollback**: Immediate rollback if tests fail or coverage decreases
+- ✅ **Before/After Metrics**: Quantifiable improvements in code quality
+- ✅ **Refactoring Report**: Detailed report with metrics comparison
+
+**Example Workflows**:
+```bash
+# Refactor specific file
+/agency:refactor src/components/UserProfile.tsx
+
+# Refactor entire directory
+/agency:refactor src/lib/database
+
+# Refactor by component name (searches codebase)
+/agency:refactor AuthProvider
+
+# Refactor files matching pattern
+/agency:refactor "*.service.ts"
+```
+
+**Phases** (6 total):
+1. **Scope Detection & Analysis**: Parse scope, analyze code quality
+2. **Project Context Detection**: Detect language/framework for analysis tools
+3. **Refactoring Plan Creation**: Incremental steps with before/after examples
+4. **Incremental Execution**: Execute step-by-step with git checkpoints
+5. **Safety Verification**: All tests pass, coverage ≥ baseline
+6. **Refactoring Report**: Before/after metrics, changes made, git history
+
+**Outputs**:
+- Refactoring report: `.agency/refactorings/refactor-[scope]-[date].md`
+- Git commits: One per successful refactoring step
+
+---
+
+### `/agency:optimize [target]` - Performance Optimization
+
+Performance optimization with profiling, benchmarking, and measurable improvements.
+
+**Features**:
+- ✅ **Profiling & Baseline**: Establish baseline metrics before optimization
+- ✅ **Target Detection**: Bundle, database, rendering, API, memory, or auto-detect
+- ✅ **Incremental Optimization**: Benchmark after each optimization
+- ✅ **Automatic Rollback**: Rollback if no improvement or tests fail
+- ✅ **Before/After Metrics**: Quantifiable performance improvements
+- ✅ **Performance Report**: Comprehensive report with optimization results
+
+**Example Workflows**:
+```bash
+# Optimize bundle size (code splitting, tree shaking)
+/agency:optimize bundle
+
+# Optimize database queries (indexes, query optimization)
+/agency:optimize database
+
+# Optimize rendering performance (React.memo, virtual scrolling)
+/agency:optimize rendering
+
+# Optimize API performance (caching, batching)
+/agency:optimize api
+
+# Optimize memory usage (leak detection, GC tuning)
+/agency:optimize memory
+
+# Auto-detect optimization targets
+/agency:optimize auto
+```
+
+**Phases** (7 total):
+1. **Optimization Target Detection**: Parse target, get user confirmation
+2. **Project Context Detection**: Detect framework/tools for profiling
+3. **Performance Profiling & Baseline**: Run profiling tools, capture baseline
+4. **Optimization Plan Creation**: Prioritize optimizations by impact
+5. **Optimization Implementation**: Execute incrementally with benchmarking
+6. **Verification & Regression Testing**: All tests pass, no regressions
+7. **Performance Report**: Before/after metrics, recommendations
+
+**Profiling Tools**:
+- Bundle: webpack-bundle-analyzer, @next/bundle-analyzer
+- Database: EXPLAIN ANALYZE, pg_stat_statements
+- Rendering: Lighthouse, React DevTools Profiler
+- API: autocannon, k6
+- Memory: Chrome DevTools, heapdump, clinic.js
+
+**Outputs**:
+- Performance report: `.agency/optimizations/optimize-[target]-[date].md`
+- Baseline data: `.agency/optimizations/baseline/`
+- Benchmark data: `.agency/optimizations/benchmarks/`
+
+---
+
+### `/agency:document [topic]` - Documentation Generation
+
+Generate comprehensive documentation with templates, validation, and quality review.
+
+**Features**:
+- ✅ **Template-Based Generation**: API, Architecture (ADR), Component, Feature, Code
+- ✅ **Code Example Validation**: Verify all code examples compile and work
+- ✅ **Link Validation**: Check all internal and external links
+- ✅ **Quality Review**: Specialist agent reviews for accuracy and completeness
+- ✅ **Auto-Publishing**: Save to appropriate docs directory with index updates
+- ✅ **Documentation Report**: Generation log and quality metrics
+
+**Example Workflows**:
+```bash
+# Generate API documentation (endpoints, request/response, examples)
+/agency:document api
+
+# Create Architecture Decision Record (ADR)
+/agency:document architecture
+
+# Document React/Vue components (props, usage, examples)
+/agency:document component
+
+# Document feature with user guide
+/agency:document authentication
+
+# Generate inline code docs (JSDoc/TypeDoc/Docstrings)
+/agency:document code
+
+# Auto-detect documentation type
+/agency:document auto
+```
+
+**Phases** (5 total):
+1. **Documentation Scope Detection**: Parse topic, analyze scope
+2. **Project Context Detection**: Detect framework/doc system
+3. **Documentation Generation**: Use templates, extract code examples
+4. **Documentation Review**: Quality review, validate examples and links
+5. **Validation & Publishing**: Validate, publish to docs directory
+
+**Documentation Templates**:
+- **API**: Endpoints, authentication, request/response, rate limiting, examples
+- **Architecture (ADR)**: Context, decision, consequences, alternatives
+- **Component**: Props, variants, states, accessibility, examples, tests
+- **Feature**: User guide, implementation, API reference, configuration, troubleshooting
+- **Code**: JSDoc/TypeDoc/Docstrings (inline documentation)
+
+**Outputs**:
+- Documentation files: `docs/api/`, `docs/components/`, `docs/architecture/`, etc.
+- Documentation report: `.agency/documentation/doc-[topic]-[date].md`
+
+---
 
 ## Workflow Skills
 
