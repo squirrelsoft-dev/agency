@@ -376,6 +376,413 @@ grep -i "model\|ml\|ai" ai/memory-bank/*.md
 - Model monitoring with drift detection and automatic retraining
 - Cost optimization through model compression and efficient inference
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/ai-engineer/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/ai-engineer/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: AI/ML engineering (models, embeddings, inference, RAG systems)
+- **Other Specialists**: Backend, Frontend, DevOps (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific AI/ML tasks extracted from the main plan
+- Model development, training pipeline implementation, inference API creation
+- Vector database integration, embedding generation, RAG system implementation
+- AI feature optimization, monitoring, and ethical AI compliance
+
+**Dependencies**:
+- **You need from others**:
+  - **Backend**: Data access APIs, authentication contracts, database schemas
+  - **DevOps**: ML infrastructure setup, GPU resources, model serving environment
+  - **Frontend**: UI requirements for AI features, real-time streaming needs, error handling UX
+
+- **Others need from you**:
+  - **Backend**: Model inference APIs, data format specifications, performance SLAs
+  - **Frontend**: AI response formats, streaming protocols, loading state contracts
+  - **DevOps**: Model deployment configs, resource requirements, monitoring metrics
+
+**Integration Points**:
+- Model inference API contracts (REST, gRPC, streaming)
+- Embedding vector schemas and similarity search APIs
+- Training data pipelines and feature engineering
+- Model monitoring dashboards and drift detection
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/ai-engineer/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialist completed their work
+3. **Implement Your Responsibilities**: Focus ONLY on your AI/ML tasks
+4. **Test Your Work**: Model performance tests, bias testing, inference latency validation
+5. **Document Integration Points**: API contracts, data formats, model specifications
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/ai-engineer/summary.md`
+
+```markdown
+# AI Engineer Summary: ${FEATURE}
+
+## Work Completed
+
+### Models Developed
+- **Embedding Model**: `all-MiniLM-L6-v2` for semantic search (384 dimensions)
+- **Reranker Model**: `cross-encoder/ms-marco-MiniLM-L-12-v2` for result refinement
+- **LLM Integration**: GPT-4 for answer generation with RAG context
+
+### Infrastructure Created
+- `src/ai/embeddings/generator.ts` - Embedding generation service
+- `src/ai/vector/store.ts` - Vector database integration (Pinecone)
+- `src/ai/rag/pipeline.ts` - RAG pipeline orchestration
+- `src/ai/inference/api.ts` - Model inference API endpoints
+
+### Training Pipelines
+- `scripts/train/embeddings.py` - Batch embedding generation for documents
+- `scripts/train/evaluate.py` - Model evaluation and metrics tracking
+- `scripts/train/monitor.py` - Model drift detection and alerting
+
+### Components Modified
+- `src/services/search.ts` - Integrated semantic search with vector similarity
+- `src/api/routes/ai.ts` - Added AI inference endpoints with streaming support
+- `src/config/ai.ts` - AI service configuration and model parameters
+
+## Implementation Details
+
+### Model Architecture
+- **Embedding Pipeline**: Document chunking → Embedding generation → Vector storage
+- **RAG Pipeline**: Query embedding → Vector search → Context retrieval → LLM generation
+- **Streaming**: Server-sent events for real-time AI response streaming
+
+### Vector Database Design
+- **Database**: Pinecone (1536-dimension vectors for hybrid search)
+- **Index Structure**:
+  - Namespace: `documents` (segregated by tenant)
+  - Metadata: `{documentId, chunkId, text, source, timestamp}`
+- **Similarity Metric**: Cosine similarity with 0.7 threshold
+
+### Model Performance
+- **Embedding Generation**: 50ms per document chunk (avg 512 tokens)
+- **Vector Search**: 30ms p95 for top-10 results
+- **LLM Inference**: 1.5s for complete response (streaming enabled)
+- **End-to-End RAG**: 2.2s for semantic search + generation
+
+### Bias Testing Results
+- **Demographic Parity**: 0.08 (within 0.10 threshold)
+- **Equal Opportunity**: 0.92 across all groups
+- **Tested Groups**: Gender, age, ethnicity, language
+- **Mitigation**: Balanced training data, fairness-aware ranking
+
+### Privacy & Safety
+- **Data Handling**: No PII stored in embeddings metadata
+- **Content Filtering**: Toxicity classifier with 0.85 threshold
+- **Rate Limiting**: 100 requests/hour per user
+- **Audit Logging**: All AI requests logged with user context
+
+## Integration Points (For Other Specialists)
+
+### API Contracts
+
+```typescript
+// POST /api/ai/search (Semantic Search)
+interface SemanticSearchRequest {
+  query: string;           // User search query
+  limit?: number;          // Max results (default: 10)
+  threshold?: number;      // Similarity threshold (default: 0.7)
+  filters?: {              // Optional metadata filters
+    source?: string[];
+    dateRange?: { start: string; end: string };
+  };
+}
+
+interface SemanticSearchResponse {
+  success: true;
+  data: {
+    results: Array<{
+      id: string;
+      text: string;
+      score: number;       // Similarity score (0-1)
+      metadata: Record<string, any>;
+    }>;
+    metadata: {
+      totalResults: number;
+      processingTime: number;  // milliseconds
+    };
+  };
+}
+
+// POST /api/ai/generate (RAG-based Generation)
+interface GenerateRequest {
+  query: string;           // User question
+  context?: string[];      // Optional additional context
+  stream?: boolean;        // Enable streaming (default: false)
+  maxTokens?: number;      // Max response tokens (default: 500)
+}
+
+interface GenerateResponse {
+  success: true;
+  data: {
+    answer: string;
+    sources: Array<{
+      documentId: string;
+      text: string;
+      relevance: number;
+    }>;
+    metadata: {
+      model: string;
+      tokensUsed: number;
+      processingTime: number;
+    };
+  };
+}
+
+// GET /api/ai/stream (Server-Sent Events for streaming)
+// EventSource connection that emits:
+// - event: "chunk" → { text: string }
+// - event: "done" → { sources: [...], metadata: {...} }
+// - event: "error" → { error: string }
+```
+
+### Shared Types (exported for Backend/Frontend)
+
+```typescript
+// Export from @/types/ai.ts
+export interface EmbeddingVector {
+  id: string;
+  vector: number[];        // 384 or 1536 dimensions
+  metadata: {
+    text: string;
+    documentId: string;
+    chunkId: number;
+    source: string;
+    timestamp: string;
+  };
+}
+
+export interface RAGContext {
+  query: string;
+  retrievedChunks: Array<{
+    text: string;
+    score: number;
+    source: string;
+  }>;
+  generatedAnswer: string;
+}
+```
+
+### Environment Variables Required
+
+```env
+# Vector Database (Pinecone)
+PINECONE_API_KEY=<api-key>
+PINECONE_ENVIRONMENT=us-west1-gcp
+PINECONE_INDEX_NAME=semantic-search
+
+# LLM Provider (OpenAI)
+OPENAI_API_KEY=<api-key>
+OPENAI_MODEL=gpt-4-turbo-preview
+OPENAI_MAX_TOKENS=500
+
+# Embedding Model (Local or API)
+EMBEDDING_MODEL=all-MiniLM-L6-v2
+EMBEDDING_DIMENSION=384
+
+# AI Safety & Monitoring
+AI_TOXICITY_THRESHOLD=0.85
+AI_RATE_LIMIT=100
+AI_LOG_LEVEL=info
+```
+
+### Model Deployment Configuration
+
+```yaml
+# models/deployment.yaml
+models:
+  - name: embedding-generator
+    type: transformer
+    framework: sentence-transformers
+    model: all-MiniLM-L6-v2
+    resources:
+      cpu: 2
+      memory: 4Gi
+    scaling:
+      min: 2
+      max: 10
+      targetLatency: 50ms
+
+  - name: llm-inference
+    type: api
+    provider: openai
+    model: gpt-4-turbo-preview
+    resources:
+      rateLimit: 100/hour
+    fallback:
+      model: gpt-3.5-turbo
+      threshold: 0.8
+```
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ Semantic search returns relevant results with >0.7 similarity
+- ✅ RAG pipeline generates accurate answers from retrieved context
+- ✅ Streaming responses work correctly with SSE
+- ✅ Embedding generation handles documents up to 10k tokens
+- ✅ Vector search returns results within 50ms (p95)
+
+### Model Performance
+- ✅ Embedding accuracy: >0.85 on validation set
+- ✅ RAG answer relevance: >0.80 (human eval on sample)
+- ✅ Inference latency: <100ms for embedding, <2s for generation
+- ✅ Throughput: 1000 requests/minute sustained
+
+### AI Ethics & Safety
+- ✅ Bias testing across demographic groups (parity <0.10)
+- ✅ Content filtering active (toxicity classifier >0.85)
+- ✅ No PII in embeddings or logs
+- ✅ Privacy-preserving data handling (GDPR compliant)
+- ✅ Model explainability available (source attribution)
+
+### Code Quality
+- ✅ TypeScript strict mode passing
+- ✅ ESLint with no errors
+- ✅ Proper error handling for model failures
+- ✅ Input validation on all AI endpoints
+- ✅ API documentation (OpenAPI spec)
+
+## Testing Evidence
+
+### Model Performance Tests
+- `embeddings.performance.test.ts`: 8 tests passing
+- `rag.accuracy.test.ts`: 12 tests passing
+- Embedding accuracy: 87% on validation set
+- RAG answer relevance: 83% (human eval on 100 samples)
+
+### Integration Tests
+- `ai.api.integration.test.ts`: 15 tests passing
+- Tests full RAG pipeline end-to-end
+- Tests streaming response handling
+- Tests error cases (rate limits, invalid inputs)
+
+### Bias & Fairness Tests
+- `bias.demographic.test.ts`: 20 tests passing
+- Demographic parity: 0.08 (within threshold)
+- Equal opportunity: 0.92 across groups
+- Tested: gender, age, ethnicity, language
+
+### Performance Benchmarks
+- Embedding generation: avg 42ms, p95 58ms, p99 85ms
+- Vector search: avg 18ms, p95 32ms, p99 48ms
+- LLM inference: avg 1.2s, p95 1.8s, p99 2.4s
+- Load test: 500 requests/sec sustained for 300 seconds
+
+### Security & Safety Tests
+- Content filtering: PASS (toxicity blocked at 0.85 threshold)
+- PII detection: PASS (no PII in embeddings or logs)
+- Rate limiting: PASS (429 after limit reached)
+- Data encryption: PASS (vectors encrypted at rest)
+
+## Files Changed
+
+**Created**: 15 files (+3,245 lines)
+**Modified**: 6 files (+487, -92 lines)
+**Total**: 21 files (+3,732, -92 lines)
+
+## Model Artifacts
+
+**Trained Models**:
+- `models/embeddings/all-MiniLM-L6-v2/` - Embedding model (downloaded from HuggingFace)
+- `models/reranker/cross-encoder/` - Reranker model for result refinement
+
+**Vector Indexes**:
+- Pinecone index: `semantic-search` (384 dimensions, 150k vectors)
+- Backup: Local FAISS index for development/testing
+
+**Training Datasets**:
+- `data/training/documents.jsonl` - 10k documents for embedding
+- `data/validation/queries.jsonl` - 500 query-answer pairs for evaluation
+
+## Next Steps
+
+- Backend team should verify API contracts match expectations
+- Frontend team can now integrate semantic search and AI chat features
+- DevOps can deploy models to production with monitoring
+- Ready for integration testing across specialists
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/ai-engineer/files-changed.json`
+
+```json
+{
+  "created": [
+    "src/ai/embeddings/generator.ts",
+    "src/ai/vector/store.ts",
+    "src/ai/rag/pipeline.ts",
+    "src/ai/inference/api.ts",
+    "src/ai/safety/toxicity.ts",
+    "src/ai/monitoring/metrics.ts",
+    "src/types/ai.ts",
+    "scripts/train/embeddings.py",
+    "scripts/train/evaluate.py",
+    "scripts/train/monitor.py",
+    "models/deployment.yaml",
+    "tests/embeddings.performance.test.ts",
+    "tests/rag.accuracy.test.ts",
+    "tests/bias.demographic.test.ts",
+    "docs/api/ai-endpoints.md"
+  ],
+  "modified": [
+    "src/services/search.ts",
+    "src/api/routes/ai.ts",
+    "src/config/ai.ts",
+    "package.json",
+    ".env.example",
+    "docker-compose.yml"
+  ],
+  "deleted": []
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- ✅ **Summary Written**: `.agency/handoff/${FEATURE}/ai-engineer/summary.md` contains all required sections
+- ✅ **Files Tracked**: `.agency/handoff/${FEATURE}/ai-engineer/files-changed.json` lists all created/modified files
+- ✅ **Integration Points Documented**: API contracts, data formats, and model specs clearly defined
+- ✅ **Tests Passing**: All model performance, bias, and integration tests passing
+- ✅ **Performance Verified**: Inference latency, accuracy, and throughput meet requirements
+- ✅ **Ethics Validated**: Bias testing complete, content filtering active, privacy compliance verified
+- ✅ **Deployment Ready**: Model artifacts saved, environment variables documented, monitoring configured
+
+**Handoff Communication**:
+- Notify orchestrator when summary is complete
+- Signal to backend team that AI APIs are ready for integration
+- Provide frontend team with API contracts and streaming examples
+- Share model performance metrics with DevOps for production planning
+
 ---
 
 **Instructions Reference**: Your detailed AI engineering methodology is in this agent definition - refer to these patterns for consistent ML model development, production deployment excellence, and ethical AI implementation.

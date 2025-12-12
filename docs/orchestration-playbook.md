@@ -4,7 +4,7 @@
 
 This playbook provides practical guidance for using Agency orchestrators effectively. It covers when to use which orchestrator, best practices, common patterns, troubleshooting, and success metrics.
 
-**Last Updated**: 2024-12-11
+**Last Updated**: 2024-12-12
 **Target Audience**: Users and AI assistants working with Agency plugin
 
 ---
@@ -14,9 +14,11 @@ This playbook provides practical guidance for using Agency orchestrators effecti
 1. [When to Use Orchestrators](#when-to-use-orchestrators)
 2. [Orchestration Best Practices](#orchestration-best-practices)
 3. [Common Patterns](#common-patterns)
-4. [Troubleshooting](#troubleshooting)
-5. [Metrics & Success](#metrics--success)
-6. [Advanced Techniques](#advanced-techniques)
+4. [Multi-Specialist Workflows](#multi-specialist-workflows)
+5. [Prompt Component Architecture](#prompt-component-architecture)
+6. [Troubleshooting](#troubleshooting)
+7. [Metrics & Success](#metrics--success)
+8. [Advanced Techniques](#advanced-techniques)
 
 ---
 
@@ -147,7 +149,7 @@ This playbook provides practical guidance for using Agency orchestrators effecti
 
 **Use Multi-Dimensional Matching**:
 
-Refer to [Agent Catalog](/docs/agent-catalog.md) and evaluate:
+Refer to [Agent Catalog](/docs/agent-catalog.md) and [Multi-Specialist Workflows](#multi-specialist-workflows) section for specialist selection. Evaluate:
 
 1. **Domain** (30%): Does agent specialize in this area?
 2. **Technology** (25%): Does agent know required tech stack?
@@ -265,7 +267,7 @@ Sequential:
 
 ### 4. Quality Gate Enforcement
 
-See [Quality Gates](/docs/quality-gates.md) for complete specification.
+See [Quality Gates](/docs/quality-gates.md) for complete specification and [Prompt Component Architecture](#prompt-component-architecture) for implementation details.
 
 **Mandatory Gates** (always enforced):
 1. **Planning**: User approval before implementation
@@ -511,6 +513,1219 @@ Time: 10 min PM + 20 min architect + (15 min × 8 tasks) + 15 min integration = 
 ```bash
 # Spawn agents-orchestrator directly
 "Please spawn an agents-orchestrator to execute complete development pipeline for project-specs/my-project-setup.md"
+```
+
+---
+
+## Multi-Specialist Workflows
+
+Modern features often require coordination between multiple specialists (frontend, backend, mobile, AI/ML, DevOps). Agency's multi-specialist workflow system provides structured handoff coordination, dependency management, and integrated verification.
+
+### Overview
+
+**Single-Specialist vs Multi-Specialist**:
+
+| Aspect | Single-Specialist | Multi-Specialist |
+|--------|------------------|------------------|
+| Selection | One specialist chosen | Multiple specialists scored |
+| Execution | Direct implementation | Sequential or parallel with handoffs |
+| Verification | Single code review | Per-specialist + integrated review |
+| Coordination | None needed | Handoff directory system |
+| Complexity | Simple | Higher, but systematic |
+
+**When Multi-Specialist Mode Activates**:
+- 2+ specialists score > 2.0 in keyword analysis
+- Plan explicitly mentions full-stack work
+- Cross-layer integration required (UI + API + Database)
+- Mobile and web components both needed
+- AI/ML integration with frontend/backend
+
+---
+
+### How Multi-Specialist Detection Works
+
+**Keyword Scoring Algorithm**:
+
+Each specialist has a set of technology keywords. The system scans the plan/issue and scores each specialist:
+
+**Frontend Developer** (+0.5 per match):
+- React, Vue, Angular, Svelte
+- Next.js, Remix, Gatsby
+- TypeScript, Component, UI, Tailwind
+- shadcn, Form, Animation
+
+**Backend Architect** (+0.5 per match):
+- API, REST, GraphQL, tRPC
+- Database, SQL, Prisma, MongoDB
+- Authentication, JWT, Middleware
+- Schema, Migration, Endpoint
+
+**Mobile App Builder** (+0.5 per match):
+- React Native, Expo, iOS, Android
+- SwiftUI, Flutter, Mobile app
+- Touch, Gesture, Push notification
+
+**AI Engineer** (+0.5 per match):
+- Machine learning, ML, AI, LLM
+- Embeddings, Vector database
+- TensorFlow, PyTorch, Mastra
+- RAG, Prompt engineering
+
+**DevOps Automator** (+0.5 per match):
+- Docker, Kubernetes, CI/CD
+- Deployment, AWS, GCP, Azure
+- Terraform, Monitoring, Pipeline
+
+**Threshold**: Score > 2.0 → Specialist is needed
+
+**Example**:
+```markdown
+Plan mentions: "Add user authentication with React login form,
+Node.js API endpoints, JWT tokens, and PostgreSQL database"
+
+Keyword Analysis:
+- Frontend: React (0.5) + form (0.5) = 1.0 ❌ (below threshold)
+- Backend: API (0.5) + endpoints (0.5) + JWT (0.5) +
+           PostgreSQL (0.5) + database (0.5) + authentication (0.5) = 3.0 ✅
+- Mobile: 0.0 ❌
+- AI: 0.0 ❌
+- DevOps: 0.0 ❌
+
+Decision: Backend only (single-specialist)
+```
+
+```markdown
+Plan mentions: "Build full-stack dashboard with React components,
+Next.js pages, REST API, Prisma schema, PostgreSQL migrations"
+
+Keyword Analysis:
+- Frontend: React (0.5) + components (0.5) + Next.js (0.5) +
+            pages (0.5) + UI (0.5) = 2.5 ✅
+- Backend: REST (0.5) + API (0.5) + Prisma (0.5) + PostgreSQL (0.5) +
+           schema (0.5) + migrations (0.5) = 3.0 ✅
+- Mobile: 0.0 ❌
+- AI: 0.0 ❌
+- DevOps: 0.0 ❌
+
+Decision: Multi-specialist (Frontend + Backend)
+```
+
+---
+
+### Execution Strategy Selection
+
+Once multiple specialists are detected, the system determines whether they should work sequentially or in parallel.
+
+#### Sequential Execution
+
+**Use when dependencies exist between specialists**:
+
+**Backend → Frontend dependency indicators**:
+- "Frontend needs backend API"
+- "UI calls authentication endpoint"
+- "Component fetches data from API"
+- "Dashboard displays database data"
+- "Frontend consumes REST/GraphQL endpoints"
+
+**Backend → Mobile dependency indicators**:
+- "Mobile app consumes API"
+- "App syncs with server"
+- "Mobile authenticates with backend"
+
+**AI → Backend → Frontend chain**:
+- "Backend integrates ML model"
+- "API serves AI predictions"
+- "UI displays ML recommendations"
+
+**DevOps → Any dependency**:
+- "Requires deployment before testing"
+- "Needs infrastructure setup first"
+
+**Execution Order**:
+```
+Typical chains:
+1. DevOps → Backend → Frontend/Mobile
+2. Backend → AI → Frontend
+3. AI → Backend → Frontend (if backend integrates AI model)
+```
+
+**Example**:
+```markdown
+Plan: "Add user profile with React UI consuming Node.js API
+endpoints that query PostgreSQL"
+
+Strategy: Sequential
+Order: Backend → Frontend
+Reason: "Frontend consumes API endpoints" (clear dependency)
+
+Execution:
+1. Backend Architect → Implement API + database
+2. Verify backend work
+3. Frontend Developer → Implement UI consuming APIs
+4. Verify frontend work
+5. Integrated review
+```
+
+#### Parallel Execution
+
+**Use when work is independent**:
+
+**Independence indicators**:
+- "Separate admin dashboard"
+- "Independent API changes"
+- "Standalone service"
+- "Different codebases/repositories"
+- "Background job processing"
+- "No shared interfaces"
+
+**Safe Default**: When unclear, use sequential execution to avoid integration conflicts.
+
+**Example**:
+```markdown
+Plan: "Build admin dashboard (React) and background job
+processor (Node.js worker) - separate systems"
+
+Strategy: Parallel
+Reason: "Admin dashboard and worker are independent systems"
+
+Execution:
+1. Spawn both specialists simultaneously
+2. Each works autonomously
+3. Both complete independently
+4. Verify each specialist
+5. Light integration review
+```
+
+---
+
+### Handoff Directory Structure
+
+Multi-specialist workflows use a structured handoff directory system for coordination:
+
+**Directory Layout**:
+```
+.agency/handoff/${FEATURE_NAME}/
+├── execution-state.json          # Overall progress tracking
+├── integration/
+│   ├── api-contract.md          # Shared API contracts
+│   ├── type-definitions.ts      # Shared TypeScript types
+│   └── integration-tests.md     # Cross-specialist test plan
+├── backend-architect/
+│   ├── plan.md                  # Backend-specific tasks
+│   ├── summary.md               # Completion report
+│   ├── verification.md          # Code review results
+│   └── files-changed.json       # File tracking
+├── frontend-developer/
+│   ├── plan.md
+│   ├── summary.md
+│   ├── verification.md
+│   └── files-changed.json
+├── mobile-app-builder/
+│   └── [same structure...]
+└── archive/
+    └── handoff-${TIMESTAMP}.tar.gz  # Archived after completion
+```
+
+**Purpose of Each Directory**:
+
+1. **`execution-state.json`**: Tracks which specialists are pending/in_progress/completed, their scores, dependencies, and verification status
+
+2. **`integration/`**: Shared contracts and interfaces that cross specialist boundaries (API contracts, type definitions, integration tests)
+
+3. **`${SPECIALIST}/plan.md`**: Auto-generated from main plan, filtered for specialist's domain with handoff requirements
+
+4. **`${SPECIALIST}/summary.md`**: Created by specialist documenting work completed, integration points, and handoff notes
+
+5. **`${SPECIALIST}/verification.md`**: Created by reality-checker with code review findings (CRITICAL/HIGH/MEDIUM/LOW)
+
+6. **`${SPECIALIST}/files-changed.json`**: Tracks created/modified/deleted files for dependency detection
+
+**Example `execution-state.json`**:
+```json
+{
+  "feature": "user-authentication",
+  "plan_file": ".agency/plans/auth-feature-plan.md",
+  "execution_strategy": "sequential",
+  "created_at": "2024-12-11T14:30:00Z",
+  "current_phase": "execution",
+  "specialists": [
+    {
+      "name": "backend-architect",
+      "status": "completed",
+      "score": 3.5,
+      "keywords_matched": ["API", "database", "JWT", "Prisma"],
+      "verification": "passed",
+      "dependencies_met": true,
+      "started_at": "2024-12-11T14:35:00Z",
+      "completed_at": "2024-12-11T15:20:00Z",
+      "duration_minutes": 45
+    },
+    {
+      "name": "frontend-developer",
+      "status": "in_progress",
+      "score": 2.5,
+      "keywords_matched": ["React", "component", "form"],
+      "verification": null,
+      "dependencies_met": true,
+      "started_at": "2024-12-11T15:25:00Z",
+      "completed_at": null
+    }
+  ]
+}
+```
+
+---
+
+### Per-Specialist Verification Workflow
+
+Each specialist undergoes individual verification before handoff:
+
+**Verification Process** (per specialist):
+
+```
+1. Specialist Completes Work
+   - Creates summary.md with work documentation
+   - Creates files-changed.json with file tracking
+   - Marks ready for verification
+
+2. Reality-Checker Verification
+   - Spawned with specialist's context
+   - Reviews plan.md vs summary.md for compliance
+   - Checks code quality, security, tests
+   - Writes findings to verification.md
+   - Severity levels: CRITICAL, HIGH, MEDIUM, LOW
+
+3. Fix Loop (if CRITICAL/HIGH issues found)
+   - Specialist fixes issues (max 3 iterations)
+   - Re-verification after each fix
+   - If still failing after 3 attempts → escalate to user
+
+4. Verification Passed
+   - Update execution-state.json (status: completed)
+   - Unblock dependent specialists
+   - Archive specialist artifacts
+```
+
+**Verification Checklist** (per specialist):
+- ✅ Plan compliance (all tasks completed)
+- ✅ Code quality (no bugs, proper error handling)
+- ✅ Security (no vulnerabilities at boundaries)
+- ✅ Tests (adequate coverage, all passing)
+- ✅ Integration points documented (for next specialist)
+
+**Example verification.md**:
+```markdown
+# Verification: Backend Architect - User Authentication
+
+**Specialist**: backend-architect
+**Feature**: user-authentication
+**Status**: PASSED ✅
+
+## Plan Compliance ✅
+- ✅ Authentication API endpoints implemented
+- ✅ Database schema created
+- ✅ JWT token generation working
+- ✅ All planned files created
+
+## Code Quality ✅
+- ✅ Proper error handling in API routes
+- ✅ Password hashing implemented correctly
+- ✅ No hardcoded secrets
+
+## Security ✅
+- ✅ SQL injection prevention (Prisma ORM)
+- ✅ Password validation rules enforced
+- ✅ JWT secret in environment variables
+
+## Tests ✅
+- ✅ Unit tests for auth logic (87% coverage)
+- ✅ Integration tests for API endpoints
+- ✅ All tests passing
+
+## Integration Points ✅
+- ✅ API contract documented in integration/api-contract.md
+- ✅ TypeScript types exported for frontend
+- ✅ Clear handoff notes in summary.md
+
+## Issues Found
+None - ready for frontend handoff
+```
+
+---
+
+### Integration Validation Across Specialists
+
+After all specialists complete individual verification, an integrated review checks cross-boundary consistency:
+
+**Integrated Review Focus**:
+
+1. **Cross-Specialist Integration**
+   - API contracts match between backend and frontend/mobile
+   - Type definitions consistent across boundaries
+   - Error handling aligned
+   - Authentication flows work end-to-end
+
+2. **Code Consistency**
+   - Naming conventions aligned
+   - Code style uniform across specialists
+   - Patterns consistent
+   - No conflicting approaches
+
+3. **Architecture Coherence**
+   - Components work together cohesively
+   - No architectural conflicts
+   - Scalability maintained
+   - Design principles followed
+
+4. **Security Across Boundaries**
+   - Authentication complete at all layers
+   - Authorization checks at boundaries
+   - Data validation at system edges
+   - No security gaps between specialists
+
+**Integration Review Spawn**:
+```
+Tool: Task
+Subagent: code-reviewer
+Context: Multi-specialist feature
+
+Prompt:
+- Read ALL specialist summaries
+- Review ALL files changed across all specialists
+- Check integration points between specialists
+- Verify cross-boundary consistency
+- Report integration-specific issues
+```
+
+**Example integration issues**:
+```markdown
+## Integration Review Findings
+
+**API Contract Mismatch** (CRITICAL)
+- Backend returns: { userId: string }
+- Frontend expects: { user_id: string }
+- Fix: Align naming (use camelCase throughout)
+
+**Type Definition Inconsistency** (HIGH)
+- Backend: interface User { email: string }
+- Frontend: type User = { email?: string }
+- Fix: Make email required in frontend types
+
+**Error Handling Gap** (MEDIUM)
+- Backend returns 401 for auth failure
+- Frontend only handles 400/500
+- Fix: Add 401 handler in frontend
+```
+
+---
+
+### Multi-Specialist PR and Jira Comments
+
+When creating PRs or Jira comments for multi-specialist features, document all specialist contributions:
+
+**PR Title Format**:
+```
+feat: Add user authentication (multi-specialist)
+```
+
+**PR Description Template**:
+```markdown
+## Summary
+Implement user authentication with full-stack integration
+
+## Multi-Specialist Implementation
+
+### Backend Architect (@backend-specialist)
+**Work completed**:
+- Authentication API endpoints (login, register, logout)
+- PostgreSQL schema with users table
+- JWT token generation and validation
+- Password hashing with bcrypt
+
+**Files changed**: 12 files created, 3 modified
+**Tests**: 87% coverage, all passing
+**Duration**: 45 minutes
+
+### Frontend Developer (@frontend-specialist)
+**Work completed**:
+- Login/register React components
+- Authentication context and hooks
+- Protected route wrapper
+- Session management
+
+**Files changed**: 8 files created, 2 modified
+**Tests**: 82% coverage, all passing
+**Duration**: 35 minutes
+
+## Integration Points
+- API Contract: See `.agency/handoff/user-auth/integration/api-contract.md`
+- Type Definitions: Shared via `src/types/auth.ts`
+- Authentication flow tested end-to-end
+
+## Verification
+- ✅ Backend verification: PASSED (0 critical issues)
+- ✅ Frontend verification: PASSED (0 critical issues)
+- ✅ Integration review: PASSED (minor style fixes applied)
+
+## Testing
+- Unit tests: 217/254 passing (85% coverage)
+- Integration tests: 12/12 passing
+- E2E tests: 5/5 passing
+
+## Closes
+Fixes #234
+```
+
+**Jira Comment Format** (using ADF):
+```json
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "heading",
+      "attrs": { "level": 2 },
+      "content": [{ "type": "text", "text": "Multi-Specialist Implementation Complete" }]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        { "type": "text", "text": "Feature implemented by ", "marks": [] },
+        { "type": "text", "text": "2 specialists", "marks": [{ "type": "strong" }] },
+        { "type": "text", "text": " (Backend + Frontend)" }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": { "level": 3 },
+      "content": [{ "type": "text", "text": "Backend Architect" }]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        { "type": "listItem", "content": [
+          { "type": "paragraph", "content": [
+            { "type": "text", "text": "Authentication API: login, register, logout" }
+          ]}
+        ]},
+        { "type": "listItem", "content": [
+          { "type": "paragraph", "content": [
+            { "type": "text", "text": "Database schema with users table" }
+          ]}
+        ]}
+      ]
+    }
+  ]
+}
+```
+
+**Commit Message Convention**:
+```bash
+# Each specialist creates their own commits
+feat(backend): implement authentication API endpoints
+feat(frontend): add login/register components
+
+# Integration commit (optional)
+feat: integrate authentication across frontend and backend
+```
+
+---
+
+### Multi-Specialist Workflow Example
+
+**Complete end-to-end example**:
+
+**Scenario**: Implement full-stack user dashboard
+
+**Step 1: Keyword Analysis**
+```
+Plan mentions: "React dashboard, data visualization components,
+REST API endpoints, PostgreSQL analytics queries, real-time updates"
+
+Scores:
+- Frontend: React (0.5) + dashboard (0.5) + components (0.5) +
+            visualization (0.5) = 2.0 ✅
+- Backend: REST (0.5) + API (0.5) + endpoints (0.5) + PostgreSQL (0.5) +
+           queries (0.5) = 2.5 ✅
+
+Decision: Multi-specialist (Frontend + Backend)
+```
+
+**Step 2: Dependency Detection**
+```
+Dependency indicator: "Dashboard components fetch data from API"
+Strategy: Sequential (Backend → Frontend)
+```
+
+**Step 3: Handoff Directory Creation**
+```bash
+.agency/handoff/user-dashboard/
+├── execution-state.json
+├── integration/
+├── backend-architect/
+└── frontend-developer/
+```
+
+**Step 4: Backend Execution**
+```
+1. Backend reads plan.md (filtered for backend tasks)
+2. Implements: API endpoints, database queries, tests
+3. Creates summary.md with API documentation
+4. Reality-checker verifies → PASSED
+5. Updates execution-state.json (backend: completed)
+6. Unblocks frontend
+```
+
+**Step 5: Frontend Execution**
+```
+1. Frontend reads backend/summary.md for API contracts
+2. Implements: Dashboard components, data fetching, visualization
+3. Creates summary.md with component documentation
+4. Reality-checker verifies → PASSED (1 HIGH issue found)
+5. Fixes HIGH issue
+6. Re-verification → PASSED
+7. Updates execution-state.json (frontend: completed)
+```
+
+**Step 6: Integration Review**
+```
+1. Code reviewer reads both summaries
+2. Checks API contracts match
+3. Verifies type definitions align
+4. Tests end-to-end flow
+5. Result: PASSED (minor naming consistency suggestions)
+```
+
+**Step 7: PR Creation**
+```
+Creates PR documenting:
+- Both specialist contributions
+- Integration points verified
+- Test coverage from both sides
+- Links to handoff directory for details
+```
+
+**Timeline**:
+- Backend: 40 minutes
+- Backend verification: 10 minutes
+- Frontend: 35 minutes
+- Frontend verification + fix: 15 minutes
+- Integration review: 10 minutes
+- **Total**: 110 minutes
+
+---
+
+### Best Practices for Multi-Specialist Workflows
+
+1. **Clear Responsibility Boundaries**
+   - Each specialist knows exactly what they own
+   - No overlap or gaps in assignments
+   - Document in specialist's plan.md
+
+2. **Document Integration Points**
+   - API contracts in integration/api-contract.md
+   - Type definitions shared explicitly
+   - Examples for next specialist
+
+3. **Verify Early and Often**
+   - Catch issues before next specialist depends on work
+   - Fix CRITICAL/HIGH issues immediately
+   - Don't block on MEDIUM/LOW issues
+
+4. **Test Integration, Don't Assume**
+   - End-to-end tests across boundaries
+   - Verify data flows correctly
+   - Check error handling at edges
+
+5. **Track State Religiously**
+   - Update execution-state.json after each phase
+   - Monitor dependencies
+   - Clear about what's blocking what
+
+6. **Communicate Through Artifacts**
+   - summary.md is the handoff document
+   - Don't rely on memory or assumptions
+   - Next specialist reads, doesn't guess
+
+7. **Ask When Unclear**
+   - Better to clarify than implement wrong
+   - Use AskUserQuestion for ambiguous requirements
+   - Document decisions in summary.md
+
+8. **Sequential by Default When Uncertain**
+   - Parallel execution requires confidence in independence
+   - Sequential is safer for unclear dependencies
+   - Can always parallelize later
+
+---
+
+## Prompt Component Architecture
+
+Agency uses a modular prompt component system to eliminate duplication across commands. Instead of repeating instructions in multiple command files, commands reference shared, reusable components.
+
+### Overview
+
+**Component System Benefits**:
+- **62% line reduction**: 12,895 → 7,500 lines across all commands
+- **3.5x reuse**: Each component used in 3-5 commands on average
+- **Single source of truth**: Update one component, all commands benefit
+- **Consistent behavior**: Same specialist selection, quality gates, review process everywhere
+
+**Component Location**: `/prompts/`
+
+**Component Count**: 46 components organized in 10 categories
+
+**Total Impact**: ~5,400 lines saved through reuse
+
+---
+
+### Component Categories and Purposes
+
+**1. Project Context Detection** (`context/`)
+- **Purpose**: Detect project framework, tech stack, and size to adapt command behavior
+- **Components**: 6 components
+- **Usage**: All 11 commands that interact with code
+
+**Components**:
+- `framework-detection.md` - Detect framework (Next.js, Django, Laravel, FastAPI, Flask, etc.)
+- `testing-framework-detection.md` - Detect test framework (Jest, Vitest, pytest, Playwright, etc.)
+- `database-detection.md` - Detect database/ORM (Prisma, Drizzle, Supabase, SQLAlchemy, etc.)
+- `build-tool-detection.md` - Detect build tool (Vite, webpack, Rollup, Next.js, etc.)
+- `documentation-system-detection.md` - Detect docs system (MkDocs, Docusaurus, Storybook, etc.)
+- `project-size-detection.md` - Categorize project size (small/medium/large) for scope adaptation
+
+**Example usage**:
+```markdown
+Commands adapt based on detection:
+- Framework: Next.js → Use `npm run dev`, `npm run build`
+- Framework: Django → Use `python manage.py runserver`, `pytest`
+- Project size: Large → Increase timeouts, suggest smaller scopes
+- Project size: Small → Enable broader refactoring suggestions
+```
+
+---
+
+**2. Specialist Selection** (`specialist-selection/`)
+- **Purpose**: Consistently select the right specialist(s) based on plan content
+- **Components**: 5 components
+- **Usage**: `implement.md`, `work.md`, `test.md`, `refactor.md`, `optimize.md`
+
+**Components**:
+- `keyword-analysis.md` - Scoring algorithm for specialist detection (+0.5 per keyword match)
+- `multi-specialist-routing.md` - Coordinate multiple specialists with handoff management
+- `dependency-detection.md` - Determine sequential vs parallel execution
+- `user-approval.md` - User confirmation prompts for specialist selection
+- `skill-activation.md` - Activate relevant skills based on detected technologies
+
+**Example keyword analysis**:
+```markdown
+Plan: "Add React login form calling Node.js API"
+
+keyword-analysis.md applies:
+- Frontend: React (0.5) + form (0.5) = 1.0
+- Backend: Node.js (0.5) + API (0.5) = 1.0
+
+→ No specialist scores > 2.0 → Use senior-developer (generalist)
+
+Plan: "Build React dashboard with 8 charts, Tailwind styling,
+responsive layout, Next.js pages, component library"
+
+keyword-analysis.md applies:
+- Frontend: React (0.5) + dashboard (0.5) + charts (0.5) +
+           Tailwind (0.5) + responsive (0.5) + Next.js (0.5) +
+           component (0.5) + layout (0.5) = 4.0 ✅
+
+→ Frontend specialist selected
+```
+
+---
+
+**3. Quality Gates** (`quality-gates/`)
+- **Purpose**: Ensure consistent quality standards across all workflows
+- **Components**: 8 components
+- **Usage**: `implement.md`, `work.md`, `test.md`, `review.md`
+
+**Components**:
+- `quality-gate-sequence.md` - Sequential execution of all verification steps
+- `build-verification.md` - Ensure code builds successfully
+- `type-checking.md` - TypeScript/Python type validation
+- `linting.md` - Code style and quality checks
+- `test-execution.md` - Run tests and validate coverage
+- `coverage-validation.md` - Test coverage thresholds
+- `security-scan-quick.md` - Basic security vulnerability scanning
+- `rollback-on-failure.md` - Revert changes if quality gates fail
+
+**Quality gate sequence**:
+```
+1. Build → CRITICAL (must pass)
+2. Type Check → CRITICAL (must pass)
+3. Linter → HIGH (can proceed with warnings)
+4. Tests → CRITICAL (must pass)
+5. Coverage → RECOMMENDED (can proceed below threshold)
+6. Security Scan → HIGH (review vulnerabilities)
+```
+
+---
+
+**4. Code Review** (`code-review/`)
+- **Purpose**: Consistent code review process with proper context
+- **Components**: 1 component
+- **Usage**: `implement.md`, `work.md`, `test.md`, `review.md`, `refactor.md`
+
+**Components**:
+- `reality-checker-spawn.md` - Spawn reality-checker agent with correct context
+
+**Modes**:
+- **Single-specialist review**: Standard code review after implementation
+- **Per-specialist verification**: Multi-specialist mode, verify each specialist's work
+- **Integrated review**: Multi-specialist mode, check cross-boundary consistency
+
+---
+
+**5. Planning** (`planning/`)
+- **Purpose**: Ensure plans are complete before implementation starts
+- **Components**: 1 component
+- **Usage**: `implement.md`, `plan.md`, `work.md`
+
+**Components**:
+- `plan-validation.md` - Validate plan completeness (requirements, files, success criteria)
+
+**Validation checklist**:
+- ✅ Clear objective stated
+- ✅ Requirements listed
+- ✅ Files to create/modify specified
+- ✅ Success criteria defined
+- ✅ Out of scope documented
+- ✅ Dependencies identified
+
+---
+
+**6. Issue Management** (`issue-management/`)
+- **Purpose**: Unified issue fetching and parsing for GitHub and Jira
+- **Components**: 4 components
+- **Usage**: `work.md`, `sprint.md`, `plan.md`
+
+**Components**:
+- `github-issue-fetch.md` - Fetch GitHub issues with `gh` CLI
+- `jira-issue-fetch.md` - Fetch Jira issues with `acli`
+- `issue-metadata-extraction.md` - Extract structured metadata from issues
+- `dependency-parsing.md` - Parse dependency references ("depends on #123")
+
+**Workflow**:
+```
+1. Detect issue source (GitHub vs Jira)
+2. Fetch issue with appropriate CLI
+3. Extract: title, description, labels, priority
+4. Parse dependencies and check status
+5. Block if dependencies not resolved
+```
+
+---
+
+**7. Progress Tracking** (`progress/`)
+- **Purpose**: Consistent progress tracking across multi-phase commands
+- **Components**: 3 components
+- **Usage**: `work.md`, `implement.md`, `sprint.md`, `deploy.md`
+
+**Components**:
+- `todo-initialization.md` - Initialize TodoWrite for workflows
+- `phase-tracking.md` - Update TodoWrite as phases complete
+- `completion-reporting.md` - Final TodoWrite with summary
+
+**TodoWrite guidelines**:
+- Initialize at command start with all phases
+- Exactly ONE item `in_progress` at all times
+- Update immediately after each phase
+- Mark all `completed` at workflow end
+- Include timing statistics in final report
+
+---
+
+**8. Git Operations** (`git/`)
+- **Purpose**: Standardized git workflows with best practices
+- **Components**: 5 components
+- **Usage**: `implement.md` (Phase 6), `work.md`, `deploy.md`
+
+**Components**:
+- `branch-creation.md` - Create branches with naming conventions (feat/, fix/, refactor/)
+- `commit-formatting.md` - Conventional commit format with HEREDOC templates
+- `pr-creation.md` - Create comprehensive PRs using `gh` CLI
+- `status-validation.md` - Validate repository state before operations
+- `tag-creation.md` - Semantic versioning and release tag creation
+
+**Branch naming**:
+```
+feat/user-authentication
+fix/login-validation-bug
+refactor/api-error-handling
+docs/api-documentation
+```
+
+**Commit format**:
+```bash
+git commit -m "$(cat <<'EOF'
+feat(auth): add user authentication endpoints
+
+- POST /api/auth/login
+- POST /api/auth/register
+- GET /api/auth/me
+- JWT token generation and validation
+
+Closes #234
+EOF
+)"
+```
+
+---
+
+**9. Error Handling** (`error-handling/`)
+- **Purpose**: Consistent error detection, reporting, and recovery
+- **Components**: 6 components
+- **Usage**: All 14 commands (universal error handling)
+
+**Components**:
+- `scope-detection-failure.md` - Handle ambiguous/missing framework detection
+- `tool-execution-failure.md` - Handle CLI tool failures (npm, tsc, gh, pytest, etc.)
+- `user-cancellation.md` - Graceful Ctrl+C handling with cleanup
+- `timeout-handling.md` - Handle long-running operations with timeouts
+- `partial-failure-recovery.md` - Handle mixed success/failure scenarios
+- `ask-user-retry.md` - Standardized retry/skip/abort pattern
+
+**Error exit codes**:
+```bash
+# Scope failures: 10-19
+EXIT_CODE_SCOPE_FAILURE=10
+EXIT_CODE_SCOPE_AMBIGUOUS=12
+
+# Tool failures: 20-29
+EXIT_CODE_TOOL_NOT_FOUND=20
+EXIT_CODE_TOOL_FAILED=21
+EXIT_CODE_TOOL_TIMEOUT=22
+
+# User-initiated: 130-139
+EXIT_CODE_USER_CANCEL=130
+EXIT_CODE_USER_ABORT=131
+
+# Timeouts: 40-49
+EXIT_CODE_TIMEOUT_BUILD=40
+EXIT_CODE_TIMEOUT_TEST=41
+
+# Partial failures: 50-59
+EXIT_CODE_PARTIAL_SUCCESS=50
+```
+
+---
+
+**10. Reporting** (`reporting/`)
+- **Purpose**: Standardized reporting format for all implementations
+- **Components**: 4 components
+- **Usage**: `implement.md`, `work.md`, `sprint.md`
+
+**Components**:
+- `summary-template.md` - Implementation summary structure
+- `artifact-listing.md` - List files created/modified/deleted
+- `next-steps-template.md` - Recommended follow-up actions
+- `metrics-comparison.md` - Before/after metrics comparison
+
+---
+
+### How Commands Reference Components
+
+**Component Attribution Format**:
+
+Commands use special markers to reference components:
+
+```markdown
+<!-- Component: prompts/specialist-selection/keyword-analysis.md -->
+
+## Phase 2: Specialist Selection
+
+Scan the plan for technology keywords to determine the best specialist:
+
+**Frontend Specialist** if plan mentions:
+- React, Vue, Angular, Svelte
+- Next.js, Remix, Gatsby
+... [keyword list from component]
+```
+
+**Benefits of attribution**:
+1. **Traceability**: Know which component provides each instruction
+2. **Maintenance**: Update component, all commands benefit
+3. **Debugging**: Trace issues back to specific components
+4. **Documentation**: Clear source of truth for each instruction
+
+**Example command structure** (`implement.md`):
+
+```markdown
+# /agency:implement - Execute Implementation Plan
+
+## Phase 1: Plan Loading
+<!-- Component: prompts/planning/plan-validation.md -->
+[Validation logic here]
+
+## Phase 2: Context Detection
+<!-- Component: prompts/context/framework-detection.md -->
+<!-- Component: prompts/context/project-size-detection.md -->
+[Detection logic here]
+
+## Phase 3: Specialist Selection
+<!-- Component: prompts/specialist-selection/keyword-analysis.md -->
+<!-- Component: prompts/specialist-selection/multi-specialist-routing.md -->
+[Selection logic here]
+
+## Phase 4: Implementation
+[Command-specific implementation logic]
+
+## Phase 5: Quality Gates
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
+<!-- Component: prompts/quality-gates/build-verification.md -->
+<!-- Component: prompts/quality-gates/test-execution.md -->
+[Gate execution here]
+
+## Phase 6: Code Review
+<!-- Component: prompts/code-review/reality-checker-spawn.md -->
+[Review spawning here]
+
+## Phase 7: Git Operations
+<!-- Component: prompts/git/commit-formatting.md -->
+<!-- Component: prompts/git/pr-creation.md -->
+[Git workflow here]
+```
+
+---
+
+### Component Reuse Statistics
+
+**Most Reused Components** (usage count):
+
+1. `error-handling/tool-execution-failure.md` - 14 commands (100%)
+2. `error-handling/scope-detection-failure.md` - 14 commands (100%)
+3. `progress/todo-initialization.md` - 12 commands (86%)
+4. `specialist-selection/keyword-analysis.md` - 11 commands (79%)
+5. `quality-gates/quality-gate-sequence.md` - 11 commands (79%)
+6. `context/framework-detection.md` - 11 commands (79%)
+7. `git/commit-formatting.md` - 8 commands (57%)
+8. `code-review/reality-checker-spawn.md` - 7 commands (50%)
+9. `issue-management/github-issue-fetch.md` - 5 commands (36%)
+10. `reporting/summary-template.md` - 5 commands (36%)
+
+**Line Reduction by Category**:
+
+| Category | Components | Total Lines | Avg Reuse | Lines Saved |
+|----------|-----------|-------------|-----------|-------------|
+| Error Handling | 6 | 2,130 | 9.3x | 19,809 |
+| Git Operations | 5 | 3,180 | 4.2x | 13,356 |
+| Context Detection | 6 | 1,840 | 7.8x | 14,352 |
+| Quality Gates | 8 | 4,200 | 6.1x | 25,620 |
+| Specialist Selection | 5 | 2,850 | 5.4x | 15,390 |
+| Issue Management | 4 | 1,240 | 3.8x | 4,712 |
+| Progress Tracking | 3 | 1,284 | 7.2x | 9,245 |
+| Code Review | 1 | 228 | 7.0x | 1,596 |
+| Planning | 1 | 156 | 5.0x | 780 |
+| Reporting | 4 | 892 | 3.5x | 3,122 |
+| **TOTAL** | **46** | **~18,000** | **5.9x avg** | **~108,000** |
+
+**Note**: "Lines Saved" = Component Lines × (Reuse Count - 1)
+
+---
+
+### Benefits of the Component System
+
+**1. Consistency Across Commands**
+
+All commands use identical logic for:
+- Specialist selection (same keyword scoring)
+- Quality gates (same sequence and thresholds)
+- Error handling (same retry patterns)
+- Git workflows (same commit format)
+- Code review (same verification criteria)
+
+**2. Maintainability**
+
+Update behavior in one place:
+```
+Change: Add new specialist "data-engineer"
+
+Before (without components):
+- Update 11 command files
+- 220+ lines changed
+- Risk of inconsistency
+
+After (with components):
+- Update specialist-selection/keyword-analysis.md
+- 20 lines changed
+- All 11 commands automatically updated
+```
+
+**3. Testing and Validation**
+
+Test components independently:
+- Unit test keyword-analysis.md with various plans
+- Verify quality-gate-sequence.md with different projects
+- Validate error-handling components with failure scenarios
+
+**4. Documentation**
+
+Components serve as living documentation:
+- Each component documents one specific workflow
+- Easy to understand in isolation
+- Clear dependencies between components
+- Examples and usage notes included
+
+**5. Evolution**
+
+Easy to improve incrementally:
+- Add new components without disrupting existing ones
+- Deprecate old components gradually
+- Version components independently
+- A/B test new approaches
+
+---
+
+### Component Dependency Graph
+
+Some components depend on others and must execute in order:
+
+```
+specialist-selection/keyword-analysis.md
+  ↓ (provides specialist list with scores)
+specialist-selection/multi-specialist-routing.md
+  ↓ (determines execution strategy)
+specialist-selection/user-approval.md
+  ↓ (confirms with user)
+[Specialist execution]
+  ↓ (specialists complete work)
+code-review/reality-checker-spawn.md
+  ↓ (per-specialist verification)
+quality-gates/quality-gate-sequence.md
+```
+
+```
+context/framework-detection.md
+  ↓ (detects Next.js, Django, etc.)
+context/testing-framework-detection.md
+  ↓ (knows Jest, pytest, etc.)
+quality-gates/test-execution.md
+  ↓ (runs correct test command)
+quality-gates/coverage-validation.md
+```
+
+```
+issue-management/github-issue-fetch.md OR jira-issue-fetch.md
+  ↓ (fetches issue content)
+issue-management/issue-metadata-extraction.md
+  ↓ (parses title, description, labels)
+issue-management/dependency-parsing.md
+  ↓ (finds "depends on #123")
+[Check dependency status before proceeding]
+```
+
+---
+
+### Creating New Components
+
+**When to create a component**:
+- Pattern appears in 3+ commands
+- Logic is >15 lines
+- Likely to change or evolve
+- Part of a critical workflow
+
+**When NOT to create a component**:
+- Command-specific logic
+- One-off instructions
+- Less than 10 lines
+- Tightly coupled to specific command context
+
+**Component structure template**:
+```markdown
+# Component Title
+
+Brief description of what this component does.
+
+## When to Use
+
+[Trigger conditions]
+
+## Purpose
+
+[What problem this solves]
+
+---
+
+## Main Content
+
+[The actual reusable instructions]
+
+---
+
+## Validation
+
+[How to verify this component was executed correctly]
+
+---
+
+<!-- Component Version: v1.0.0 -->
+<!-- Last Updated: 2024-12-11 -->
+<!-- Used In: implement.md, work.md, test.md -->
+```
+
+**Naming convention**:
+- Use kebab-case for filenames
+- Descriptive, action-oriented names
+- Group related components in subdirectories
+
+**Good**: `specialist-selection/keyword-analysis.md`
+**Bad**: `helpers/utils.md`
+
+---
+
+### Component Maintenance
+
+**Updating components**:
+1. Test with ALL commands that use it
+2. Update component version/date in header
+3. Document changes in `prompts/README.md`
+4. Notify team of changes
+
+**Impact radius**: One component change affects 3-5 commands on average.
+
+**Versioning**:
+```markdown
+<!-- v1.2.0 - 2024-12-11 - Added DevOps specialist scoring -->
+```
+
+**Deprecation process**:
+1. Mark as `[DEPRECATED]` in filename
+2. Add deprecation notice at top
+3. Provide migration path
+4. Remove after all commands updated
+
+---
+
+### Multi-Specialist Integration with Components
+
+Components fully support multi-specialist workflows:
+
+**Backward Compatible**: Components auto-detect mode based on context:
+- If 1 specialist selected → Single-specialist mode
+- If 2+ specialists selected → Multi-specialist mode
+
+**Multi-specialist aware components**:
+- `specialist-selection/keyword-analysis.md` - Scores all specialists
+- `specialist-selection/multi-specialist-routing.md` - Coordinates handoffs
+- `code-review/reality-checker-spawn.md` - Adapts to per-specialist or integrated review
+- `git/pr-creation.md` - Documents all specialist contributions
+- `reporting/summary-template.md` - Aggregates multi-specialist work
+
+**Example**: `code-review/reality-checker-spawn.md`
+```markdown
+## Detection Logic
+
+IF execution-state.json exists:
+  → Multi-specialist mode
+  → Run per-specialist verification THEN integrated review
+ELSE:
+  → Single-specialist mode
+  → Run standard code review
 ```
 
 ---
@@ -930,9 +2145,12 @@ Issue? →
 
 - **[Agent Catalog](/docs/agent-catalog.md)**: Complete agent reference with selection guide
 - **[Quality Gates](/docs/quality-gates.md)**: Quality standards and enforcement
+- **[Prompt Components README](/prompts/README.md)**: Detailed component documentation and usage
+- **[Multi-Specialist Routing](/prompts/specialist-selection/multi-specialist-routing.md)**: Complete handoff system specification
+- **[Agent Capability Matrix](/docs/agent-capability-matrix.md)**: Technology and skill mappings for all agents
 
 ---
 
-**Last Review**: 2024-12-11
-**Next Review**: 2025-03-11 (Quarterly)
+**Last Review**: 2024-12-12
+**Next Review**: 2025-03-12 (Quarterly)
 **Feedback**: Create issue in agency plugin repository with `orchestration` label

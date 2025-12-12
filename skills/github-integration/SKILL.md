@@ -852,6 +852,483 @@ await Promise.all(
 
 ---
 
+## Multi-Specialist PR Comments
+
+When multiple specialists collaborate on a feature, create comprehensive PR comments that document each specialist's contribution.
+
+### Multi-Specialist Detection
+
+**Check for handoff directory**:
+```typescript
+import { existsSync, readdirSync } from 'fs';
+import { join } from 'path';
+
+interface MultiSpecialistContext {
+  isMultiSpecialist: boolean;
+  specialists?: string[];
+  handoffDir?: string;
+  handoffFiles?: string[];
+}
+
+function detectMultiSpecialistWork(featureName: string): MultiSpecialistContext {
+  const handoffDir = join(process.cwd(), '.agency', 'handoff', featureName);
+
+  if (!existsSync(handoffDir)) {
+    return { isMultiSpecialist: false };
+  }
+
+  const files = readdirSync(handoffDir);
+  const summaryFiles = files.filter(f => f.endsWith('-summary.md'));
+
+  // Extract specialist names from summary files
+  const specialists = summaryFiles.map(f => {
+    // Remove '-summary.md' and convert to title case
+    const name = f.replace('-summary.md', '').replace(/-/g, ' ');
+    return name.split(' ').map(w =>
+      w.charAt(0).toUpperCase() + w.slice(1)
+    ).join(' ');
+  });
+
+  return {
+    isMultiSpecialist: true,
+    specialists,
+    handoffDir,
+    handoffFiles: summaryFiles
+  };
+}
+
+// Usage
+const context = detectMultiSpecialistWork('user-authentication');
+if (context.isMultiSpecialist) {
+  console.log(`Multi-specialist work detected: ${context.specialists?.join(', ')}`);
+}
+```
+
+### Single-Specialist PR Comment Template
+
+**Standard PR comment for single specialist**:
+```markdown
+## Implementation Summary
+
+**Specialist**: Frontend Developer
+
+### Changes Made
+- Implemented user authentication UI
+- Added login and registration forms
+- Created protected route components
+- Integrated with backend auth API
+
+### Files Changed
+**Total**: 8 files (+245, -12)
+
+**Key Files**:
+- `src/components/auth/LoginForm.tsx` (+89, -0)
+- `src/components/auth/RegisterForm.tsx` (+76, -0)
+- `src/hooks/useAuth.ts` (+45, -8)
+- `src/pages/ProfilePage.tsx` (+35, -4)
+
+### Test Results
+✅ All tests passing (18/18)
+
+**Test Coverage**:
+- Unit tests: 12 passing
+- Integration tests: 6 passing
+- E2E tests: Verified manually
+
+### Verification
+- [x] Code builds without errors
+- [x] All tests passing
+- [x] Linting and formatting applied
+- [x] No console errors or warnings
+- [x] Tested in development environment
+
+**Ready for review** 🚀
+```
+
+**TypeScript example for single-specialist comment**:
+```typescript
+interface FileChange {
+  path: string;
+  additions: number;
+  deletions: number;
+}
+
+interface TestResults {
+  total: number;
+  passing: number;
+  failing: number;
+  categories?: { name: string; count: number }[];
+}
+
+function generateSingleSpecialistComment(
+  specialist: string,
+  summary: string,
+  changes: FileChange[],
+  tests: TestResults
+): string {
+  const totalFiles = changes.length;
+  const totalAdditions = changes.reduce((sum, c) => sum + c.additions, 0);
+  const totalDeletions = changes.reduce((sum, c) => sum + c.deletions, 0);
+
+  const keyFiles = changes
+    .sort((a, b) => (b.additions + b.deletions) - (a.additions + a.deletions))
+    .slice(0, 5)
+    .map(c => `- \`${c.path}\` (+${c.additions}, -${c.deletions})`)
+    .join('\n');
+
+  const testStatus = tests.passing === tests.total ? '✅' : '⚠️';
+
+  return `## Implementation Summary
+
+**Specialist**: ${specialist}
+
+### Changes Made
+${summary}
+
+### Files Changed
+**Total**: ${totalFiles} files (+${totalAdditions}, -${totalDeletions})
+
+**Key Files**:
+${keyFiles}
+
+### Test Results
+${testStatus} Tests: ${tests.passing}/${tests.total} passing
+
+${tests.categories?.map(c => `- ${c.name}: ${c.count} passing`).join('\n') || ''}
+
+### Verification
+- [x] Code builds without errors
+- [x] All tests passing
+- [x] Linting and formatting applied
+- [x] No console errors or warnings
+- [x] Tested in development environment
+
+**Ready for review** 🚀`;
+}
+```
+
+### Multi-Specialist PR Comment Template
+
+**Comprehensive multi-specialist comment**:
+```markdown
+## 🚀 Multi-Specialist Implementation
+
+This PR represents collaborative work across multiple specialists for the **User Authentication** feature.
+
+**Specialists Involved**: Backend Architect, Frontend Developer
+
+---
+
+<details>
+<summary><b>Backend Architect Summary</b></summary>
+
+### Work Completed
+- Implemented REST API authentication endpoints
+- Added JWT token generation and validation
+- Created database migrations for users table
+- Integrated bcrypt password hashing
+- Added role-based access control middleware
+
+### Files Changed
+**Total**: 12 files (+567, -89)
+
+**Key Changes**:
+- `src/api/auth/routes.ts` (+124, -0) - Authentication routes
+- `src/api/auth/controller.ts` (+98, -0) - Auth business logic
+- `src/middleware/auth.ts` (+76, -12) - JWT validation middleware
+- `src/models/User.ts` (+89, -34) - User model with auth fields
+- `migrations/002_add_auth_tables.sql` (+67, -0) - Database schema
+
+### Test Results
+✅ All tests passing (24/24)
+- Unit tests: 16 passing
+- Integration tests: 8 passing
+- API endpoint coverage: 100%
+
+### Handoff Notes
+[View detailed handoff summary](.agency/handoff/user-authentication/backend-architect-summary.md)
+
+**Integration Points**:
+- JWT tokens returned in `/api/auth/login` response
+- Token validation via `Authorization: Bearer <token>` header
+- User roles available in `req.user.role` after auth middleware
+
+</details>
+
+<details>
+<summary><b>Frontend Developer Summary</b></summary>
+
+### Work Completed
+- Built login and registration form components
+- Implemented client-side auth state management
+- Created protected route components
+- Added token storage and refresh logic
+- Integrated with backend auth API
+
+### Files Changed
+**Total**: 8 files (+245, -12)
+
+**Key Changes**:
+- `src/components/auth/LoginForm.tsx` (+89, -0) - Login UI
+- `src/components/auth/RegisterForm.tsx` (+76, -0) - Registration UI
+- `src/hooks/useAuth.ts` (+45, -8) - Auth state hook
+- `src/context/AuthContext.tsx` (+35, -4) - Global auth context
+
+### Test Results
+✅ All tests passing (18/18)
+- Component tests: 10 passing
+- Hook tests: 4 passing
+- Integration tests: 4 passing
+
+### Handoff Notes
+[View detailed handoff summary](.agency/handoff/user-authentication/frontend-developer-summary.md)
+
+**Integration Points**:
+- Consumes `/api/auth/login` and `/api/auth/register` endpoints
+- Stores JWT in localStorage with auto-refresh
+- Protected routes redirect to `/login` when unauthenticated
+
+</details>
+
+---
+
+### Overall Status
+✅ **All specialists have completed and verified their work**
+
+**Total Changes**: 20 files (+812, -101)
+**Total Tests**: 42/42 passing (100%)
+
+**Integration Verified**:
+- [x] Backend API fully functional
+- [x] Frontend successfully consuming backend
+- [x] End-to-end authentication flow working
+- [x] Token refresh mechanism operational
+- [x] Protected routes enforcing authentication
+- [x] All tests passing across both layers
+
+**Ready for review** 🎉
+```
+
+**TypeScript example for multi-specialist comment**:
+```typescript
+interface SpecialistWork {
+  name: string;
+  summary: string;
+  files: FileChange[];
+  tests: TestResults;
+  handoffFile: string;
+  integrationPoints: string[];
+}
+
+async function generateMultiSpecialistComment(
+  featureName: string,
+  specialists: SpecialistWork[]
+): Promise<string> {
+  const totalFiles = specialists.reduce((sum, s) => sum + s.files.length, 0);
+  const totalAdditions = specialists.reduce(
+    (sum, s) => sum + s.files.reduce((s2, f) => s2 + f.additions, 0),
+    0
+  );
+  const totalDeletions = specialists.reduce(
+    (sum, s) => sum + s.files.reduce((s2, f) => s2 + f.deletions, 0),
+    0
+  );
+  const totalTests = specialists.reduce((sum, s) => sum + s.tests.total, 0);
+  const totalPassing = specialists.reduce((sum, s) => sum + s.tests.passing, 0);
+
+  const allTestsPassing = totalTests === totalPassing;
+  const statusIcon = allTestsPassing ? '✅' : '⚠️';
+
+  const specialistSections = specialists.map(s => {
+    const fileCount = s.files.length;
+    const additions = s.files.reduce((sum, f) => sum + f.additions, 0);
+    const deletions = s.files.reduce((sum, f) => sum + f.deletions, 0);
+
+    const keyFiles = s.files
+      .sort((a, b) => (b.additions + b.deletions) - (a.additions + a.deletions))
+      .slice(0, 5)
+      .map(f => `- \`${f.path}\` (+${f.additions}, -${f.deletions}) - ${getFileDescription(f.path)}`)
+      .join('\n');
+
+    const testStatus = s.tests.passing === s.tests.total ? '✅' : '⚠️';
+    const testBreakdown = s.tests.categories
+      ?.map(c => `- ${c.name}: ${c.count} passing`)
+      .join('\n') || '';
+
+    const integrationPoints = s.integrationPoints
+      .map(point => `- ${point}`)
+      .join('\n');
+
+    return `<details>
+<summary><b>${s.name} Summary</b></summary>
+
+### Work Completed
+${s.summary}
+
+### Files Changed
+**Total**: ${fileCount} files (+${additions}, -${deletions})
+
+**Key Changes**:
+${keyFiles}
+
+### Test Results
+${testStatus} All tests passing (${s.tests.passing}/${s.tests.total})
+${testBreakdown}
+
+### Handoff Notes
+[View detailed handoff summary](${s.handoffFile})
+
+**Integration Points**:
+${integrationPoints}
+
+</details>`;
+  }).join('\n\n');
+
+  const specialistNames = specialists.map(s => s.name).join(', ');
+
+  return `## 🚀 Multi-Specialist Implementation
+
+This PR represents collaborative work across multiple specialists for the **${formatFeatureName(featureName)}** feature.
+
+**Specialists Involved**: ${specialistNames}
+
+---
+
+${specialistSections}
+
+---
+
+### Overall Status
+${statusIcon} **All specialists have completed and verified their work**
+
+**Total Changes**: ${totalFiles} files (+${totalAdditions}, -${totalDeletions})
+**Total Tests**: ${totalPassing}/${totalTests} passing (${Math.round(totalPassing / totalTests * 100)}%)
+
+**Integration Verified**:
+${generateIntegrationChecklist(specialists)}
+
+**Ready for review** 🎉`;
+}
+
+function getFileDescription(filePath: string): string {
+  if (filePath.includes('route')) return 'API routes';
+  if (filePath.includes('controller')) return 'Business logic';
+  if (filePath.includes('model')) return 'Data model';
+  if (filePath.includes('component')) return 'UI component';
+  if (filePath.includes('hook')) return 'React hook';
+  if (filePath.includes('test')) return 'Tests';
+  if (filePath.includes('migration')) return 'Database migration';
+  return 'Core implementation';
+}
+
+function formatFeatureName(name: string): string {
+  return name
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function generateIntegrationChecklist(specialists: SpecialistWork[]): string {
+  const checks = [
+    'All specialist work completed and verified',
+    'Integration points documented and tested',
+    'End-to-end functionality confirmed',
+    'All tests passing across all layers',
+    'No breaking changes introduced',
+    'Documentation updated'
+  ];
+
+  return checks.map(check => `- [x] ${check}`).join('\n');
+}
+```
+
+### Complete PR Comment Workflow
+
+**Detect context and generate appropriate comment**:
+```typescript
+async function generatePRComment(
+  featureName: string,
+  prNumber: number
+): Promise<string> {
+  const context = detectMultiSpecialistWork(featureName);
+
+  if (!context.isMultiSpecialist) {
+    // Single specialist workflow
+    const specialist = await getCurrentSpecialist();
+    const changes = await getFileChanges(prNumber);
+    const tests = await getTestResults();
+    const summary = await generateWorkSummary(changes);
+
+    return generateSingleSpecialistComment(specialist, summary, changes, tests);
+  }
+
+  // Multi-specialist workflow
+  const specialists = await Promise.all(
+    context.specialists!.map(async (name) => {
+      const handoffFile = `.agency/handoff/${featureName}/${name.toLowerCase().replace(/\s+/g, '-')}-summary.md`;
+      const summary = await parseHandoffSummary(handoffFile);
+
+      return {
+        name,
+        summary: summary.workCompleted,
+        files: summary.filesChanged,
+        tests: summary.testResults,
+        handoffFile,
+        integrationPoints: summary.integrationPoints
+      };
+    })
+  );
+
+  return generateMultiSpecialistComment(featureName, specialists);
+}
+
+async function postPRComment(prNumber: number, body: string): Promise<void> {
+  await octokit.issues.createComment({
+    owner: 'org-name',
+    repo: 'repo-name',
+    issue_number: prNumber,
+    body
+  });
+}
+
+// Usage
+const comment = await generatePRComment('user-authentication', 456);
+await postPRComment(456, comment);
+```
+
+### Best Practices for PR Comments
+
+**Multi-Specialist Comments**:
+- ✅ Use collapsible `<details>` sections to keep the main view clean
+- ✅ List all specialists involved in the header
+- ✅ Link to detailed handoff summaries for deep dive
+- ✅ Document integration points clearly
+- ✅ Include comprehensive test results
+- ✅ Show overall status and verification checklist
+
+**Single-Specialist Comments**:
+- ✅ Keep format consistent for easy scanning
+- ✅ Highlight key files and changes
+- ✅ Include test results and coverage
+- ✅ Add verification checklist
+- ✅ Use clear status indicators (✅, ⚠️, ❌)
+
+**Markdown Formatting**:
+- ✅ Use proper heading hierarchy (##, ###)
+- ✅ Format code with backticks
+- ✅ Use emojis sparingly for status indicators
+- ✅ Keep lines under 120 characters for readability
+- ✅ Use tables for structured data when appropriate
+
+**Automation**:
+- ✅ Auto-detect multi-specialist vs single-specialist context
+- ✅ Extract file stats from git diff
+- ✅ Parse test results from test runner output
+- ✅ Link to relevant handoff documents
+- ✅ Include commit SHAs for traceability
+
+---
+
 ## Quick Reference
 
 ### Essential gh Commands

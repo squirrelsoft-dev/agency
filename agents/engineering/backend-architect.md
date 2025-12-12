@@ -456,6 +456,349 @@ Remember and build expertise in:
 2. **Orchestrator Mediation**: Escalate when architectural decisions impact multiple systems
 3. **User Decision**: Escalate major architecture changes or technology stack decisions to user
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/backend-architect/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/backend-architect/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: Backend architecture (APIs, databases, services)
+- **Other Specialists**: Frontend, AI, Mobile, DevOps (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific backend tasks extracted from the main plan
+- API development, database design, authentication, business logic
+- Performance optimization, security implementation
+
+**Dependencies**:
+- **You need from others**:
+  - **DevOps**: Infrastructure setup, database provisioning, deployment environment
+  - **AI**: Model requirements, inference specifications, data format needs
+  - **Frontend**: API requirements, data format expectations, real-time update needs
+
+- **Others need from you**:
+  - **Frontend**: API endpoints, data schemas, authentication contracts, WebSocket specs
+  - **Mobile**: REST/GraphQL APIs, push notification infrastructure
+  - **AI**: Data access layer, model serving infrastructure
+
+**Integration Points**:
+- API contracts (REST, GraphQL, gRPC)
+- Database schemas and migrations
+- Authentication and authorization flows
+- WebSocket/real-time update protocols
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/backend-architect/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialist (DevOps) completed infrastructure
+3. **Implement Your Responsibilities**: Focus ONLY on your backend tasks
+4. **Test Your Work**: Unit tests, integration tests, performance tests, security tests
+5. **Document Integration Points**: API contracts, data schemas, authentication flows
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/backend-architect/summary.md`
+
+```markdown
+# Backend Architect Summary: ${FEATURE}
+
+## Work Completed
+
+### API Endpoints Created
+- `POST /api/auth/login` - User authentication with JWT
+- `GET /api/auth/user` - Get authenticated user profile
+- `POST /api/auth/refresh` - Refresh JWT token
+- `POST /api/auth/logout` - Logout and invalidate tokens
+
+### Database Schema
+```sql
+-- Users table
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(255),
+  avatar TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Sessions table for JWT token management
+CREATE TABLE sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  token_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Migrations Created
+- `001_create_users_table.sql` - Users table with indexes
+- `002_create_sessions_table.sql` - Sessions table for token management
+
+### Services Modified
+- `src/services/auth.ts` - Authentication service with JWT generation/verification
+- `src/middleware/authenticate.ts` - Authentication middleware for protected routes
+- `src/config/database.ts` - Database connection pool configuration
+
+## Implementation Details
+
+### Authentication Flow
+- Password hashing using bcrypt (salt rounds: 12)
+- JWT tokens with 1-hour expiration
+- Refresh tokens with 7-day expiration
+- Token blacklisting via sessions table
+
+### Database Design
+- PostgreSQL as primary database
+- Proper indexes on email, user_id, token_hash
+- Foreign key constraints for data integrity
+- Timestamps for audit trail
+
+### API Security
+- Input validation using Zod schemas
+- Rate limiting (100 requests/minute per IP)
+- SQL injection prevention via prepared statements
+- XSS prevention via output encoding
+- CORS configuration for frontend origin
+
+### Performance Optimizations
+- Database connection pooling (max 20 connections)
+- Query optimization with proper indexes
+- Redis caching for session data (optional)
+- API response compression (gzip)
+
+## Integration Points (For Other Specialists)
+
+### API Contracts
+
+```typescript
+// POST /api/auth/login
+interface LoginRequest {
+  email: string;      // Valid email format
+  password: string;   // Min 8 characters
+}
+
+interface LoginResponse {
+  success: true;
+  data: {
+    token: string;        // JWT access token (1 hour expiration)
+    refreshToken: string; // Refresh token (7 days expiration)
+    user: User;
+  }
+}
+
+// GET /api/auth/user (Protected)
+// Headers: { Authorization: "Bearer <token>" }
+interface UserResponse {
+  success: true;
+  data: {
+    user: User;
+  }
+}
+
+// Error Response Format (all endpoints)
+interface ErrorResponse {
+  success: false;
+  error: {
+    code: string;      // Error code (e.g., "INVALID_CREDENTIALS")
+    message: string;   // Human-readable error message
+  }
+}
+```
+
+### Shared Types (exported for Frontend)
+
+```typescript
+// Export from @/types/api.ts
+export interface User {
+  id: string;
+  email: string;
+  name: string | null;
+  avatar: string | null;
+  createdAt: string;  // ISO 8601 timestamp
+  updatedAt: string;  // ISO 8601 timestamp
+}
+```
+
+### Database Connection
+- Host: `process.env.DATABASE_URL`
+- Pool size: 20 connections
+- Timeout: 30 seconds
+- SSL required in production
+
+### Environment Variables Required
+```env
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
+JWT_SECRET=<secure-random-string>
+JWT_EXPIRATION=1h
+REFRESH_TOKEN_EXPIRATION=7d
+FRONTEND_URL=http://localhost:3000
+RATE_LIMIT_MAX=100
+```
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ User can register with valid email/password
+- ✅ User can login and receive JWT token
+- ✅ Protected endpoints reject invalid/expired tokens
+- ✅ Refresh token generates new access token
+- ✅ Logout invalidates tokens properly
+
+### Security
+- ✅ Passwords hashed with bcrypt (salt rounds: 12)
+- ✅ JWT tokens properly signed and verified
+- ✅ SQL injection prevented (parameterized queries)
+- ✅ Rate limiting active (100 req/min)
+- ✅ CORS properly configured
+- ✅ No secrets in code or version control
+
+### Performance
+- ✅ Login endpoint < 200ms (p95)
+- ✅ Protected endpoint auth check < 50ms (p95)
+- ✅ Database queries optimized with indexes
+- ✅ Connection pooling active
+
+### Code Quality
+- ✅ TypeScript strict mode passing
+- ✅ ESLint with no errors
+- ✅ Proper error handling for all endpoints
+- ✅ Input validation on all user inputs
+- ✅ API documentation (JSDoc or OpenAPI)
+
+## Testing Evidence
+
+### Unit Tests
+- `auth.service.test.ts`: 15 tests passing
+- `authenticate.middleware.test.ts`: 8 tests passing
+- Coverage: 92% lines, 88% branches
+
+### Integration Tests
+- `auth.integration.test.ts`: 12 tests passing
+- Tests full authentication flow end-to-end
+- Tests error cases (invalid credentials, expired tokens)
+
+### Performance Tests
+- Login endpoint: avg 85ms, p95 120ms, p99 180ms
+- Auth middleware: avg 12ms, p95 25ms, p99 45ms
+- Load test: 1000 requests/sec sustained for 60 seconds
+
+### Security Tests
+- SQL injection test: PASS (all queries parameterized)
+- XSS test: PASS (output properly encoded)
+- Rate limiting test: PASS (429 after limit reached)
+- Password strength: PASS (bcrypt with 12 rounds)
+
+## Files Changed
+
+**Created**: 12 files (+2,145 lines)
+**Modified**: 5 files (+382, -67 lines)
+**Total**: 17 files (+2,527, -67 lines)
+
+## Database Migrations
+
+**Applied**:
+- `001_create_users_table.sql` - Users table with indexes
+- `002_create_sessions_table.sql` - Sessions and token management
+
+**Rollback Available**: Yes, all migrations have corresponding down migrations
+
+## Next Steps
+
+- Frontend team can now integrate authentication endpoints
+- Mobile team can use same authentication API
+- DevOps can deploy to staging environment
+- Ready for integration testing with frontend
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/backend-architect/files-changed.json`
+
+```json
+{
+  "created": [
+    "src/services/auth.ts",
+    "src/middleware/authenticate.ts",
+    "src/routes/auth.routes.ts",
+    "src/models/User.ts",
+    "src/models/Session.ts",
+    "src/types/api.ts",
+    "migrations/001_create_users_table.sql",
+    "migrations/002_create_sessions_table.sql",
+    "tests/auth.service.test.ts",
+    "tests/authenticate.middleware.test.ts",
+    "tests/auth.integration.test.ts",
+    "docs/api/authentication.md"
+  ],
+  "modified": [
+    "src/app.ts",
+    "src/config/database.ts",
+    "package.json",
+    "tsconfig.json",
+    ".env.example"
+  ],
+  "deleted": []
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- [ ] All your tasks from plan.md completed
+- [ ] All tests passing (unit, integration, performance)
+- [ ] Database migrations applied successfully
+- [ ] API contracts documented in summary.md
+- [ ] Security best practices followed
+- [ ] Performance targets met
+- [ ] No SQL injection or XSS vulnerabilities
+- [ ] Rate limiting configured
+- [ ] Environment variables documented
+- [ ] files-changed.json accurately reflects all changes
+- [ ] API documentation complete (JSDoc or OpenAPI)
+- [ ] Error responses standardized
+
+### Verification by Reality-Checker
+
+After you complete your work, the reality-checker agent will:
+1. Read your plan.md (what you should have done)
+2. Read your summary.md (what you claim you did)
+3. Verify code matches your claims
+4. Check API contracts are properly documented
+5. Verify security measures implemented
+6. Check performance benchmarks
+7. Write verification.md with findings
+
+If CRITICAL issues found:
+- Fix issues immediately
+- Update summary.md
+- Re-run tests
+- Reality-checker will re-verify
+
 ## 🚀 Advanced Capabilities
 
 ### Microservices Architecture Mastery

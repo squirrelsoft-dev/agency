@@ -29,35 +29,73 @@ Use the Skill tool to activate: agency-workflow-patterns
 
 ## Phase 1: Requirements Analysis
 
-### Determine Input Type
+<!-- Component: prompts/issue-management/github-issue-fetch.md -->
+<!-- Component: prompts/issue-management/jira-issue-fetch.md -->
+<!-- Component: prompts/issue-management/issue-metadata-extraction.md -->
 
-Analyze `$ARGUMENTS`:
+### Determine Input Type and Fetch Issue
 
-**If Issue Number or URL**:
-- Fetch issue details using `gh issue view` (GitHub) or `acli issue get` (Jira)
-- Extract title, description, acceptance criteria
+Analyze `$ARGUMENTS` to determine the source:
 
-**If Text Description**:
-- Use the description as-is
-- May need to clarify scope with user
+**GitHub Issue Detection**:
+- Numeric only: `123`, `456`
+- GitHub URL: `https://github.com/owner/repo/issues/123`
+- `next` keyword: Find next open issue assigned to current user
 
-### Extract Requirements
+**Jira Issue Detection**:
+- Jira key format: `PROJ-123`, `ABC-456`
+- Jira URL: `https://company.atlassian.net/browse/PROJ-123`
+- `next` keyword: Find next open issue in active sprint
 
-Identify:
-- **What**: What needs to be built?
-- **Why**: What problem does this solve?
-- **Who**: Who is the user/stakeholder?
-- **Success Criteria**: How will we know it's done?
-- **Constraints**: Technical limitations, deadlines, dependencies
+**Text Description**:
+- If no pattern matches, use the description as-is
 
-### Clarify Ambiguities
+### Fetch Issue (if applicable)
 
-If requirements are unclear, use AskUserQuestion to clarify:
-- Specific functionality details
-- Technical preferences (libraries, frameworks)
-- Scope boundaries
-- Performance requirements
-- Security considerations
+**For GitHub**:
+```bash
+gh issue view $ARGUMENTS --json number,title,body,state,labels,assignees,milestone,createdAt,updatedAt
+```
+
+**For Jira**:
+```bash
+acli jira --action getIssue \
+  --issue "$ARGUMENTS" \
+  --outputFormat 2 \
+  --columns "key,summary,description,status,priority,issuetype,assignee,reporter,labels,created,updated"
+```
+
+### Extract Metadata
+
+From the fetched issue, extract:
+- **Issue ID**: Issue number or key
+- **Title/Summary**: Main description
+- **Description**: Full details
+- **Labels/Type**: Bug, feature, enhancement
+- **Priority**: High, medium, low
+- **Acceptance Criteria**: Expected outcomes
+- **Technical Requirements**: Implementation details
+
+### Handle Missing Information
+
+<!-- Component: prompts/error-handling/ask-user-retry.md -->
+
+If issue lacks detail or requirements are unclear:
+```
+Use AskUserQuestion tool:
+
+"**Issue Analysis**
+
+The issue/description needs clarification:
+- [List missing or unclear elements]
+
+**Options**:
+A) Provide missing details now
+B) Proceed with available information and refine later
+C) Update the issue/description first
+
+Please select an option (A/B/C) or provide the missing information:"
+```
 
 ---
 
@@ -102,166 +140,58 @@ The Explore agent should provide:
 
 ### Structure Your Plan
 
-Create a comprehensive plan with these sections:
+Create a comprehensive plan following this structure:
 
-#### 1. Overview
-```markdown
-## Implementation Plan: [Feature Name]
+1. **Overview** - Summary, scope (in/out), objectives
+2. **Technical Approach** - Architecture, components, data flow, tech stack
+3. **File Changes** - New files, modified files, estimated LOC
+4. **Implementation Phases** - Phase-by-phase breakdown with time estimates
+5. **Testing Strategy** - Unit (70%), integration (20%), E2E (10%), coverage target 80%+
+6. **Risks & Mitigation** - Identified risks with impact/probability/mitigation
+7. **Success Criteria** - Testable criteria for completion verification
+8. **Alternative Approaches** - Considered alternatives with pros/cons
 
-### Summary
-[2-3 sentence overview of what will be implemented]
-
-### Scope
-**In Scope**:
-- [Item 1]
-- [Item 2]
-
-**Out of Scope**:
-- [Item A]
-- [Item B]
-```
-
-#### 2. Technical Approach
-
-```markdown
-### Architecture
-
-[Describe the high-level architecture]
-
-**Components**:
-- **Component A**: [Purpose and responsibility]
-- **Component B**: [Purpose and responsibility]
-
-**Data Flow**:
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
-**Technology Stack**:
-- Framework: [e.g., Next.js 15, React 18]
-- State Management: [e.g., Zustand, Context API]
-- Styling: [e.g., Tailwind CSS]
-- Database: [e.g., PostgreSQL via Supabase]
-- Testing: [e.g., Jest, Playwright]
-```
-
-#### 3. Files to Create/Modify
-
-```markdown
-### File Changes
-
-**New Files**:
-- `app/features/[feature]/page.tsx` - Main feature page
-- `components/[Feature]/[Component].tsx` - Feature components
-- `lib/api/[feature].ts` - API layer
-- `lib/db/schema/[feature].ts` - Database schema
-
-**Modified Files**:
-- `app/layout.tsx` - Add navigation link
-- `lib/types.ts` - Add new types
-- `middleware.ts` - Add authorization check
-
-**Total Estimated Changes**: X files, ~Y LOC
-```
-
-#### 4. Implementation Steps
-
-```markdown
-### Phase-by-Phase Breakdown
-
-**Phase 1: Foundation** (Estimated: 2-3 hours)
-1. Create database schema and migrations
-2. Set up API routes
-3. Create base types and interfaces
-
-**Phase 2: Core Logic** (Estimated: 3-4 hours)
-1. Implement business logic
-2. Add data validation
-3. Create service layer
-
-**Phase 3: UI Implementation** (Estimated: 4-5 hours)
-1. Create component structure
-2. Implement forms and interactions
-3. Add loading and error states
-4. Integrate with API
-
-**Phase 4: Testing** (Estimated: 2-3 hours)
-1. Unit tests for logic
-2. Integration tests for API
-3. E2E tests for critical flows
-4. Manual QA
-
-**Phase 5: Polish** (Estimated: 1-2 hours)
-1. Error handling
-2. Loading states
-3. Responsive design
-4. Accessibility review
-
-**Total Estimated Time**: 12-17 hours
-```
-
-#### 5. Testing Strategy
-
-```markdown
-### Testing Plan
-
-**Unit Tests** (70% of test effort):
-- Business logic functions
-- Utility functions
-- Data transformations
-
-**Integration Tests** (20% of test effort):
-- API endpoints
-- Database operations
-- Authentication flows
-
-**E2E Tests** (10% of test effort):
-- Critical user journeys
-- Happy path flows
-- Error scenarios
-
-**Test Coverage Target**: 80%+
-```
-
-#### 6. Risks & Mitigation
-
-```markdown
-### Risks
-
-**Risk 1: [Description]**
-- **Impact**: High/Medium/Low
-- **Probability**: High/Medium/Low
-- **Mitigation**: [How to address]
-
-**Risk 2: [Description]**
-- **Impact**: High/Medium/Low
-- **Probability**: High/Medium/Low
-- **Mitigation**: [How to address]
-```
-
-#### 7. Alternative Approaches
-
-```markdown
-### Alternatives Considered
-
-**Alternative 1: [Approach]**
-- **Pros**: [Benefits]
-- **Cons**: [Drawbacks]
-- **Why Not Chosen**: [Reason]
-
-**Alternative 2: [Approach]**
-- **Pros**: [Benefits]
-- **Cons**: [Drawbacks]
-- **Why Not Chosen**: [Reason]
-```
+**Reference**: See `prompts/reporting/summary-template.md` for detailed plan template format.
 
 ---
 
 ## Phase 4: Plan Review
 
+<!-- Component: prompts/specialist-selection/multi-specialist-routing.md -->
+<!-- Component: prompts/planning/plan-validation.md -->
+
+### Validate Plan Before Review
+
+**Validation Checklist**:
+
+- [ ] **Clear objective statement** - Specific and actionable
+- [ ] **At least 3 implementation steps** - Ordered and actionable
+- [ ] **List of files to modify/create** - Specific file paths
+- [ ] **Success criteria defined** - Testable criteria
+- [ ] **No placeholder text** - No [TODO], [TBD], etc.
+- [ ] **Dependencies identified** - External libraries, APIs, services
+- [ ] **Scope is reasonable** - Can be completed in one session
+
+**If validation fails**:
+```
+Use AskUserQuestion tool:
+
+"**Plan Validation Failed**
+
+The plan is missing:
+- [LIST MISSING COMPONENTS]
+
+Cannot proceed without a complete plan.
+
+Options:
+1. Add missing information now
+2. Return to planning phase
+3. Provide guidance on what's needed"
+```
+
 ### Select Reviewer Specialist
 
-Based on the plan type, select an appropriate reviewer:
+Based on detected keywords and plan type:
 
 | Plan Type | Reviewer Agent |
 |-----------|----------------|
@@ -313,68 +243,30 @@ Use the `code-review-standards` and relevant technology skills.
 
 ## Phase 5: Present Plan to User
 
+<!-- Component: prompts/reporting/summary-template.md -->
+<!-- Component: prompts/reporting/next-steps-template.md -->
+
 ### Create Summary
 
-Present the plan to the user in a clear, actionable format:
+Present the plan using the standardized template (see `prompts/reporting/summary-template.md`):
 
-```markdown
-# Implementation Plan: [Feature Name]
+**Key sections to include**:
+- Header with date, issue ID, reviewer, status
+- Summary (2-3 sentences)
+- Scope (in/out)
+- Technical approach with tech stack
+- File changes (new/modified files with descriptions)
+- Implementation phases with time estimates
+- Testing strategy (unit/integration/E2E split)
+- Risks and mitigation
+- Success criteria
+- Next steps (see `prompts/reporting/next-steps-template.md`)
 
-## 📋 Summary
-[Brief overview]
-
-## 🎯 Scope
-**What we'll build**:
-- [Item 1]
-- [Item 2]
-- [Item 3]
-
-**What we won't build** (out of scope):
-- [Item A]
-- [Item B]
-
-## 🏗️ Technical Approach
-[High-level architecture description]
-
-**Stack**: [Technology choices]
-
-## 📁 File Changes
-- **New Files**: X files
-- **Modified Files**: Y files
-- **Estimated LOC**: ~Z lines
-
-See detailed file list below.
-
-## 📅 Estimated Timeline
-- **Phase 1 - Foundation**: 2-3 hours
-- **Phase 2 - Core Logic**: 3-4 hours
-- **Phase 3 - UI**: 4-5 hours
-- **Phase 4 - Testing**: 2-3 hours
-- **Phase 5 - Polish**: 1-2 hours
-
-**Total**: 12-17 hours
-
-## ⚠️ Risks
-1. [Risk 1 and mitigation]
-2. [Risk 2 and mitigation]
-
-## ✅ Next Steps
-1. Review this plan
-2. Provide feedback or approval
-3. Run `/agency:implement` to execute
-4. Or modify requirements and re-plan
-
----
-
-## Detailed Implementation Plan
-
-[Include the complete plan from Phase 3]
-
----
-
-**Reviewed by**: [Specialist agent name]
-**Plan Status**: Ready for approval
-```
+**Next steps section should include**:
+- Review plan instructions
+- Approval/modification options
+- Implementation command: `/agency:implement .agency/plans/plan-[feature].md`
+- Alternative paths (modify requirements, re-plan, iterate)
 
 ### Save Plan to File
 
@@ -382,23 +274,13 @@ Create a plan file for future reference:
 
 ```bash
 mkdir -p .agency/plans
-echo "[plan content]" > .agency/plans/plan-$ARGUMENTS-$(date +%Y%m%d).md
+PLAN_FILE=".agency/plans/plan-$(echo $ARGUMENTS | tr ' ' '-' | tr '[:upper:]' '[:lower:]')-$(date +%Y%m%d).md"
+# Write plan content to file
 ```
 
 ### Get User Feedback
 
-Ask the user:
-```
-**This plan is complete and ready for review.**
-
-Options:
-- **Approve**: Ready to implement? Run `/agency:implement .agency/plans/plan-...md`
-- **Modify**: Want changes? Let me know what to adjust
-- **Questions**: Need clarification on any part?
-- **Alternatives**: Want to explore a different approach?
-
-What would you like to do?
-```
+Ask the user what they'd like to do next with the plan.
 
 ---
 
@@ -415,27 +297,72 @@ At the end of this command, provide:
 
 ## Error Handling
 
+<!-- Component: prompts/error-handling/ask-user-retry.md -->
+
 ### If Requirements Are Too Vague
 
-Ask clarifying questions using AskUserQuestion:
-- What specific functionality is needed?
-- What are the acceptance criteria?
-- Any technical preferences or constraints?
-- What's the priority/urgency?
+```
+Use AskUserQuestion tool:
+
+"**Requirements Need Clarification**
+
+The current requirements are too vague to create a detailed plan.
+
+**Missing Information**:
+- [What specific functionality is needed?]
+- [What are the acceptance criteria?]
+- [Technical preferences or constraints?]
+- [Priority/urgency?]
+
+**Options**:
+A) Provide the missing information now
+B) Proceed with assumptions (I'll document them)
+C) Update the issue/description first
+
+Please select an option (A/B/C) or provide clarification:"
+```
 
 ### If Specialist Reviewer Raises Concerns
 
-- Address concerns in the plan
-- If significant issues, re-plan with new approach
-- If minor issues, note them as risks/considerations
-- Always incorporate feedback before final presentation
+**Critical concerns**:
+- Re-plan with new approach
+- Document why original approach was rejected
+- Get user approval for new direction
+
+**Minor concerns**:
+- Note them as risks/considerations in plan
+- Include mitigation strategies
+- Proceed with implementation
+
+**Always incorporate feedback** before final presentation.
 
 ### If Research Reveals Blockers
 
-- Document blockers clearly in risks section
+**Hard blockers** (cannot proceed):
+```
+Use AskUserQuestion tool:
+
+"**Implementation Blocker Detected**
+
+Cannot proceed with current approach due to:
+- [Blocker description]
+
+**Impact**: [What this prevents]
+
+**Options**:
+A) Adjust scope to work around blocker
+B) Explore alternative approach
+C) Resolve blocker first, then plan
+D) Abort planning
+
+Please select an option (A/B/C/D):"
+```
+
+**Soft blockers** (can work around):
+- Document clearly in risks section
 - Propose mitigation strategies
 - May need to adjust scope or approach
-- Inform user of constraints
+- Inform user of constraints and workarounds
 
 ---
 

@@ -29,6 +29,61 @@ This skill contains critical orchestration patterns, agent selection guidelines,
 
 ---
 
+<!-- Component: prompts/progress/todo-initialization.md -->
+## Phase 0: Initialize Progress Tracking
+
+Use TodoWrite tool to create todo list:
+
+```javascript
+[
+  {
+    "content": "Fetch and analyze issue",
+    "status": "in_progress",
+    "activeForm": "Fetching and analyzing issue"
+  },
+  {
+    "content": "Set up repository and branch",
+    "status": "pending",
+    "activeForm": "Setting up repository and branch"
+  },
+  {
+    "content": "Generate implementation plan",
+    "status": "pending",
+    "activeForm": "Generating implementation plan"
+  },
+  {
+    "content": "Select specialist(s) and get approval",
+    "status": "pending",
+    "activeForm": "Selecting specialist(s) and getting approval"
+  },
+  {
+    "content": "Implement changes via specialist",
+    "status": "pending",
+    "activeForm": "Implementing changes via specialist"
+  },
+  {
+    "content": "Run quality gates",
+    "status": "pending",
+    "activeForm": "Running quality gates"
+  },
+  {
+    "content": "Conduct code review",
+    "status": "pending",
+    "activeForm": "Conducting code review"
+  },
+  {
+    "content": "Commit and create pull request",
+    "status": "pending",
+    "activeForm": "Committing and creating pull request"
+  }
+]
+```
+
+---
+
+<!-- Component: prompts/issue-management/github-issue-fetch.md -->
+<!-- Component: prompts/issue-management/jira-issue-fetch.md -->
+<!-- Component: prompts/issue-management/issue-metadata-extraction.md -->
 ## Phase 1: Issue Fetch & Analysis
 
 ### Detect Issue Source
@@ -48,70 +103,106 @@ Analyze `$ARGUMENTS` to determine the source:
 
 **For GitHub**:
 ```bash
-# Numeric issue
-gh issue view $ARGUMENTS
+# Numeric issue or URL
+gh issue view $ARGUMENTS --json number,title,body,state,labels,assignees,milestone
 
 # Find next issue (if $ARGUMENTS is "next")
-gh issue list --assignee @me --state open --limit 1 --json number,title,body
+gh issue list --assignee @me --state open --limit 1 --json number,title,body,labels
 ```
 
 **For Jira**:
 ```bash
-# Assuming acli (Atlassian CLI) is installed
-acli issue get $ARGUMENTS
+# Extract issue key from URL if needed
+ISSUE_KEY=$(echo "$ARGUMENTS" | grep -oP '[A-Z]+-\d+')
+
+# Fetch issue details
+acli jira --action getIssue \
+  --issue "$ISSUE_KEY" \
+  --outputFormat 2 \
+  --columns "key,summary,description,status,priority,issuetype,assignee,labels"
+
+# Find next issue (if $ARGUMENTS is "next")
+acli jira --action getIssueList \
+  --jql "sprint in openSprints() AND assignee = currentUser() AND status != Done" \
+  --maxResults 1 \
+  --outputFormat 2
 ```
 
 ### Extract Key Information
 
 From the issue, identify:
-- **Title**: What is being requested?
+- **Title/Summary**: What is being requested?
 - **Description**: Detailed requirements
 - **Acceptance Criteria**: How to verify success
 - **Labels/Type**: Bug, feature, enhancement, etc.
 - **Priority**: Urgency level
 - **Dependencies**: Related issues or blockers
 
+**Parse structured sections** from issue description:
+- Acceptance Criteria (look for `## Acceptance Criteria`, `## AC`, `## Success Criteria`)
+- Technical Requirements (look for `## Technical Requirements`, `## Implementation Details`)
+- Context/Background (look for `## Description`, `## Background`, `## Problem`)
+
+**Error Handling**:
+- If issue not found, verify issue number/key and permissions
+- If issue lacks detail, use AskUserQuestion to clarify requirements
+- If issue is closed, warn user and ask whether to proceed
+
 ---
 
+<!-- Component: prompts/git/branch-creation.md -->
 ## Phase 2: Repository Setup
 
-### Fetch Latest & Create Branch
+### Pre-Flight Checks
 
 ```bash
-# Fetch latest from remote
+# 1. Check current branch
+git branch --show-current
+
+# 2. Check for uncommitted changes
+git status --porcelain
+
+# 3. Fetch latest changes
 git fetch origin
 
-# Checkout and update main branch
+# 4. Checkout and update main branch
 git checkout main
 git pull origin main
-
-# Create feature branch
-# Format: feature/issue-NUMBER or feature/JIRA-KEY
-git checkout -b feature/issue-$ARGUMENTS
 ```
 
-**Branch Naming**:
-- GitHub: `feature/issue-123` or `bugfix/issue-123`
-- Jira: `feature/PROJ-123` or `bugfix/PROJ-123`
+### Create Feature Branch
 
-Use the `github-workflow-best-practices` skill for branching guidance if needed.
+```bash
+# Determine branch prefix based on issue type
+# For GitHub: Check labels (bug → fix/, feature → feat/)
+# For Jira: Check issuetype (Bug → fix/, Story → feat/, Task → feat/)
+
+# Create feature branch
+# Format: feat/issue-NUMBER or feat/JIRA-KEY or fix/issue-NUMBER
+git checkout -b feat/issue-$ARGUMENTS
+
+# Or for bug fixes:
+git checkout -b fix/issue-$ARGUMENTS
+```
+
+**Branch Naming Rules**:
+- Use lowercase
+- Use hyphens, not underscores
+- GitHub: `feat/issue-123` or `fix/issue-123`
+- Jira: `feat/PROJ-123` or `fix/PROJ-123`
+
+**Validation**:
+```bash
+# Verify branch created
+git branch --show-current
+
+# Verify clean state
+git status
+```
 
 ---
 
 ## Phase 3: Planning & Architecture
-
-### Use TodoWrite for Tracking
-
-Create a todo list with these phases:
-```
-1. Analyze issue requirements
-2. Create implementation plan
-3. Review plan with specialist
-4. Implement solution
-5. Run build and tests
-6. Code review
-7. Commit and create PR
-```
 
 ### Create Implementation Plan
 
@@ -138,11 +229,12 @@ Analyze the issue and create a detailed plan covering:
 - Edge cases to handle
 - Performance considerations
 
-### Select Reviewer Agent
+<!-- Component: prompts/specialist-selection/multi-specialist-routing.md -->
+### Select Specialist(s)
 
-Based on the issue type, select the appropriate specialist to review your plan:
+Based on the issue type and plan analysis, select the appropriate specialist(s):
 
-| Issue Type | Reviewer Agent |
+| Issue Type | Specialist |
 |------------|----------------|
 | **Backend/API** | Backend Architect |
 | **Frontend/UI** | Frontend Developer or ArchitectUX |
@@ -152,35 +244,55 @@ Based on the issue type, select the appropriate specialist to review your plan:
 | **Performance** | Performance Benchmarker |
 | **General** | Plan agent or Senior Developer |
 
-### Get Plan Reviewed
+**Multi-Specialist Detection**:
+If plan mentions multiple domains (e.g., "backend API" AND "frontend UI"), enable multi-specialist mode.
 
-Use the Task tool to spawn the reviewer agent:
+**Execution Strategy**:
+- **Sequential**: When dependencies exist (e.g., frontend needs backend API)
+  - Order: Backend → Frontend → Integration Review
+- **Parallel**: When work is independent (e.g., separate admin dashboard and API)
 
+<!-- Component: prompts/specialist-selection/user-approval.md -->
+### Get User Approval
+
+**For Single Specialist**:
 ```
-Task: Review implementation plan
+Use AskUserQuestion tool:
 
-Agent: [selected specialist]
+"I've analyzed the plan and selected **[SPECIALIST]** based on these keywords: [KEYWORD_LIST].
 
-Context:
-- Issue: [issue details]
-- Proposed plan: [your plan]
+Proceed with [SPECIALIST] for implementation?"
 
-Instructions:
-- Review the plan for completeness
-- Identify potential issues or risks
-- Suggest improvements or alternatives
-- Confirm technical approach is sound
-
-Please provide feedback on this implementation plan.
+Options:
+- Yes, proceed with [SPECIALIST] (Recommended)
+- No, use a different specialist
 ```
 
-### Incorporate Feedback & Get User Approval
+**For Multi-Specialist**:
+```
+Use AskUserQuestion tool:
 
-1. Update the plan based on reviewer feedback
-2. Present the final plan to the user
-3. Wait for explicit approval before proceeding
+"**Multi-Specialist Work Detected**
 
-**Use AskUserQuestion** or clearly present:
+Specialists Needed:
+- ✅ [SPECIALIST_1] (Score: [X.X]) - [KEY_RESPONSIBILITIES]
+- ✅ [SPECIALIST_2] (Score: [Y.Y]) - [KEY_RESPONSIBILITIES]
+
+Execution Strategy: [Sequential/Parallel]
+- Reason: [DEPENDENCY_REASON or INDEPENDENCE_REASON]
+[IF Sequential]
+- Order: [SPECIALIST_1] → [SPECIALIST_2]
+
+Proceed with this plan?"
+
+Options:
+- Yes, proceed (Recommended)
+- Run in parallel instead (faster, riskier) [IF currently sequential]
+- Run sequentially instead (safer) [IF currently parallel]
+- Modify specialist selection
+```
+
+**Present the final plan to the user**:
 ```markdown
 ## Implementation Plan for Issue #$ARGUMENTS
 
@@ -207,21 +319,6 @@ Please provide feedback on this implementation plan.
 
 ## Phase 4: Implementation (Delegated to Specialist)
 
-### Select Implementation Agent
-
-Based on the work type, select the best specialist:
-
-| Work Type | Implementation Agent |
-|-----------|---------------------|
-| **React/UI** | Frontend Developer |
-| **Node.js/Express API** | Backend Architect |
-| **Python Backend** | Backend Architect |
-| **Mobile (iOS/Android)** | Mobile App Builder |
-| **AI/ML Features** | AI Engineer |
-| **DevOps/CI/CD** | DevOps Automator |
-| **Laravel/Livewire** | senior-developer |
-| **Complex/Mixed** | Senior Developer |
-
 ### Spawn Implementation Agent
 
 Use the Task tool to spawn the implementation agent:
@@ -234,7 +331,7 @@ Agent: [selected specialist]
 Context:
 - Issue details: [from Phase 1]
 - Approved implementation plan: [from Phase 3]
-- Branch: feature/issue-$ARGUMENTS
+- Branch: feat/issue-$ARGUMENTS
 
 Instructions:
 1. Implement the solution according to the approved plan
@@ -258,87 +355,182 @@ Please implement the solution now.
 
 ---
 
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
 ## Phase 5: Verification & Quality Gates
 
-### Build Verification
+Execute quality gates in sequence. **Do NOT skip any gate.**
 
-Run the build to ensure no compilation errors:
+### Gate 1: Build (CRITICAL)
 
 ```bash
+# For Next.js/React projects
 npm run build
-# or
-pnpm build
-# or
-yarn build
+
+# For TypeScript projects
+npm run type-check
+
+# For general Node.js
+npm run build || npm run compile
 ```
 
-**If build fails**:
-- Fix the errors
-- Re-run build
-- Repeat until successful
+**Quality Standard**: Build MUST pass
 
-### Type Checking (if TypeScript)
+**On Failure**:
+1. Read build errors carefully
+2. Fix critical compilation issues
+3. Re-run build
+4. **BLOCK** until build passes
+
+### Gate 2: Type Check (CRITICAL)
 
 ```bash
-npx tsc --noEmit
+# TypeScript projects
+npm run type-check || npx tsc --noEmit
 ```
 
-**Fix any type errors.**
+**Quality Standard**: Type check MUST pass
 
-### Linting
+**On Failure**:
+1. Analyze type errors
+2. Fix type mismatches
+3. Re-run type check
+4. **BLOCK** until type check passes
+
+### Gate 3: Linter (HIGH PRIORITY)
 
 ```bash
+# ESLint
 npm run lint
-# or
-pnpm lint
+
+# Auto-fix when possible
+npm run lint -- --fix
 ```
 
-**Fix critical lint errors.** (Warnings are okay if minor)
+**Quality Standard**:
+- Linting errors MUST be fixed
+- Warnings are acceptable but should be minimized
 
-### Run Tests
+**On Failure**:
+1. Review linting errors
+2. Fix errors (auto-fix when possible)
+3. Re-run linter
+4. **BLOCK** on errors, proceed with warnings (note them)
+
+### Gate 4: Tests (CRITICAL)
 
 ```bash
+# Run all tests
 npm test
-# or
-pnpm test
-# or specific test file
-npm test -- <test-file>
+
+# Or specific test commands
+npm run test:unit
+npm run test:integration
+npm run test:e2e
 ```
 
-**If tests fail**:
-- Analyze failures
-- Fix implementation or update tests
-- Re-run until passing
+**Quality Standard**: All tests MUST pass
 
-### Code Review
+**On Failure**:
+1. Analyze test failures carefully
+2. Fix code or update tests appropriately
+3. Re-run tests
+4. **BLOCK** until all tests pass
+
+### Gate 5: Test Coverage (RECOMMENDED)
+
+```bash
+# Generate coverage report
+npm run test:coverage || npm test -- --coverage
+```
+
+**Quality Standard**: Target 80%+ coverage
+
+**On Low Coverage (< 80%)**:
+1. Note coverage gaps in report
+2. Recommend adding tests
+3. **DO NOT BLOCK** - user decides acceptability
+4. Document coverage in summary
+
+---
+
+<!-- Component: prompts/code-review/reality-checker-spawn.md -->
+## Phase 6: Code Review
 
 Spawn a code review agent to review the changes:
 
 ```
 Task: Code review for issue #$ARGUMENTS
 
-Agent: Reality Checker or Senior Developer
+Agent: Reality Checker
 
 Context:
 - Issue: [issue details]
 - Changes made: [summary]
 
 Instructions:
-Use the `code-review-standards` skill to review the changes for:
-1. **Security**: No vulnerabilities (XSS, SQL injection, etc.)
-2. **Code Quality**: Readable, maintainable, follows conventions
-3. **Performance**: No obvious performance issues
-4. **Testing**: Adequate test coverage
-5. **Edge Cases**: Handles error scenarios properly
+Review the implementation for:
 
-Please review the git diff and provide feedback.
+**Plan Compliance**:
+- All requirements from the plan implemented
+- No extra features added beyond plan scope
+- Success criteria met
+- All specified files created/modified
+
+**Code Quality**:
+- No obvious bugs or logic errors
+- Follows project coding standards
+- Proper error handling
+- No hardcoded values that should be configurable
+- Efficient algorithms and data structures
+
+**Security**:
+- No SQL injection vulnerabilities
+- No XSS vulnerabilities
+- No exposed secrets or credentials
+- Proper input validation
+- Authentication/authorization checks
+
+**Performance**:
+- No obvious performance issues
+- No unnecessary re-renders (React)
+- Proper database indexing (if applicable)
+- Efficient queries and data fetching
+
+**Testing**:
+- Tests adequately cover the implementation
+- Edge cases tested
+- Error paths tested
+
+**Files to review**: [list of modified/created files]
+
+Provide findings with severity levels:
+- **CRITICAL**: Must fix before merge (security, data loss, crashes)
+- **HIGH**: Should fix before merge (bugs, incorrect behavior)
+- **MEDIUM**: Consider fixing (code quality, performance)
+- **LOW**: Nice to have (style, minor improvements)
+
+**Focus on CRITICAL and HIGH severity issues only.**
 ```
 
-**Address significant issues raised in review.**
+**Handle Review Findings**:
+
+**CRITICAL or HIGH issues found**:
+1. Read review findings carefully
+2. Fix each critical/high issue
+3. Re-run quality gates if changes are significant
+4. Re-run reality-checker to verify fixes
+5. **Maximum 3 fix iterations** - escalate to user after that
+
+**MEDIUM or LOW issues**:
+- Document in implementation summary
+- User decides whether to address
+- Don't block completion
 
 ---
 
-## Phase 6: Completion & PR Creation
+<!-- Component: prompts/git/commit-formatting.md -->
+<!-- Component: prompts/git/pr-creation.md -->
+## Phase 7: Completion & PR Creation
 
 ### Stage and Review Changes
 
@@ -391,41 +583,72 @@ Configured session management with NextAuth.
 Closes #123
 ```
 
-Use the `github-workflow-best-practices` skill for commit message guidance.
+**Quality Checklist**:
+- [ ] Changes are logical and atomic
+- [ ] Message follows conventional commit format
+- [ ] Subject is clear and under 50 characters
+- [ ] No secrets or sensitive data included
+- [ ] Only intentional changes staged
+- [ ] Issue reference included in footer
 
 ### Push Branch
 
 ```bash
-git push -u origin feature/issue-$ARGUMENTS
+git push -u origin feat/issue-$ARGUMENTS
 ```
 
 ### Create Pull Request
 
-**For GitHub**:
+**Analyze PR Context First**:
 ```bash
-gh pr create --title "[Issue #$ARGUMENTS]: <brief description>" --body "$(cat <<'EOF'
-## Summary
-[Brief summary of changes]
+# Review all commits in the branch
+git log main..HEAD --oneline
 
-## Changes Made
+# View full diff from base branch
+git diff main...HEAD
+
+# Check files changed
+git diff --name-status main...HEAD
+```
+
+**CRITICAL**: Analyze ALL commits, not just the latest one!
+
+**Create PR with GitHub CLI**:
+```bash
+gh pr create \
+  --title "feat(scope): <brief description>" \
+  --body "$(cat <<'EOF'
+## Summary
+- [Brief summary of what changed and WHY]
+- [1-3 bullet points]
+
+## Changes
+
+### Backend
 - [Change 1]
 - [Change 2]
-- [Change 3]
 
-## Testing
-- [How this was tested]
-- [Test results]
+### Frontend
+- [Change 1]
+- [Change 2]
 
-## Screenshots (if UI changes)
-[Add screenshots]
+### Tests
+- [Test additions/updates]
+
+## Test Plan
+
+- [ ] Step 1: [How to test]
+- [ ] Step 2: [Expected result]
+- [ ] Step 3: [Edge cases]
+
+## Related Issues
+Closes #$ARGUMENTS
 
 ## Checklist
-- [x] Build passes
-- [x] Tests pass
-- [x] Linting passes
-- [x] Code reviewed
-
-Closes #$ARGUMENTS
+- [x] Tests added/updated
+- [x] Documentation updated
+- [x] No secrets committed
+- [x] All quality gates passed
 EOF
 )"
 ```
@@ -435,23 +658,24 @@ EOF
 gh pr create --title "[$ARGUMENTS]: <brief description>" --body "..."
 ```
 
-The PR body should include:
-- Summary of changes
-- Link to issue (`Closes #$ARGUMENTS` for GitHub, `[PROJ-123]` for Jira)
-- Test plan or verification steps
-- Screenshots (if UI changes)
-- Notes for reviewers
+**PR Pre-Flight Checks**:
+- Verify current branch is NOT main/master
+- Check for uncommitted changes
+- Verify remote tracking exists
+- Check if up to date with remote
+- Verify no PR already exists
 
 ---
 
-## Phase 7: Report Completion
+<!-- Component: prompts/reporting/summary-template.md -->
+## Phase 8: Report Completion
 
 Update the todo list to mark all tasks complete.
 
 Report to the user:
 
 ```markdown
-✅ **Issue #$ARGUMENTS Complete**
+## Issue #$ARGUMENTS Complete
 
 **Pull Request Created**: [PR URL]
 
@@ -464,7 +688,7 @@ Report to the user:
 
 **Verification**:
 - ✅ Build passing
-- ✅ Tests passing (X tests, Y coverage)
+- ✅ Tests passing (X tests, Y% coverage)
 - ✅ Linting passing
 - ✅ Code review complete
 

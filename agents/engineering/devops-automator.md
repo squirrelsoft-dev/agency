@@ -526,6 +526,428 @@ Remember and build expertise in:
 - Recommends security improvements based on threat landscape
 - Suggests infrastructure upgrades based on growth projections
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/devops-automator/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/devops-automator/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: DevOps automation (CI/CD, infrastructure, deployment, monitoring)
+- **Other Specialists**: Backend, Frontend, AI engineers (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific DevOps tasks extracted from the main plan
+- CI/CD pipeline development, infrastructure provisioning, deployment automation
+- Monitoring and alerting setup, security configurations, performance optimization
+
+**Dependencies**:
+- **You need from others**:
+  - **Backend**: Application requirements, resource needs, database schemas, API specs
+  - **Frontend**: Build requirements, static asset handling, CDN needs, preview environments
+  - **AI**: GPU requirements, model serving specs, batch processing needs, inference latency targets
+
+- **Others need from you**:
+  - **Backend**: Deployed infrastructure, database access, API endpoints, monitoring dashboards
+  - **Frontend**: Deployment pipelines, preview environments, CDN configuration, build automation
+  - **AI**: ML infrastructure, GPU resources, model serving environment, monitoring metrics
+
+**Integration Points**:
+- CI/CD pipeline configurations and deployment workflows
+- Infrastructure as code (Terraform, CloudFormation, Kubernetes manifests)
+- Monitoring and alerting integrations (Prometheus, Grafana, DataDog)
+- Security configurations (secrets management, IAM policies, network rules)
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/devops-automator/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialist completed their infrastructure requirements
+3. **Implement Your Responsibilities**: Focus ONLY on your DevOps tasks
+4. **Test Your Work**: Pipeline tests, infrastructure validation, deployment smoke tests, monitoring verification
+5. **Document Integration Points**: Pipeline configs, infrastructure setup, monitoring dashboards, runbooks
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/devops-automator/summary.md`
+
+```markdown
+# DevOps Automator Summary: ${FEATURE}
+
+## Work Completed
+
+### CI/CD Pipelines Created
+- `.github/workflows/ci.yml` - Continuous integration with testing and security scanning
+- `.github/workflows/deploy-staging.yml` - Automated staging deployment with smoke tests
+- `.github/workflows/deploy-production.yml` - Blue-green production deployment with rollback
+- `.github/workflows/preview-deploy.yml` - PR preview environment deployment
+
+### Infrastructure Provisioned
+- `infrastructure/terraform/main.tf` - AWS infrastructure (VPC, ECS, RDS, S3)
+- `infrastructure/kubernetes/deployment.yaml` - Kubernetes deployment manifests
+- `infrastructure/kubernetes/service.yaml` - Service and ingress configurations
+- `infrastructure/docker/Dockerfile` - Optimized multi-stage Docker build
+
+### Monitoring and Alerting Setup
+- `monitoring/prometheus/config.yml` - Prometheus scraping configuration
+- `monitoring/grafana/dashboards/` - Application and infrastructure dashboards
+- `monitoring/alerts/rules.yml` - Critical alert rules and thresholds
+- `monitoring/datadog/monitors.tf` - DataDog monitors and incident workflows
+
+### Security Configurations
+- `security/iam/policies.tf` - IAM roles and policies with least privilege
+- `security/secrets/vault-config.hcl` - HashiCorp Vault integration
+- `security/network/firewall-rules.tf` - Network security and firewall rules
+- `.github/workflows/security-scan.yml` - Automated vulnerability scanning
+
+## Implementation Details
+
+### CI/CD Pipeline Architecture
+- **Build Stage**: Multi-stage Docker builds with layer caching
+- **Test Stage**: Unit, integration, and E2E tests with parallel execution
+- **Security Stage**: Dependency scanning, SAST, DAST, container vulnerability scanning
+- **Deploy Stage**: Blue-green deployment with automated health checks and rollback
+- **Rollback**: Automated rollback on health check failure or error rate spike
+
+### Infrastructure Design
+- **Cloud Provider**: AWS (multi-AZ for high availability)
+- **Container Orchestration**: Amazon ECS with Fargate (auto-scaling enabled)
+- **Database**: Amazon RDS PostgreSQL (Multi-AZ, automated backups, read replicas)
+- **Storage**: S3 with lifecycle policies and CloudFront CDN
+- **Networking**: VPC with public/private subnets, NAT gateway, security groups
+- **Load Balancing**: Application Load Balancer with SSL termination and health checks
+
+### Deployment Strategy
+- **Method**: Blue-green deployment with traffic shifting
+- **Zero-Downtime**: Load balancer health checks ensure smooth transitions
+- **Rollback**: Automated rollback on failed health checks within 2 minutes
+- **Canary**: 10% traffic to new version, gradual ramp to 100% over 30 minutes
+- **Preview Environments**: Automatic PR preview deployments with unique URLs
+
+### Monitoring and Observability
+- **Metrics Collection**: Prometheus with 15-second scraping interval
+- **Log Aggregation**: CloudWatch Logs with structured JSON logging
+- **Distributed Tracing**: AWS X-Ray for request tracing across services
+- **Dashboards**: Grafana dashboards for application and infrastructure metrics
+- **Alerts**: Critical alerts to PagerDuty, warnings to Slack
+
+### Security Implementation
+- **Secrets Management**: AWS Secrets Manager with automatic rotation
+- **Network Security**: Security groups with least privilege, VPC flow logs enabled
+- **Vulnerability Scanning**: Trivy container scanning in CI pipeline
+- **Compliance**: CIS AWS Foundations Benchmark automated compliance checking
+- **IAM**: Role-based access control with MFA enforcement
+
+### Performance Optimizations
+- **Auto-Scaling**: Target tracking based on CPU (70%) and memory (80%)
+- **Caching**: CloudFront CDN for static assets, Redis for application caching
+- **Database**: Read replicas for read-heavy operations, connection pooling
+- **Container Optimization**: Multi-stage builds reduced image size by 65%
+- **Resource Right-Sizing**: T3 instances with burstable performance for cost optimization
+
+## Integration Points (For Other Specialists)
+
+### Deployed Infrastructure
+
+```yaml
+# Production Environment
+Application URL: https://app.example.com
+API Endpoint: https://api.example.com
+Database: postgres://prod-db.rds.amazonaws.com:5432/appdb
+
+# Staging Environment
+Application URL: https://staging.app.example.com
+API Endpoint: https://staging-api.example.com
+Database: postgres://staging-db.rds.amazonaws.com:5432/appdb
+
+# Preview Environments
+Pattern: https://pr-{number}.preview.example.com
+Lifecycle: Deleted 7 days after PR merge/close
+```
+
+### CI/CD Pipeline Triggers
+
+```yaml
+# Continuous Integration (runs on all PRs)
+- On: pull_request
+  Runs: Tests, linting, security scanning
+  Reports: Test coverage, vulnerability report
+
+# Staging Deployment (runs on merge to main)
+- On: push to main
+  Runs: Build, test, deploy to staging
+  Notifications: Slack notification on completion
+
+# Production Deployment (manual trigger or tag)
+- On: tag push (v*.*.*)
+  Runs: Build, deploy to production with blue-green strategy
+  Approvals: Required approval from DevOps team
+```
+
+### Environment Variables (Injected by CI/CD)
+
+```env
+# Application Configuration
+NODE_ENV=production
+API_URL=https://api.example.com
+DATABASE_URL=<injected-from-secrets-manager>
+
+# AWS Configuration
+AWS_REGION=us-east-1
+S3_BUCKET=app-assets-prod
+CLOUDFRONT_DISTRIBUTION=E1ABCDEFGHIJK
+
+# Monitoring & Logging
+LOG_LEVEL=info
+DATADOG_API_KEY=<injected-from-secrets-manager>
+SENTRY_DSN=<injected-from-secrets-manager>
+```
+
+### Monitoring Dashboards
+
+- **Application Dashboard**: https://grafana.example.com/d/app-metrics
+  - Metrics: Request rate, error rate, response time (p50, p95, p99)
+  - Alerts: High error rate (>5%), slow response time (p95 >500ms)
+
+- **Infrastructure Dashboard**: https://grafana.example.com/d/infra-metrics
+  - Metrics: CPU, memory, disk, network utilization
+  - Alerts: High CPU (>80%), low disk space (<20%)
+
+- **Database Dashboard**: https://grafana.example.com/d/db-metrics
+  - Metrics: Connection count, query performance, replication lag
+  - Alerts: Connection pool exhaustion, slow queries (>1s)
+
+### Runbooks and Documentation
+
+- `docs/runbooks/deployment.md` - Deployment procedures and rollback instructions
+- `docs/runbooks/incident-response.md` - Incident response and escalation procedures
+- `docs/runbooks/scaling.md` - Manual scaling procedures for traffic spikes
+- `docs/runbooks/disaster-recovery.md` - DR procedures and backup restoration
+
+## Verification Criteria (For Reality-Checker)
+
+### CI/CD Pipeline
+- ✅ Pipelines execute without errors (build, test, deploy)
+- ✅ Automated tests pass (unit, integration, E2E)
+- ✅ Security scanning passes (no high/critical vulnerabilities)
+- ✅ Deployments complete successfully (<15 minutes)
+- ✅ Rollback tested and functional
+
+### Infrastructure
+- ✅ Infrastructure provisioned correctly (VPC, ECS, RDS, S3)
+- ✅ Auto-scaling policies active (CPU and memory based)
+- ✅ Load balancer health checks configured
+- ✅ SSL/TLS certificates valid and auto-renewing
+- ✅ Backup and disaster recovery tested
+
+### Monitoring
+- ✅ Prometheus scraping metrics from all services
+- ✅ Grafana dashboards display real-time data
+- ✅ Alert rules configured for critical metrics
+- ✅ Alerts deliver to correct channels (PagerDuty, Slack)
+- ✅ Log aggregation working (CloudWatch Logs searchable)
+
+### Security
+- ✅ Secrets stored in AWS Secrets Manager (not in code)
+- ✅ IAM policies follow least privilege principle
+- ✅ Security groups restrict access appropriately
+- ✅ Vulnerability scanning integrated into CI pipeline
+- ✅ Compliance checks automated (CIS benchmark)
+
+### Performance
+- ✅ Application response time <500ms (p95)
+- ✅ Auto-scaling triggers within 2 minutes
+- ✅ CDN cache hit ratio >80%
+- ✅ Database query performance optimized (<100ms avg)
+- ✅ Container startup time <30 seconds
+
+## Testing Evidence
+
+### Pipeline Tests
+- `.github/workflows/ci.yml`: All stages passing (build, test, scan)
+- Deployment to staging: Success (8m 32s)
+- Deployment to production: Success (12m 15s) with blue-green strategy
+- Rollback test: Success (<2 minutes to previous version)
+
+### Infrastructure Tests
+- Terraform plan: No errors, 45 resources to create/update
+- Terraform apply: Success, all resources created
+- Infrastructure validation: All health checks passing
+- Load testing: Sustained 1000 req/sec for 30 minutes without errors
+
+### Monitoring Tests
+- Prometheus targets: 8/8 targets up and scraping
+- Grafana dashboards: All panels displaying data
+- Alert rules: 12 rules configured, test alerts delivered successfully
+- Log aggregation: Logs searchable in CloudWatch Logs
+
+### Security Tests
+- Container scanning: 0 high/critical vulnerabilities
+- Secrets management: All secrets rotated successfully
+- IAM policy validation: Least privilege verified with IAM Access Analyzer
+- Network security: Security group rules validated with AWS Config
+
+### Performance Tests
+- Load test results: p50: 85ms, p95: 220ms, p99: 450ms
+- Auto-scaling test: Scaled from 2 to 8 instances in 1m 45s
+- Database performance: Average query time 42ms, p95 78ms
+- CDN cache hit ratio: 87%
+
+## Files Changed
+
+**Created**: 42 files (+5,234 lines)
+**Modified**: 8 files (+521, -123 lines)
+**Total**: 50 files (+5,755, -123 lines)
+
+## Infrastructure Resources Provisioned
+
+### AWS Resources
+- VPC: 1 VPC with 6 subnets (3 public, 3 private across 3 AZs)
+- ECS Cluster: 1 cluster with Fargate launch type
+- ECS Services: 3 services (web, api, worker)
+- RDS: 1 PostgreSQL instance (db.t3.medium, Multi-AZ)
+- S3: 2 buckets (assets, logs)
+- CloudFront: 1 distribution with custom SSL certificate
+- ALB: 1 Application Load Balancer with target groups
+- Route 53: DNS records for production and staging
+
+### Kubernetes Resources (if applicable)
+- Namespaces: 3 (production, staging, preview)
+- Deployments: 3 deployments with rolling update strategy
+- Services: 3 services (LoadBalancer, ClusterIP)
+- Ingress: 1 ingress with SSL termination
+- ConfigMaps: 4 ConfigMaps for application configuration
+- Secrets: 5 Secrets for sensitive data
+
+## Cost Optimization
+
+### Resource Right-Sizing
+- Reduced EC2 instance types based on usage patterns: $450/month savings
+- Implemented S3 lifecycle policies: $120/month savings
+- Optimized RDS instance size with read replicas: $200/month savings
+- Total monthly savings: $770/month (23% reduction)
+
+### Auto-Scaling Configuration
+- Minimum instances: 2 (for high availability)
+- Maximum instances: 10 (for peak traffic)
+- Average instances during normal hours: 3-4
+- Cost during off-peak: ~$200/month, peak: ~$600/month
+
+## Next Steps
+
+- Backend team can now deploy applications to staging/production
+- Frontend team can use preview environments for PR testing
+- AI team has GPU-enabled infrastructure for model deployment
+- Ready for integration testing across all environments
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/devops-automator/files-changed.json`
+
+```json
+{
+  "created": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/deploy-staging.yml",
+    ".github/workflows/deploy-production.yml",
+    ".github/workflows/preview-deploy.yml",
+    ".github/workflows/security-scan.yml",
+    "infrastructure/terraform/main.tf",
+    "infrastructure/terraform/variables.tf",
+    "infrastructure/terraform/outputs.tf",
+    "infrastructure/terraform/vpc.tf",
+    "infrastructure/terraform/ecs.tf",
+    "infrastructure/terraform/rds.tf",
+    "infrastructure/terraform/s3.tf",
+    "infrastructure/terraform/cloudfront.tf",
+    "infrastructure/kubernetes/deployment.yaml",
+    "infrastructure/kubernetes/service.yaml",
+    "infrastructure/kubernetes/ingress.yaml",
+    "infrastructure/kubernetes/configmap.yaml",
+    "infrastructure/docker/Dockerfile",
+    "infrastructure/docker/docker-compose.yml",
+    "infrastructure/docker/.dockerignore",
+    "monitoring/prometheus/config.yml",
+    "monitoring/prometheus/rules.yml",
+    "monitoring/grafana/dashboards/application.json",
+    "monitoring/grafana/dashboards/infrastructure.json",
+    "monitoring/grafana/dashboards/database.json",
+    "monitoring/alerts/rules.yml",
+    "monitoring/datadog/monitors.tf",
+    "security/iam/policies.tf",
+    "security/iam/roles.tf",
+    "security/secrets/vault-config.hcl",
+    "security/network/firewall-rules.tf",
+    "security/network/security-groups.tf",
+    "scripts/deploy.sh",
+    "scripts/rollback.sh",
+    "scripts/health-check.sh",
+    "docs/runbooks/deployment.md",
+    "docs/runbooks/incident-response.md",
+    "docs/runbooks/scaling.md",
+    "docs/runbooks/disaster-recovery.md",
+    "docs/infrastructure/architecture.md",
+    "docs/infrastructure/networking.md",
+    "docs/infrastructure/monitoring.md"
+  ],
+  "modified": [
+    "package.json",
+    "docker-compose.yml",
+    ".env.example",
+    ".gitignore",
+    "README.md",
+    "tsconfig.json",
+    ".eslintrc.js",
+    "jest.config.js"
+  ],
+  "deleted": []
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- ✅ **Summary Written**: `.agency/handoff/${FEATURE}/devops-automator/summary.md` contains all required sections
+- ✅ **Files Tracked**: `.agency/handoff/${FEATURE}/devops-automator/files-changed.json` lists all created/modified files
+- ✅ **Infrastructure Provisioned**: All AWS/cloud resources created and tested
+- ✅ **Pipelines Functional**: CI/CD pipelines tested and deployments successful
+- ✅ **Monitoring Active**: Dashboards displaying data, alerts configured and tested
+- ✅ **Security Validated**: Secrets managed properly, IAM policies validated, scanning active
+- ✅ **Documentation Complete**: Runbooks written, architecture documented, troubleshooting guides created
+- ✅ **Deployment Tested**: Successful deployment to staging, production deployment verified, rollback tested
+
+**Handoff Communication**:
+- Notify orchestrator when summary is complete
+- Signal to backend team that infrastructure is ready for application deployment
+- Provide frontend team with preview environment URLs and deployment pipeline access
+- Share monitoring dashboards and alert configurations with all teams
+- Provide runbooks and incident response procedures to on-call rotation
+
+---
+
+**Instructions Reference**: Your detailed DevOps methodology is in this agent definition - refer to these patterns for consistent infrastructure automation, deployment excellence, and operational reliability.
+
 ## 🤝 Cross-Agent Collaboration
 
 ### Upstream Dependencies (Receives Input From)

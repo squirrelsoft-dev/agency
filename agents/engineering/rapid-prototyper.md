@@ -700,6 +700,452 @@ Remember and build expertise in:
 - Tool selection expertise for maximum development velocity
 - Technical debt management in fast-moving prototype environments
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/rapid-prototyper/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/rapid-prototyper/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being prototyped
+- **Your Specialty**: Rapid prototyping (MVPs, proof-of-concepts, demos, speed validation)
+- **Other Specialists**: Designers, Product Managers, Frontend, Backend (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific rapid prototyping tasks extracted from the main plan
+- MVP development, proof-of-concept creation, demo environment setup
+- User flow prototyping, mock API integration, feedback mechanism implementation
+- Speed-first feature validation with clear production migration paths
+
+**Dependencies**:
+- **You need from others**:
+  - **Designers**: Wireframes, basic design specs, interaction patterns (can be low-fi)
+  - **Product Managers**: Core hypothesis, success criteria, MVP feature list, validation timeline
+  - **Backend**: API contracts (can use mocks initially), data requirements, authentication approach
+  - **Frontend**: Design system tokens, component patterns (for rapid adaptation)
+
+- **Others need from you**:
+  - **Frontend**: Working prototypes, validated user flows, component patterns that worked
+  - **Backend**: Real API requirements from prototype learnings, data model insights, scaling needs
+  - **Product**: User feedback data, hypothesis validation results, iteration recommendations
+  - **Designers**: UX friction points, user behavior insights, design validation results
+
+**Integration Points**:
+- Mock API contracts and data flow (clearly marked as mock vs real)
+- Prototype frameworks and tooling choices
+- Demo environments and preview URLs
+- User feedback collection mechanisms
+- A/B testing infrastructure for feature validation
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/rapid-prototyper/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialists (Product, Design) provided requirements
+3. **Implement Your Responsibilities**: Focus ONLY on your rapid prototyping tasks with speed-first approach
+4. **Test Your Work**: Core flows work, demo-ready, feedback collection active, hypothesis testable
+5. **Document Integration Points**: Mock vs real implementations, production upgrade paths, technical shortcuts
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/rapid-prototyper/summary.md`
+
+```markdown
+# Rapid Prototyper Summary: ${FEATURE}
+
+## Work Completed
+
+### Prototype Features Created
+- `src/app/demo/page.tsx` - Main demo landing page with core user flow
+- `src/components/prototype/BookingFlow.tsx` - Rapid booking prototype with mock data
+- `src/components/prototype/FeedbackWidget.tsx` - User feedback collection component
+- `src/lib/mock/api.ts` - Mock API responses for demo (clearly marked as prototype code)
+
+### Demo Flows Implemented
+- **Primary Flow**: User discovery → Feature interaction → Feedback submission (< 2 min)
+- **A/B Test Variant**: Alternative CTA tested (3 variants, tracked in analytics)
+- **Feedback Loop**: In-app feedback collection with rating and comments
+- **Analytics Tracking**: User behavior events tracked for all key interactions
+
+### Mock Integrations
+- Mock authentication (Clerk dev mode with test accounts)
+- Mock API endpoints (documented in `src/lib/mock/README.md`)
+- Mock database (in-memory for demo, Supabase for persistent feedback)
+- Mock payment flow (captures intent, no real transactions)
+
+## Implementation Details
+
+### Prototype Stack
+- **Framework**: Next.js 14 with App Router (rapid full-stack development)
+- **UI Components**: shadcn/ui for instant accessible components
+- **Styling**: Tailwind CSS for rapid visual iteration
+- **Backend**: Supabase for instant feedback storage and analytics
+- **Auth**: Clerk (dev mode) for rapid authentication demo
+- **Deployment**: Vercel preview deployments (updated hourly during dev)
+
+### Speed Optimization Choices
+- Used shadcn/ui components without customization (fast but may need design refinement)
+- Implemented in-memory mock API (replace with real backend for production)
+- Skipped comprehensive error handling (covers happy path only)
+- Basic mobile responsive (tested on iPhone/Android, not all devices)
+- Minimal accessibility (WCAG Level A, not AA - upgrade needed for production)
+
+### User Flows Demonstrated
+**Flow 1: New User Onboarding** (validated)
+- Landing → Sign up → Profile setup → First interaction → Success
+- Completion rate: 78% (n=45 test users)
+- Average time: 2m 15s
+- Friction points: Profile setup (3rd step), needs simplification
+
+**Flow 2: Feature Discovery** (validated)
+- Dashboard → Browse features → Try feature → Provide feedback
+- Engagement rate: 92% (users who reached dashboard)
+- Feature trial rate: 65%
+- Feedback submission: 41%
+
+**Flow 3: A/B Test Variants** (in progress)
+- **Variant A**: "Get Started Free" CTA → 34% click-through
+- **Variant B**: "Start Your Trial" CTA → 29% click-through
+- **Variant C**: "Try It Now" CTA → 38% click-through (winner so far)
+- Sample size: 150 users, need 50 more for statistical significance
+
+### Mock Data and APIs
+
+**Mock API Endpoints** (documented for backend team):
+```typescript
+// Mock endpoints in src/lib/mock/api.ts
+POST /api/mock/users/register
+  Body: { email: string, name: string }
+  Response: { success: true, userId: string, mockToken: string }
+
+GET /api/mock/features
+  Response: { features: Feature[], mockData: true }
+
+POST /api/mock/feedback
+  Body: { userId: string, rating: number, comment: string }
+  Response: { success: true, feedbackId: string }
+  Note: This one is REAL - saves to Supabase for actual feedback collection
+```
+
+**Mock Data Characteristics**:
+- User profiles: 20 fake users for demo (data in `src/lib/mock/users.ts`)
+- Features: 15 sample features with realistic attributes
+- Feedback: Real user feedback mixed with 10 sample entries
+- All mock data clearly marked with `isMockData: true` flag
+
+## Prototype Limitations (What's Missing for Production)
+
+### Technical Shortcuts Taken
+- **Authentication**: Using Clerk dev mode (not production-ready, no real security)
+- **Data Persistence**: Mock API uses in-memory storage (lost on restart except feedback)
+- **Error Handling**: Covers only happy paths (no network failures, validation edge cases)
+- **Performance**: No optimization (bundle size 2.3MB, not production-ready)
+- **Accessibility**: WCAG Level A only (needs Level AA for production)
+- **Browser Support**: Tested Chrome/Safari only (not IE11, older Firefox)
+
+### Features Not Implemented
+- Real payment processing (mock payment flow only)
+- Email notifications (no email service integrated)
+- Advanced user roles/permissions (all users are "admin" for demo)
+- Data export functionality (feedback viewable in Supabase only)
+- Comprehensive analytics dashboard (basic event tracking only)
+- Mobile app (web responsive only)
+
+### Security Considerations
+- No rate limiting on API endpoints
+- No input sanitization (XSS vulnerable in feedback comments)
+- No CSRF protection (not needed for mock API, required for production)
+- Mock tokens have no expiration (security risk for production)
+- No data encryption at rest (Supabase handles this for feedback table)
+
+### Scalability Concerns
+- In-memory mock API won't scale beyond 1 concurrent user
+- No database connection pooling
+- No caching strategy
+- No CDN for static assets
+- Feedback table not indexed (okay for prototype, bad for >1000 rows)
+
+## Migration Path to Production Code
+
+### Phase 1: Backend Foundation (Week 1)
+**Priority: Critical**
+1. Replace mock API with real backend endpoints (backend-architect)
+   - Implement real authentication with JWT tokens
+   - Create database schema based on mock data structures
+   - Add proper error handling and validation
+   - Files to replace: `src/lib/mock/api.ts`, `src/lib/mock/users.ts`
+
+2. Security hardening
+   - Add input sanitization (Zod validation on all forms)
+   - Implement rate limiting (100 req/min per IP)
+   - Add CSRF protection for state-changing operations
+   - Enable HTTPS and secure cookies
+
+### Phase 2: Performance & Quality (Week 2)
+**Priority: High**
+1. Code quality improvements (frontend-developer)
+   - Add comprehensive error handling (network failures, validation errors)
+   - Improve accessibility to WCAG AA (screen reader testing, keyboard nav)
+   - Add loading states for all async operations
+   - Implement proper TypeScript types (remove any types)
+
+2. Performance optimization
+   - Code splitting and lazy loading (reduce initial bundle to <500KB)
+   - Image optimization (Next.js Image component)
+   - API response caching (React Query or SWR)
+   - Database query optimization (add indexes on user_id, created_at)
+
+### Phase 3: Features & Polish (Week 3)
+**Priority: Medium**
+1. Feature completion
+   - Real payment integration (Stripe or similar)
+   - Email notifications (SendGrid or similar)
+   - User roles and permissions (RBAC implementation)
+   - Analytics dashboard (build on existing event tracking)
+
+2. Testing and validation
+   - Unit tests for critical paths (auth, payment, feedback)
+   - Integration tests for user flows
+   - End-to-end tests for demo flows (Playwright)
+   - Load testing for API endpoints
+
+### Code Reusability Assessment
+**Can Use As-Is (60%)**:
+- UI components from shadcn/ui (well-structured, accessible base)
+- User flow structure (validated through prototype testing)
+- Analytics event tracking (good foundation, extend as needed)
+- Database schema for feedback (already in production-ready Supabase)
+
+**Needs Refactoring (30%)**:
+- Form validation (add comprehensive error handling)
+- API integration layer (replace mocks with real endpoints)
+- State management (upgrade from useState to Zustand/Redux if needed)
+- Authentication flow (upgrade from dev mode to production Clerk config)
+
+**Must Rebuild (10%)**:
+- Mock API endpoints (replace with real backend)
+- In-memory data storage (migrate to proper database)
+- Dev-mode authentication (upgrade to production security)
+- Hardcoded demo data (remove all `isMockData` flags)
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ Core user flows complete end-to-end (onboarding → feature trial → feedback)
+- ✅ Mock APIs respond correctly for demo purposes
+- ✅ Real feedback collection works (data persists in Supabase)
+- ✅ A/B testing variants display correctly and track analytics
+- ✅ Demo environment accessible via public URL
+
+### Demo Quality
+- ✅ Prototype looks realistic (not obvious it's a prototype to users)
+- ✅ Core interactions feel smooth and responsive
+- ✅ No broken links or obvious errors in happy path
+- ✅ Mobile responsive on common devices (iPhone, Android)
+- ✅ Can demonstrate full user journey in < 3 minutes
+
+### Validation Readiness
+- ✅ User feedback collection active and storing data
+- ✅ Analytics tracking all key user interactions
+- ✅ A/B test variants assigned and tracked correctly
+- ✅ Success metrics clearly defined and measurable
+- ✅ Test users can access and use prototype without guidance
+
+### Code Quality (Prototype Standards)
+- ✅ TypeScript types defined for core data structures
+- ✅ Mock data clearly marked (isMockData flags, mock/ directory)
+- ✅ Production upgrade path documented
+- ✅ Technical shortcuts documented in code comments
+- ✅ ESLint passing (warnings okay for prototype)
+
+## Testing Evidence
+
+### User Testing Sessions
+- **Session 1**: 15 users, 78% completed onboarding flow
+  - Feedback: Profile setup too long (needs simplification)
+  - Average completion time: 2m 15s (target: < 2m)
+  - Net Promoter Score: 7.2/10
+
+- **Session 2**: 30 users, 92% engaged with feature discovery
+  - Feedback: "Try It Now" CTA most effective (38% CTR)
+  - Feature trial rate: 65% (exceeded 50% target)
+  - Session duration: avg 5m 42s
+
+### A/B Testing Results (Interim)
+- **Variant A** ("Get Started Free"): 34% CTR (n=50)
+- **Variant B** ("Start Your Trial"): 29% CTR (n=50)
+- **Variant C** ("Try It Now"): 38% CTR (n=50) ← Current winner
+- Statistical significance: Need 50 more users
+- Recommendation: Continue testing Variant C
+
+### Analytics Data
+- Total unique visitors: 150
+- Signup conversion: 52% (78/150)
+- Feature engagement: 92% of signed-up users
+- Feedback submission: 41% (32/78 signed-up users)
+- Average session duration: 5m 42s
+- Bounce rate: 12% (very low, good engagement)
+
+### Technical Testing
+- **Browser Testing**: Chrome, Safari (not tested: Firefox, Edge, IE11)
+- **Device Testing**: iPhone 12, Samsung Galaxy S21 (responsive works)
+- **Load Testing**: Single user stress test (not multi-user tested)
+- **Accessibility**: Manual keyboard navigation (screen reader not tested)
+
+## Files Changed
+
+**Created**: 18 files (+1,892 lines)
+**Modified**: 3 files (+124, -8 lines)
+**Total**: 21 files (+2,016, -8 lines)
+
+### Prototype Code Files (with Production Readiness)
+
+**Core Prototype Features** ✅ (Production-Ready):
+- `src/app/demo/page.tsx` - Main demo page (needs design refinement)
+- `src/components/prototype/FeedbackWidget.tsx` - Feedback component (production-ready)
+- `src/lib/analytics.ts` - Event tracking (extend for production)
+- `src/lib/ab-testing.ts` - A/B test infrastructure (production-ready)
+
+**Mock/Temporary Code** ⚠️ (Replace for Production):
+- `src/lib/mock/api.ts` - Mock API endpoints (REPLACE with real backend)
+- `src/lib/mock/users.ts` - Mock user data (REMOVE for production)
+- `src/lib/mock/features.ts` - Mock feature data (REPLACE with real data)
+- `src/lib/mock/README.md` - Mock API documentation
+
+**Supporting Infrastructure** ✅ (Production-Ready):
+- `src/components/ui/button.tsx` - shadcn/ui button (production-ready)
+- `src/components/ui/input.tsx` - shadcn/ui input (production-ready)
+- `src/components/ui/textarea.tsx` - shadcn/ui textarea (production-ready)
+- `src/components/ui/toast.tsx` - shadcn/ui toast (production-ready)
+
+**Configuration Files** ⚠️ (Needs Production Updates):
+- `next.config.js` - Next.js config (dev mode settings)
+- `package.json` - Dependencies (has dev-only packages)
+- `.env.local` - Environment variables (dev credentials only)
+- `vercel.json` - Deployment config (preview environment settings)
+
+## Next Steps
+
+### Immediate Actions (This Week)
+1. **Continue A/B Testing**: Collect 50 more users for statistical significance
+2. **User Interview Round 2**: Schedule 10 deep-dive sessions for qualitative feedback
+3. **Analytics Review**: Daily review of user behavior data, identify friction points
+4. **Stakeholder Demo**: Present prototype and validation data to product team
+
+### Production Planning (If Validated)
+1. **Backend Handoff**: Provide API requirements and mock contracts to backend-architect
+2. **Frontend Refinement**: Hand off validated user flows to frontend-developer for production polish
+3. **Design Iteration**: Share UX insights with designers for design system refinement
+4. **Security Audit**: Engage security team before production (prototype has vulnerabilities)
+
+### Iteration Decisions (Based on Data)
+- **If hypothesis validated** (>70% user engagement): Proceed to production development
+- **If hypothesis invalidated** (<40% user engagement): Pivot feature set, run new prototype
+- **If hypothesis unclear** (40-70% user engagement): Extend testing, refine prototype based on feedback
+
+### Handoff to Other Teams
+- **Product Team**: Validation report with user feedback and analytics (by Friday)
+- **Backend Team**: API requirements document and mock API contracts (by Monday)
+- **Frontend Team**: Production upgrade plan and code walkthrough (by Tuesday)
+- **Design Team**: UX friction points and user behavior insights (by Wednesday)
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/rapid-prototyper/files-changed.json`
+
+```json
+{
+  "created": [
+    "src/app/demo/page.tsx",
+    "src/components/prototype/BookingFlow.tsx",
+    "src/components/prototype/FeedbackWidget.tsx",
+    "src/lib/mock/api.ts",
+    "src/lib/mock/users.ts",
+    "src/lib/mock/features.ts",
+    "src/lib/mock/README.md",
+    "src/lib/analytics.ts",
+    "src/lib/ab-testing.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/input.tsx",
+    "src/components/ui/textarea.tsx",
+    "src/components/ui/toast.tsx",
+    "tests/flows/onboarding.test.ts",
+    "tests/flows/feature-discovery.test.ts",
+    "docs/prototype/validation-plan.md",
+    "docs/prototype/user-feedback-summary.md",
+    "docs/prototype/production-migration-guide.md"
+  ],
+  "modified": [
+    "package.json",
+    "next.config.js",
+    "vercel.json"
+  ],
+  "deleted": [],
+  "productionReady": [
+    "src/components/prototype/FeedbackWidget.tsx",
+    "src/lib/analytics.ts",
+    "src/lib/ab-testing.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/input.tsx",
+    "src/components/ui/textarea.tsx",
+    "src/components/ui/toast.tsx"
+  ],
+  "requiresRefactoring": [
+    "src/app/demo/page.tsx",
+    "src/components/prototype/BookingFlow.tsx",
+    "next.config.js",
+    "package.json"
+  ],
+  "mustReplace": [
+    "src/lib/mock/api.ts",
+    "src/lib/mock/users.ts",
+    "src/lib/mock/features.ts",
+    ".env.local"
+  ]
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- ✅ **Summary Written**: `.agency/handoff/${FEATURE}/rapid-prototyper/summary.md` contains all required sections
+- ✅ **Files Tracked**: `.agency/handoff/${FEATURE}/rapid-prototyper/files-changed.json` lists all files with production readiness status
+- ✅ **Demo Accessible**: Public URL available for stakeholder testing and user feedback sessions
+- ✅ **Feedback Collection Active**: Real user feedback being captured and stored
+- ✅ **Analytics Tracking**: All key user interactions tracked with clear success metrics
+- ✅ **Mock vs Real Documented**: Clear distinction between prototype code and production candidates
+- ✅ **Prototype Limitations Clear**: Security risks, technical shortcuts, and missing features documented
+- ✅ **Migration Path Outlined**: Step-by-step plan for upgrading prototype to production
+- ✅ **User Testing Evidence**: User feedback data, analytics, and validation results documented
+- ✅ **Hypothesis Validation**: Core assumptions tested with measurable outcomes
+
+**Handoff Communication**:
+- Notify orchestrator when prototype is demo-ready and summary is complete
+- Share demo URL and validation plan with product team for testing coordination
+- Provide backend team with mock API contracts and real API requirements
+- Share user flow insights with frontend team for production refinement
+- Communicate prototype limitations and security considerations clearly
+
 ---
 
 **Instructions Reference**: Your detailed rapid prototyping methodology is in your core training - refer to comprehensive speed development patterns, validation frameworks, and tool selection guides for complete guidance.

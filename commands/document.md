@@ -18,6 +18,7 @@ Follow the documentation lifecycle: detect scope → generate content → review
 
 ## Critical Instructions
 
+<!-- Component: prompts/specialist-selection/skill-activation.md -->
 ### 1. Activate Agency Workflow Knowledge
 
 **IMMEDIATELY** activate the agency workflow patterns skill:
@@ -27,89 +28,42 @@ Use the Skill tool to activate: agency-workflow-patterns
 
 This skill contains critical orchestration patterns, agent selection guidelines, and workflow strategies you MUST follow.
 
+**Technology-Specific Skills**: After detecting the project framework and documentation system, activate relevant skills:
+- For TypeScript projects: `typescript-5-expert`
+- For Next.js documentation: `nextjs-16-expert`
+- For technical writing: Consider framework-specific documentation skills
+
+Refer to `prompts/specialist-selection/skill-activation.md` for complete skill activation guidelines.
+
 ---
 
 ## Phase 0: Project Context Detection (1-2 min)
 
 Quickly gather project context to determine documentation approach and templates.
 
+<!-- Component: prompts/context/framework-detection.md -->
 ### Detect Framework/Language
 
-```bash
-# Detect JavaScript/TypeScript frameworks
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
-  FRAMEWORK="Next.js"
-  # Read package.json to get version
-  Read package.json
+Execute framework detection to identify the project's primary technology stack. This determines:
+- Documentation format and conventions
+- Code example syntax
+- Build commands for validation
+- Specialist selection
 
-  # Check for App Router vs Pages Router
-  if [ -d "app" ]; then
-    ROUTER="App Router"
-  else
-    ROUTER="Pages Router"
-  fi
-fi
+Use the detection algorithm from `prompts/context/framework-detection.md` to identify frameworks like Next.js, Django, Laravel, FastAPI, etc.
 
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  FRAMEWORK="React + Vite"
-fi
-
-# Check for Python frameworks
-if [ -f "manage.py" ]; then
-  FRAMEWORK="Django"
-fi
-
-if [ -f "app.py" ] || [ -f "main.py" ]; then
-  if grep -q "fastapi" requirements.txt 2>/dev/null; then
-    FRAMEWORK="FastAPI"
-  elif grep -q "flask" requirements.txt 2>/dev/null; then
-    FRAMEWORK="Flask"
-  fi
-fi
-
-# Check for other frameworks
-if [ -f "composer.json" ]; then
-  if grep -q "laravel" composer.json; then
-    FRAMEWORK="Laravel"
-  fi
-fi
-```
-
+<!-- Component: prompts/context/documentation-system-detection.md -->
 ### Detect Documentation System
 
-```bash
-# Check for existing documentation setup
-if [ -d "docs" ]; then
-  DOC_DIR="docs"
+Execute documentation system detection to identify existing documentation setup. This determines:
+- Where to place new documentation
+- What format to use (Markdown, MDX, reStructuredText)
+- Build commands for documentation
+- Deployment strategy
 
-  # Check for documentation generators
-  if [ -f "mkdocs.yml" ]; then
-    DOC_SYSTEM="MkDocs"
-  elif [ -f "docusaurus.config.js" ]; then
-    DOC_SYSTEM="Docusaurus"
-  elif [ -f ".vitepress/config.js" ] || [ -f ".vitepress/config.ts" ]; then
-    DOC_SYSTEM="VitePress"
-  elif [ -f "sphinx-build" ] || [ -f "conf.py" ]; then
-    DOC_SYSTEM="Sphinx"
-  else
-    DOC_SYSTEM="Markdown (no generator)"
-  fi
-else
-  DOC_DIR="docs" # Will create
-  DOC_SYSTEM="Markdown (no generator)"
-fi
+Use the detection algorithm from `prompts/context/documentation-system-detection.md` to identify systems like MkDocs, Docusaurus, Storybook, VitePress, Sphinx, TypeDoc, JSDoc, etc.
 
-# Check for API documentation tools
-if grep -q "swagger" package.json 2>/dev/null || grep -q "openapi" package.json 2>/dev/null; then
-  API_DOC_SYSTEM="OpenAPI/Swagger"
-fi
-
-if [ -d ".storybook" ]; then
-  COMPONENT_DOC_SYSTEM="Storybook"
-fi
-```
-
-### Detect Project Type
+### Determine Project Type
 
 ```bash
 # Determine if this is a library, application, or API
@@ -260,18 +214,42 @@ if [ -f "requirements.txt" ]; then
 fi
 ```
 
+<!-- Component: prompts/progress/todo-initialization.md -->
 ### Create Todo List for Documentation
 
-Use TodoWrite to create tracking for documentation phases:
+Initialize progress tracking with TodoWrite:
 
-```
-1. Detect documentation scope
-2. Generate documentation content
-3. Review documentation quality
-4. Validate code examples
-5. Publish documentation
+```javascript
+[
+  {
+    "content": "Detect documentation scope",
+    "status": "in_progress",
+    "activeForm": "Detecting documentation scope"
+  },
+  {
+    "content": "Generate documentation content",
+    "status": "pending",
+    "activeForm": "Generating documentation content"
+  },
+  {
+    "content": "Review documentation quality",
+    "status": "pending",
+    "activeForm": "Reviewing documentation quality"
+  },
+  {
+    "content": "Validate code examples",
+    "status": "pending",
+    "activeForm": "Validating code examples"
+  },
+  {
+    "content": "Publish documentation",
+    "status": "pending",
+    "activeForm": "Publishing documentation"
+  }
+]
 ```
 
+<!-- Component: prompts/specialist-selection/user-approval.md -->
 ### Get User Confirmation
 
 If scope is auto-detected or ambiguous, use AskUserQuestion to confirm:
@@ -1279,7 +1257,10 @@ Last updated: [DATE]
 
 Save to `$DOC_DIR/README.md`
 
+<!-- Component: prompts/git/commit-formatting.md -->
 ### Publish Documentation
+
+Follow conventional commit standards for documentation:
 
 ```bash
 # Add documentation to git
@@ -1288,46 +1269,61 @@ git add $DOC_DIR/
 # Show what will be committed
 git status
 
-# Commit documentation
-git commit -m "docs($ARGUMENTS): generate comprehensive [TYPE] documentation
+# Commit using heredoc format (see prompts/git/commit-formatting.md)
+git commit -m "$(cat <<'EOF'
+docs($ARGUMENTS): generate comprehensive [TYPE] documentation
 
 Generated documentation includes:
 - [Section 1]
 - [Section 2]
 - [Section 3]
 
-[Any notable details]"
+[Any notable details]
+EOF
+)"
 ```
 
+Refer to `prompts/git/commit-formatting.md` for complete commit message guidelines and templates.
+
+<!-- Component: prompts/reporting/summary-template.md -->
 ### Generate Documentation Report
 
-Create comprehensive report:
+Create a comprehensive report adapted from the implementation summary template:
+
+**File Location**: `.agency/documentation/doc-[topic]-[timestamp].md`
+
+**Report Structure**:
 
 ```markdown
-# Documentation Generation Report
+# Documentation Generation Summary: [Topic]
 
-**Date**: [current date]
+**Date**: [YYYY-MM-DD HH:MM:SS]
 **Documentation Type**: [API/Architecture/Component/Feature/Code]
 **Scope**: [what was documented]
+**Specialist**: [Selected specialist]
 **Duration**: [time spent]
+**Status**: ✅ SUCCESS / ⚠️ PARTIAL / ❌ FAILED
+
+---
+
+## Objective
+
+[Brief description of documentation goals - 1-3 sentences]
 
 ---
 
 ## Documentation Generated
 
-### Files Created/Updated
+### Files Created ([X] files)
 
-1. `$DOC_DIR/[path]` - [Description]
-2. `$DOC_DIR/[path]` - [Description]
-3. `$DOC_DIR/[path]` - [Description]
+- `$DOC_DIR/[path]` - [Description]
+- `$DOC_DIR/[path]` - [Description]
+
+### Files Modified ([Y] files)
+
+- `$DOC_DIR/[path]` - [What changed]
 
 **Total**: [N] documentation files, [X]KB of documentation
-
-### Sections Included
-
-- [Section 1]: [Brief description]
-- [Section 2]: [Brief description]
-- [Section 3]: [Brief description]
 
 ---
 
@@ -1345,7 +1341,6 @@ Create comprehensive report:
 - ✅ Code examples validated
 - ✅ Links checked
 - ✅ API schemas verified
-- ⚠️ [Any concerns]
 
 ### Code Examples: [N] examples
 
@@ -1359,6 +1354,8 @@ Create comprehensive report:
 
 1. **[Feedback 1]**: [How addressed]
 2. **[Feedback 2]**: [How addressed]
+
+OR "No critical issues found"
 
 ---
 
@@ -1377,31 +1374,17 @@ Create comprehensive report:
 
 ---
 
-## Artifacts
+## Related Resources
 
-All documentation artifacts in:
-- `$DOC_DIR/` - Generated documentation
-- `.agency/documentation/` - Generation logs and validation reports
-
----
-
-## Related Documentation
-
-- [Link to related docs]
-
----
-
-**Status**: ✅ Documentation Complete and Published
-
-**Commit**: [commit hash]
-
----
-
-**Generated**: [timestamp]
-**Documentation Topic**: $ARGUMENTS
+- **Documentation System**: [MkDocs/Docusaurus/etc]
+- **Build Command**: [command]
+- **Deploy Command**: [command]
+- **Commit**: [commit hash]
 ```
 
-Save to `.agency/documentation/doc-[topic]-report-[date].md`
+Save to `.agency/documentation/doc-[topic]-[timestamp].md`
+
+Refer to `prompts/reporting/summary-template.md` for the complete template structure.
 
 Mark todo #4 as completed.
 
@@ -1409,41 +1392,51 @@ Mark todo #4 as completed.
 
 ## Error Handling
 
+<!-- Component: prompts/error-handling/scope-detection-failure.md -->
 ### If Scope Detection Fails
 
 **Ambiguous Topic**:
-- Ask user to clarify with AskUserQuestion
-- Provide options based on project analysis
+- Use AskUserQuestion to clarify documentation type
+- Provide options based on project analysis (API/Architecture/Component/Feature/Code)
+- List detected evidence for each option
 - Allow manual scope specification
 
 **No Relevant Code Found**:
 - Verify search paths are correct
 - Ask user to specify exact location
-- Suggest alternative documentation types
+- Suggest alternative documentation types based on project structure
 
+<!-- Component: prompts/error-handling/ask-user-retry.md -->
 ### If Generation Fails
 
 **Specialist Agent Error**:
-- Review error from specialist
-- Either fix prerequisites or re-delegate with clarification
-- If repeated failures, offer to do manual generation with user guidance
+- Present error to user with retry options:
+  - A) Retry with clarified instructions
+  - B) Fix prerequisites and retry
+  - C) Manual generation with user guidance
+  - D) Abort workflow
+- Review error from specialist for missing dependencies or invalid context
+- Maximum 3 retry attempts before escalating to user
 
 **Missing Information**:
 - Identify what information is needed
 - Use Grep/Read to find it in codebase
-- Ask user if not found in code
+- If not found in code, ask user via AskUserQuestion
+- Document assumptions if information unavailable
 
 ### If Validation Fails
 
 **Code Examples Don't Work**:
-- Fix the examples in documentation
-- Or clarify they're pseudocode (not recommended)
+- Fix the examples in documentation using Edit tool
+- Re-run validation to verify fixes
 - Ensure examples match actual code
+- Never use pseudocode without clear labeling
 
 **Broken Links**:
 - Fix relative links
 - Update moved files
 - Remove links to non-existent pages
+- Validate all internal and external links
 
 **Formatting Issues**:
 - Fix markdown syntax errors

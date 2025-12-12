@@ -16,8 +16,48 @@ Perform comprehensive multi-aspect code review: security → quality → perform
 
 ---
 
+<!-- Component: prompts/progress/todo-initialization.md -->
+## Initialize Progress Tracking
+
+Use TodoWrite tool to create todo list:
+
+```javascript
+TodoWrite({
+  todos: [
+    {
+      content: "Detect review target and fetch details",
+      status: "in_progress",
+      activeForm: "Detecting review target and fetching details"
+    },
+    {
+      content: "Analyze changed files and complexity",
+      status: "pending",
+      activeForm: "Analyzing changed files and complexity"
+    },
+    {
+      content: "Launch parallel multi-aspect reviews",
+      status: "pending",
+      activeForm: "Launching parallel multi-aspect reviews"
+    },
+    {
+      content: "Aggregate and categorize findings",
+      status: "pending",
+      activeForm: "Aggregating and categorizing findings"
+    },
+    {
+      content: "Generate and save review report",
+      status: "pending",
+      activeForm: "Generating and saving review report"
+    }
+  ]
+});
+```
+
+---
+
 ## Critical Instructions
 
+<!-- Component: prompts/specialist-selection/skill-activation.md -->
 ### 1. Activate Code Review Standards
 
 **IMMEDIATELY** activate the code review standards skill:
@@ -31,6 +71,7 @@ This skill contains critical review patterns, security checklists, and quality s
 
 ## Phase 1: Review Target Detection (2-3 min)
 
+<!-- Component: prompts/issue-management/github-issue-fetch.md (adapted for PRs) -->
 ### Auto-Detect Source
 
 Analyze `$ARGUMENTS` to determine what to review:
@@ -70,7 +111,6 @@ gh pr view $ARGUMENTS --json files --jq '.files[].path'
 ```bash
 # Assuming glab CLI is installed
 glab mr view $ARGUMENTS
-
 glab mr diff $ARGUMENTS
 ```
 
@@ -89,6 +129,7 @@ git diff main -- $ARGUMENTS
 git diff -- $ARGUMENTS
 ```
 
+<!-- Component: prompts/issue-management/issue-metadata-extraction.md -->
 ### Extract Review Context
 
 From the PR/MR/files, gather:
@@ -102,8 +143,23 @@ From the PR/MR/files, gather:
 
 ---
 
+<!-- Component: prompts/progress/phase-tracking.md -->
+**Update Progress**:
+```javascript
+TodoWrite({
+  todos: [
+    {content: "Detect review target and fetch details", status: "completed", activeForm: "..."},
+    {content: "Analyze changed files and complexity", status: "in_progress", activeForm: "Analyzing changed files and complexity"},
+    {content: "Launch parallel multi-aspect reviews", status: "pending", activeForm: "..."},
+    {content: "Aggregate and categorize findings", status: "pending", activeForm: "..."},
+    {content: "Generate and save review report", status: "pending", activeForm: "..."}
+  ]
+});
+```
+
 ## Phase 2: Changed Files Analysis (3-5 min)
 
+<!-- Component: prompts/context/framework-detection.md (adapted for file categorization) -->
 ### Categorize Files
 
 Group changed files by type:
@@ -199,230 +255,113 @@ Based on changed files:
 
 ---
 
+<!-- Component: prompts/progress/phase-tracking.md -->
+**Update Progress**:
+```javascript
+TodoWrite({
+  todos: [
+    {content: "Detect review target and fetch details", status: "completed", activeForm: "..."},
+    {content: "Analyze changed files and complexity", status: "completed", activeForm: "..."},
+    {content: "Launch parallel multi-aspect reviews", status: "in_progress", activeForm: "Launching parallel multi-aspect reviews"},
+    {content: "Aggregate and categorize findings", status: "pending", activeForm: "..."},
+    {content: "Generate and save review report", status: "pending", activeForm: "..."}
+  ]
+});
+```
+
 ## Phase 3: Parallel Multi-Aspect Review (10-30 min)
 
+<!-- Component: prompts/code-review/reality-checker-spawn.md (adapted for multi-aspect review) -->
 ### Launch Review Agents in Parallel
 
 **IMPORTANT**: Spawn ALL relevant agents in parallel (single message, multiple Task calls) for maximum efficiency.
 
-#### Security Review (ALWAYS)
+**Review aspects to spawn based on file categorization**:
+- **Security Review** (ALWAYS) - Use backend-architect specialist
+- **Quality Review** (ALWAYS) - Use testing-reality-checker specialist
+- **Performance Review** (IF backend/API/frontend performance-critical changes) - Use performance-benchmarker specialist
+- **Testing Review** (IF new features or test coverage < 80%) - Use test-results-analyzer specialist
+- **Architecture Review** (IF > 20 files changed or major refactoring) - Use appropriate specialist based on domain
+
+#### Review Prompt Template (Apply to Each Aspect)
+
+For each review aspect, use the Task tool with this structure:
 
 ```bash
 Task tool with:
-- subagent_type: backend-architect
-- description: "Security review for PR $ARGUMENTS"
-- prompt: "Perform comprehensive security review focusing on:
+- subagent_type: [specialist-for-aspect]
+- description: "[Aspect] review for PR $ARGUMENTS"
+- prompt: "Perform [aspect] review focusing on:
 
-  **OWASP Top 10 Vulnerabilities**:
-  1. Injection (SQL, NoSQL, Command, LDAP)
-  2. Broken Authentication
-  3. Sensitive Data Exposure
-  4. XML External Entities (XXE)
-  5. Broken Access Control
-  6. Security Misconfiguration
-  7. Cross-Site Scripting (XSS)
-  8. Insecure Deserialization
-  9. Using Components with Known Vulnerabilities
-  10. Insufficient Logging & Monitoring
+  [Aspect-specific checklist from reality-checker-spawn.md]:
+  - Security: OWASP Top 10, input validation, authentication, secrets
+  - Quality: Readability, bugs, best practices, type safety
+  - Performance: Database queries, bundle size, algorithm efficiency
+  - Testing: Coverage, test quality, missing tests
+  - Architecture: Patterns, breaking changes, scalability
 
-  **Specific Checks**:
-  - Input validation on all user inputs
-  - SQL injection prevention (parameterized queries)
-  - XSS prevention (sanitization, escaping)
-  - CSRF token usage for state-changing operations
-  - Proper authentication checks on protected routes
-  - Authorization checks (user can only access their data)
-  - Secrets not hardcoded (use env vars)
-  - Secure password hashing (bcrypt, scrypt, argon2)
-  - HTTPS enforcement
-  - Rate limiting on APIs
-  - Proper error messages (no stack traces in production)
-
-  Files to review: [backend/API files list]
+  Files to review: [filtered-by-aspect]
 
   Severity levels:
-  - CRITICAL: Immediate security risk, blocks merge
-  - HIGH: Security vulnerability, must fix before merge
-  - MEDIUM: Security concern, should fix
-  - LOW: Security best practice, nice to fix
-
-  Report CRITICAL and HIGH issues ONLY."
-```
-
-#### Quality Review (ALWAYS)
-
-```bash
-Task tool with:
-- subagent_type: testing-reality-checker
-- description: "Quality review for PR $ARGUMENTS"
-- prompt: "Perform comprehensive quality review focusing on:
-
-  **Code Quality**:
-  - Readability: Clear variable names, logical structure
-  - Maintainability: DRY principle, single responsibility
-  - Complexity: Cyclomatic complexity reasonable
-  - Error Handling: Proper try/catch, error boundaries
-  - Type Safety: No 'any' types, proper TypeScript
-  - Comments: Code is self-documenting, minimal comments needed
-
-  **Bugs & Logic Errors**:
-  - Off-by-one errors
-  - Null/undefined checks
-  - Race conditions
-  - Memory leaks (closures, event listeners)
-  - Edge cases handled
-  - Async/await used correctly
-
-  **Best Practices**:
-  - Follows project coding standards
-  - Consistent with existing codebase patterns
-  - No code duplication
-  - No magic numbers (use constants)
-  - No TODO/FIXME left in PR
-  - No console.log/debugger statements
-
-  Files to review: [all code files]
-
-  Severity levels:
-  - CRITICAL: Blocks merge, introduces bugs
-  - HIGH: Should fix, impacts quality
+  - CRITICAL: Must fix before merge
+  - HIGH: Should fix before merge
   - MEDIUM: Consider fixing
   - LOW: Nice to have
 
   Report CRITICAL and HIGH issues ONLY."
 ```
 
-#### Performance Review (IF NEEDED)
+**Key Review Focus Areas** (from reality-checker-spawn.md):
 
-```bash
-Task tool with:
-- subagent_type: performance-benchmarker
-- description: "Performance review for PR $ARGUMENTS"
-- prompt: "Perform performance review focusing on:
+**Security** (backend-architect):
+- OWASP Top 10 vulnerabilities
+- Input validation, SQL injection, XSS, CSRF
+- Authentication/authorization checks
+- Secrets management, password hashing
 
-  **Backend Performance**:
-  - Database query efficiency (N+1 queries, missing indexes)
-  - API response time (< 200ms for simple, < 1s for complex)
-  - Caching strategy (Redis, in-memory, CDN)
-  - Background jobs for heavy operations
-  - Connection pooling
-  - Rate limiting to prevent abuse
+**Quality** (testing-reality-checker):
+- Code readability and maintainability
+- Bugs and logic errors
+- Type safety, error handling
+- Code standards and best practices
 
-  **Frontend Performance**:
-  - Bundle size impact (lazy loading, code splitting)
-  - Re-render optimization (React.memo, useMemo, useCallback)
-  - Image optimization (next/image, lazy loading)
-  - Core Web Vitals impact (LCP, FID, CLS)
-  - Unnecessary dependencies added
+**Performance** (performance-benchmarker):
+- Database query efficiency (N+1, indexing)
+- API response times, caching
+- Frontend bundle size, re-renders
+- Algorithm complexity
 
-  **Algorithm Efficiency**:
-  - Time complexity reasonable (avoid O(n²) if avoidable)
-  - Space complexity reasonable
-  - Proper data structures used
+**Testing** (test-results-analyzer):
+- Test coverage (80%+ target)
+- Test quality and patterns
+- Missing tests for critical paths
+- Edge case and error coverage
 
-  Files to review: [backend/database/frontend files]
-
-  Severity levels:
-  - CRITICAL: Major performance regression
-  - HIGH: Noticeable performance impact
-  - MEDIUM: Minor performance concern
-  - LOW: Optimization opportunity
-
-  Report CRITICAL and HIGH issues ONLY."
-```
-
-#### Testing Review (IF NEEDED)
-
-```bash
-Task tool with:
-- subagent_type: test-results-analyzer
-- description: "Testing review for PR $ARGUMENTS"
-- prompt: "Perform testing review focusing on:
-
-  **Test Coverage**:
-  - New features have tests (unit + integration)
-  - Modified code has tests updated
-  - Target: 80%+ coverage for new code
-  - Critical paths fully tested
-
-  **Test Quality**:
-  - Tests are meaningful, not just for coverage
-  - Tests actually test behavior, not implementation
-  - Edge cases covered
-  - Error cases covered
-  - Mocking used appropriately
-
-  **Test Patterns**:
-  - Arrange-Act-Assert (AAA) pattern
-  - Descriptive test names
-  - Independent tests (no shared state)
-  - Fast tests (< 100ms for unit tests)
-
-  **Missing Tests**:
-  - New functions without tests
-  - New API endpoints without tests
-  - New React components without tests
-  - Error handling paths without tests
-
-  Files to review: [code files + test files]
-
-  Severity levels:
-  - CRITICAL: Critical feature untested
-  - HIGH: Important feature lacks tests
-  - MEDIUM: Test coverage below target
-  - LOW: Minor test improvements
-
-  Report CRITICAL and HIGH issues ONLY."
-```
-
-#### Architecture Review (IF NEEDED)
-
-```bash
-Task tool with:
-- subagent_type: [selected-specialist based on domain]
-- description: "Architecture review for PR $ARGUMENTS"
-- prompt: "Perform architecture review focusing on:
-
-  **Architectural Concerns**:
-  - New patterns consistent with existing architecture
-  - Separation of concerns maintained
-  - Dependencies flow in correct direction
-  - No circular dependencies introduced
-  - Abstraction layers appropriate
-
-  **Breaking Changes**:
-  - Public API changes documented
-  - Backwards compatibility considered
-  - Migration path provided if breaking
-  - Deprecation warnings added
-
-  **Cross-Cutting Concerns**:
-  - Logging strategy consistent
-  - Error handling strategy consistent
-  - Configuration management consistent
-  - Dependency injection patterns followed
-
-  **Scalability**:
-  - Design scales with user growth
-  - No hardcoded limits that won't scale
-  - Stateless design where appropriate
-
-  Files to review: [all files]
-
-  Severity levels:
-  - CRITICAL: Architecture violation, major refactor needed
-  - HIGH: Architectural concern, should address
-  - MEDIUM: Design improvement recommended
-  - LOW: Minor architectural suggestion
-
-  Report CRITICAL and HIGH issues ONLY."
-```
+**Architecture** (domain-specialist):
+- Pattern consistency
+- Separation of concerns
+- Breaking changes handling
+- Scalability considerations
 
 ### Wait for All Reviews to Complete
 
 All review agents run in parallel. Wait for all to finish before proceeding to aggregation.
 
 ---
+
+<!-- Component: prompts/progress/phase-tracking.md -->
+**Update Progress**:
+```javascript
+TodoWrite({
+  todos: [
+    {content: "Detect review target and fetch details", status: "completed", activeForm: "..."},
+    {content: "Analyze changed files and complexity", status: "completed", activeForm: "..."},
+    {content: "Launch parallel multi-aspect reviews", status: "completed", activeForm: "..."},
+    {content: "Aggregate and categorize findings", status: "in_progress", activeForm: "Aggregating and categorizing findings"},
+    {content: "Generate and save review report", status: "pending", activeForm: "..."}
+  ]
+});
+```
 
 ## Phase 4: Review Aggregation (5-7 min)
 
@@ -438,43 +377,14 @@ From each reviewer agent, extract:
 
 ### Categorize by Severity and File
 
-Organize findings:
+Organize findings by severity and file for clarity.
 
-**By Severity**:
-```
-CRITICAL Issues: X
-- [Security] File.ts:123 - SQL injection vulnerability
-- [Quality] File.tsx:45 - Null pointer dereference
-
-HIGH Issues: Y
-- [Performance] API.ts:67 - N+1 query problem
-- [Testing] Feature.tsx - No tests for new feature
-
-MEDIUM Issues: Z
-- [Quality] Component.tsx:12 - Complex function, consider refactoring
-- [Performance] Page.tsx:89 - Unoptimized re-renders
-
-LOW Issues: W
-- [Architecture] Service.ts - Consider using dependency injection
-```
-
-**By File**:
-```
-src/api/users.ts
-- CRITICAL [Security] Line 45: SQL injection via unsanitized input
-- HIGH [Performance] Line 67: N+1 query, use JOIN
-
-src/components/UserProfile.tsx
-- HIGH [Testing] Missing tests for new feature
-- MEDIUM [Quality] Line 123: Complex conditional, refactor
-
-src/lib/auth.ts
-- CRITICAL [Security] Line 89: Hardcoded API key
-```
-
+<!-- Component: prompts/reporting/summary-template.md (adapted for code review) -->
 ### Generate Unified Report
 
-Create comprehensive review report structure:
+Use the following template structure for the review report:
+
+**File**: `.agency/reviews/pr-[number]-review-[timestamp].md`
 
 ```markdown
 # Code Review Report: [PR/MR Title or Files]
@@ -492,11 +402,11 @@ Create comprehensive review report structure:
 **Overall Assessment**: ✅ APPROVED / ⚠️ APPROVED WITH COMMENTS / ❌ CHANGES REQUIRED
 
 **Review Aspects Evaluated**:
-- ✅ Security: [X] issues found
-- ✅ Quality: [X] issues found
-- ✅ Performance: [X] issues found
-- ✅ Testing: [X] issues found
-- ✅ Architecture: [X] issues found
+- Security: [X] issues
+- Quality: [X] issues
+- Performance: [X] issues
+- Testing: [X] issues
+- Architecture: [X] issues
 
 **Severity Breakdown**:
 - CRITICAL: [X] (must fix before merge)
@@ -508,28 +418,14 @@ Create comprehensive review report structure:
 
 ## Critical Issues (Must Fix Before Merge)
 
-### 1. [Aspect] [File:Line] - [Issue Title]
+[For each critical issue]:
+### [N]. [Aspect] [File:Line] - [Issue Title]
 
 **Severity**: CRITICAL
-**Category**: [Security/Quality/Performance/Testing/Architecture]
 **File**: `path/to/file.ts:123`
-
-**Issue**:
-[Detailed description of the problem]
-
-**Risk**:
-[What could go wrong if not fixed]
-
-**Recommendation**:
-[Specific steps to fix]
-
-```code
-// Example fix if applicable
-```
-
----
-
-[Repeat for each critical issue]
+**Issue**: [Description]
+**Risk**: [Impact if not fixed]
+**Recommendation**: [How to fix]
 
 ---
 
@@ -539,57 +435,25 @@ Create comprehensive review report structure:
 
 ---
 
-## Medium Priority Issues (Consider Fixing)
+## Medium/Low Priority Issues
 
 [Condensed format]:
-1. **[File:Line]** - [Brief issue description] → [Brief fix recommendation]
-2. **[File:Line]** - [Brief issue description] → [Brief fix recommendation]
-
----
-
-## Low Priority Issues (Optional Improvements)
-
-[Brief list]:
-- [File]: [Issue] → [Fix]
+- **[File:Line]** - [Brief issue] → [Brief fix]
 
 ---
 
 ## File-by-File Breakdown
 
-### `src/api/users.ts` ([+X, -Y] lines)
+### `[file-path]` ([+X, -Y] lines)
 
 **Issues Found**: [X]
-- CRITICAL: [Issue]
-- HIGH: [Issue]
-- MEDIUM: [Issue]
-
-**Strengths**:
-- [Positive observations]
-
----
-
-[Repeat for significant files]
+**Strengths**: [Positive observations]
 
 ---
 
 ## Positive Observations
 
-- ✅ [Good practice 1]
-- ✅ [Good practice 2]
-- ✅ [Good practice 3]
-
----
-
-## Recommendations Summary
-
-**Before Merge** (Required):
-1. Fix [X] critical issues
-2. Fix [X] high priority issues
-3. Verify fixes don't introduce new issues
-
-**Future Improvements** (Optional):
-1. [Recommendation]
-2. [Recommendation]
+- ✅ [Good practice observed]
 
 ---
 
@@ -600,28 +464,38 @@ Create comprehensive review report structure:
 - **Issues Found**: [X] total
 - **Code Quality Score**: [X]/10
 - **Security Posture**: [Strong/Good/Needs Work/Weak]
-- **Test Coverage**: [X]% ([Above/Below] target)
 
 ---
 
+<!-- Component: prompts/reporting/next-steps-template.md -->
 ## Next Steps
 
-[If approved]:
-✅ **Ready to Merge** - All critical issues resolved, high quality code
+[Based on review decision criteria]:
 
-[If approved with comments]:
-⚠️ **Approved with Comments** - Safe to merge, but consider addressing [X] high priority issues in follow-up
-
-[If changes required]:
-❌ **Changes Required** - [X] critical issues must be fixed before merge:
-1. [Critical issue 1]
-2. [Critical issue 2]
+**✅ APPROVED**: Ready to merge
+**⚠️ APPROVED WITH COMMENTS**: Safe to merge with noted issues
+**❌ CHANGES REQUIRED**: Fix [X] critical issues before merge
 ```
 
 ---
 
+<!-- Component: prompts/progress/phase-tracking.md -->
+**Update Progress**:
+```javascript
+TodoWrite({
+  todos: [
+    {content: "Detect review target and fetch details", status: "completed", activeForm: "..."},
+    {content: "Analyze changed files and complexity", status: "completed", activeForm: "..."},
+    {content: "Launch parallel multi-aspect reviews", status: "completed", activeForm: "..."},
+    {content: "Aggregate and categorize findings", status: "completed", activeForm: "..."},
+    {content: "Generate and save review report", status: "in_progress", activeForm: "Generating and saving review report"}
+  ]
+});
+```
+
 ## Phase 5: Save Review Report & Communicate (2-3 min)
 
+<!-- Component: prompts/reporting/artifact-listing.md -->
 ### Save Review Report
 
 ```bash
@@ -666,109 +540,57 @@ Provide concise summary:
 **Detailed Report**: $REVIEW_FILE
 
 **Next Steps**:
-[Recommended actions]
+[Recommended actions based on next-steps-template.md]
 ```
 
+<!-- Component: prompts/progress/completion-reporting.md -->
 ### Update TodoWrite
 
-Mark all review tasks as completed in TodoWrite.
+Mark all review tasks as completed:
+
+```javascript
+TodoWrite({
+  todos: [
+    {content: "Detect review target and fetch details", status: "completed", activeForm: "..."},
+    {content: "Analyze changed files and complexity", status: "completed", activeForm: "..."},
+    {content: "Launch parallel multi-aspect reviews", status: "completed", activeForm: "..."},
+    {content: "Aggregate and categorize findings", status: "completed", activeForm: "..."},
+    {content: "Generate and save review report", status: "completed", activeForm: "Generating and saving review report"}
+  ]
+});
+```
 
 ---
 
+<!-- Component: prompts/git/pr-creation.md (adapted for review submission) -->
 ## Multi-Provider Support
 
-### GitHub Integration
-
-```bash
-# View PR
-gh pr view 123
-
-# View PR diff
-gh pr diff 123
-
-# Get changed files
-gh pr view 123 --json files --jq '.files[].path'
-
-# Add review comment
-gh pr review 123 --comment --body "Review findings: ..."
-
-# Request changes
-gh pr review 123 --request-changes --body "Critical issues found..."
-
-# Approve
-gh pr review 123 --approve --body "LGTM! 🚀"
-```
-
-### GitLab Integration
-
-```bash
-# View MR
-glab mr view 123
-
-# View MR diff
-glab mr diff 123
-
-# Add MR comment
-glab mr note 123 --message "Review findings: ..."
-```
-
-### Bitbucket Integration
-
-```bash
-# Use Bitbucket API
-curl -X POST https://api.bitbucket.org/2.0/repositories/owner/repo/pullrequests/123/comments \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"content": {"raw": "Review findings..."}}'
-```
-
-### Local Files (No PR)
-
-When reviewing local files without a PR:
-- Create review report in `.agency/reviews/`
-- Filename: `local-review-[filename]-[timestamp].md`
-- Include git diff in report if available
+**GitHub**: Use `gh pr review` to submit review findings
+**GitLab**: Use `glab mr note` to add review comments
+**Bitbucket**: Use API or web interface to submit review
+**Local Files**: Save review report to `.agency/reviews/local-review-[filename]-[timestamp].md`
 
 ---
 
+<!-- Component: prompts/reporting/next-steps-template.md (review decision matrix) -->
 ## Review Decision Criteria
 
-### ✅ APPROVED
+**✅ APPROVED**: 0 critical, 0 high issues, coverage ≥80%, quality ≥7/10, no security vulnerabilities
 
-All of the following must be true:
-- Zero CRITICAL issues
-- Zero HIGH issues (or all have acceptable explanations)
-- Code quality score ≥ 7/10
-- Test coverage ≥ 80% (or acceptable for change type)
-- No security vulnerabilities
-- Follows project standards
+**⚠️ APPROVED WITH COMMENTS**: 0 critical, 1-3 high issues (acceptable trade-offs), coverage 60-79%, quality 5-7/10
 
-### ⚠️ APPROVED WITH COMMENTS
-
-When:
-- Zero CRITICAL issues
-- 1-3 HIGH issues that are acceptable trade-offs
-- Code quality score 5-7/10
-- Test coverage 60-79%
-- Minor security concerns (all addressed or mitigated)
-- High priority items can be addressed in follow-up
-
-### ❌ CHANGES REQUIRED
-
-When any of the following are true:
-- 1+ CRITICAL issues
-- 4+ HIGH issues
-- Code quality score < 5/10
-- Test coverage < 60% for new code
-- Security vulnerabilities present
-- Breaking changes without migration path
-- Does not follow project standards
+**❌ CHANGES REQUIRED**: 1+ critical OR 4+ high issues OR coverage <60% OR quality <5/10 OR security vulnerabilities present
 
 ---
 
+<!-- Component: prompts/error-handling/tool-execution-failure.md -->
 ## Error Handling
 
 ### If PR/MR Not Found
 
+**Detection**: gh/glab CLI returns 404 or "not found" error
+
+**User Message**:
 ```
 Error: PR/MR not found: $ARGUMENTS
 
@@ -783,8 +605,11 @@ Try:
 - Different format (e.g., #123 vs 123)
 ```
 
+**Recovery**: Use AskUserQuestion to get corrected PR number or URL.
+
 ### If No Changed Files
 
+**User Message**:
 ```
 Error: No changed files found in $ARGUMENTS
 
@@ -796,7 +621,10 @@ This could mean:
 Cannot proceed with review of empty changeset.
 ```
 
+<!-- Component: prompts/error-handling/partial-failure-recovery.md -->
 ### If Review Agent Fails
+
+**Strategy**: Continue with partial review from successful agents.
 
 ```
 Warning: [Agent] review failed or incomplete

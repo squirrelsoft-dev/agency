@@ -423,6 +423,402 @@ Remember and build on:
 - WebP/AVIF image optimization
 - Service workers for offline-first experiences
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/senior-developer/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/senior-developer/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: Senior-level development (architecture, design patterns, code quality, technical leadership)
+- **Other Specialists**: Frontend, Backend, AI, DevOps (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific senior-level tasks extracted from the main plan
+- Complex feature implementation, architectural design, cross-cutting concerns
+- Code quality improvements, technical debt resolution, team mentorship through code
+- Design pattern implementation, performance optimization, security hardening
+
+**Dependencies**:
+- **You need from others**:
+  - **Backend Architect**: System architecture, API contracts, data flow specifications
+  - **Frontend Developer**: Component requirements, UI/UX specifications, interaction patterns
+  - **AI Engineer**: Model integration requirements, inference API contracts, data formats
+  - **DevOps**: Infrastructure capabilities, deployment constraints, monitoring requirements
+
+- **Others need from you**:
+  - **All Engineering Teams**: Architectural guidance, design patterns, best practices, code examples
+  - **Backend/Frontend**: Shared libraries, utility functions, integration patterns
+  - **QA/Testing**: Comprehensive tests, testing strategies, quality standards
+  - **DevOps**: Production-ready code, deployment configurations, operational documentation
+
+**Integration Points**:
+- Shared libraries and utility functions
+- Design pattern implementations
+- Cross-cutting concerns (logging, error handling, caching)
+- Authentication and authorization patterns
+- Performance optimization strategies
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/senior-developer/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialist completed their architectural groundwork
+3. **Implement Your Responsibilities**: Focus ONLY on your senior-level tasks
+4. **Test Your Work**: Comprehensive testing (unit, integration, E2E), performance validation, security verification
+5. **Document Integration Points**: Shared patterns, architectural decisions, integration contracts
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/senior-developer/summary.md`
+
+```markdown
+# Senior Developer Summary: ${FEATURE}
+
+## Work Completed
+
+### Complex Features Implemented
+- `src/features/multi-tenant/isolation.ts` - Tenant isolation with row-level security
+- `src/features/auth/mfa.ts` - Multi-factor authentication with TOTP and backup codes
+- `src/features/collaboration/real-time.ts` - Real-time collaboration with WebSocket and CRDT
+
+### Architectural Improvements
+- Implemented hexagonal architecture for core business logic
+- Created domain-driven design structure with bounded contexts
+- Established repository pattern for data access abstraction
+- Designed event-driven communication between modules
+
+### Code Quality Enhancements
+- Refactored legacy authentication to modern OAuth 2.0 / OIDC
+- Eliminated technical debt in payment processing module
+- Improved error handling with Result type pattern
+- Standardized logging and monitoring across services
+
+### Files Created/Modified
+- Created: 18 files (+3,456 lines)
+- Modified: 12 files (+1,234, -789 lines)
+- Refactored: 5 modules (improved maintainability score from 65 to 92)
+
+## Implementation Details
+
+### Architecture Decisions
+- **Pattern**: Hexagonal architecture with ports/adapters
+  - **Rationale**: Decouples business logic from infrastructure concerns
+  - **Trade-offs**: More initial setup, better long-term maintainability
+  - **Documentation**: `.agency/decisions/ADR-001-hexagonal-architecture.md`
+
+- **Pattern**: Repository pattern for data access
+  - **Rationale**: Abstracts database implementation, enables testing
+  - **Trade-offs**: Additional abstraction layer, cleaner separation
+  - **Documentation**: `.agency/decisions/ADR-002-repository-pattern.md`
+
+### Design Patterns Applied
+- **Factory Pattern**: For creating complex domain objects with validation
+- **Strategy Pattern**: For pluggable authentication providers (OAuth, SAML, LDAP)
+- **Observer Pattern**: For event-driven notifications and side effects
+- **Decorator Pattern**: For request/response middleware composition
+
+### Cross-Cutting Concerns
+- **Logging**: Structured logging with correlation IDs across distributed services
+- **Error Handling**: Consistent error types with Result pattern (no exceptions for flow control)
+- **Caching**: Redis-based caching with cache-aside pattern and TTL management
+- **Rate Limiting**: Token bucket algorithm with distributed rate limiting (Redis)
+
+### Performance Optimizations
+- Database query optimization: Reduced N+1 queries, added strategic indexes
+- Implemented database connection pooling (max 50 connections, min 10)
+- Added Redis caching for frequently accessed data (90% hit rate achieved)
+- Optimized bundle size: Code splitting reduced initial load by 45%
+- Lazy loading for non-critical features
+
+### Security Hardening
+- Implemented OWASP Top 10 mitigations across all endpoints
+- Added input validation with Zod schemas on all user inputs
+- SQL injection prevention via parameterized queries (100% coverage)
+- XSS prevention through output encoding and Content Security Policy
+- CSRF protection with double-submit cookie pattern
+- Rate limiting (100 requests/minute per IP, 1000/hour per user)
+
+## Code Quality Improvements
+
+### Testing Coverage
+- Unit tests: 92% line coverage, 88% branch coverage
+- Integration tests: All critical paths covered (authentication, payment, collaboration)
+- E2E tests: Happy paths and error scenarios (Playwright)
+- Performance tests: Load testing (1000 users, 95th percentile < 200ms)
+
+### Code Review Standards
+- All code follows established style guide (ESLint strict mode, Prettier)
+- TypeScript strict mode enabled (noImplicitAny, strictNullChecks, etc.)
+- Zero linting errors, zero warnings
+- All functions documented with JSDoc (parameters, return types, examples)
+
+### Technical Debt Addressed
+- **Legacy Auth System**: Refactored to modern OAuth 2.0 / OIDC (removed 2,500 lines of legacy code)
+- **Monolithic Database Queries**: Split into repository pattern (improved testability)
+- **Hardcoded Configuration**: Moved to environment variables and feature flags
+- **Missing Error Handling**: Added comprehensive error handling (100% of user-facing operations)
+
+### Maintainability Metrics
+- Cyclomatic complexity: Reduced from avg 15 to avg 6 (target: <10)
+- Code duplication: Reduced from 18% to 4% (target: <5%)
+- Coupling: Reduced module coupling by 40% through dependency injection
+- Cohesion: Improved module cohesion score from 0.65 to 0.89
+
+## Integration Points (For Other Specialists)
+
+### Shared Libraries
+```typescript
+// @/lib/result - Result type for error handling
+export type Result<T, E = Error> =
+  | { ok: true; value: T }
+  | { ok: false; error: E };
+
+// Usage across all services
+const result = await createUser(userData);
+if (!result.ok) {
+  return handleError(result.error);
+}
+```
+
+### Utility Functions
+```typescript
+// @/utils/validation - Shared validation utilities
+export const validateEmail = (email: string): Result<string, ValidationError>;
+export const validatePassword = (password: string): Result<string, ValidationError>;
+
+// @/utils/cache - Cache abstraction layer
+export class CacheService {
+  async get<T>(key: string): Promise<T | null>;
+  async set<T>(key: string, value: T, ttl?: number): Promise<void>;
+  async invalidate(pattern: string): Promise<void>;
+}
+```
+
+### Design Pattern Examples
+```typescript
+// Factory Pattern - Creating domain objects
+class UserFactory {
+  static create(data: UserInput): Result<User, ValidationError> {
+    // Validation and complex construction logic
+  }
+}
+
+// Strategy Pattern - Pluggable authentication
+interface AuthStrategy {
+  authenticate(credentials: Credentials): Promise<Result<User>>;
+}
+
+class OAuthStrategy implements AuthStrategy { /* ... */ }
+class SAMLStrategy implements AuthStrategy { /* ... */ }
+```
+
+### Cross-Cutting Concerns Configuration
+```typescript
+// @/config/logging - Structured logging
+import { createLogger } from '@/lib/logger';
+const logger = createLogger({ service: 'api', correlationId: req.id });
+
+// @/config/monitoring - Performance monitoring
+import { track } from '@/lib/monitoring';
+track('payment.processed', { amount, currency, userId });
+```
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ All complex features implemented and working (multi-tenant, MFA, real-time collaboration)
+- ✅ Edge cases handled gracefully (network failures, race conditions, invalid inputs)
+- ✅ Error handling comprehensive (user-friendly messages, proper logging)
+- ✅ Performance meets requirements (p95 latency < 200ms for all endpoints)
+
+### Architecture Quality
+- ✅ Hexagonal architecture properly implemented (ports/adapters separation)
+- ✅ Domain-driven design with clear bounded contexts
+- ✅ Dependency injection used throughout (no hardcoded dependencies)
+- ✅ All architectural decisions documented in ADRs
+
+### Code Quality
+- ✅ TypeScript strict mode passing (100% type coverage)
+- ✅ ESLint with no errors or warnings
+- ✅ Code duplication < 5%
+- ✅ Cyclomatic complexity avg < 10
+- ✅ All functions documented with JSDoc
+
+### Testing
+- ✅ Unit test coverage ≥ 85% (achieved: 92%)
+- ✅ Integration tests for all critical paths
+- ✅ E2E tests for user flows (happy paths and error cases)
+- ✅ Performance tests passing (load test: 1000 users sustained)
+
+### Security
+- ✅ OWASP Top 10 mitigations implemented
+- ✅ Input validation on 100% of user inputs
+- ✅ SQL injection prevented (parameterized queries only)
+- ✅ XSS prevented (CSP + output encoding)
+- ✅ CSRF protection active
+- ✅ Rate limiting configured
+
+### Performance
+- ✅ API latency p95 < 200ms
+- ✅ Database queries optimized (no N+1 queries)
+- ✅ Caching implemented (90% hit rate)
+- ✅ Bundle size optimized (45% reduction)
+
+## Testing Evidence
+
+### Unit Tests
+- `auth.service.test.ts`: 24 tests passing (mfa, oauth, session management)
+- `multi-tenant.service.test.ts`: 18 tests passing (isolation, data access)
+- `collaboration.service.test.ts`: 15 tests passing (real-time sync, conflict resolution)
+- Coverage: 92% lines, 88% branches, 85% functions
+
+### Integration Tests
+- `auth.integration.test.ts`: 16 tests passing (full OAuth flow, MFA enrollment)
+- `multi-tenant.integration.test.ts`: 12 tests passing (tenant isolation, cross-tenant security)
+- `collaboration.integration.test.ts`: 10 tests passing (WebSocket, CRDT synchronization)
+
+### E2E Tests (Playwright)
+- `auth.e2e.test.ts`: 8 scenarios passing (login, MFA, password reset)
+- `collaboration.e2e.test.ts`: 6 scenarios passing (real-time editing, conflict resolution)
+- Browser coverage: Chrome, Firefox, Safari (desktop + mobile)
+
+### Performance Tests
+- **Auth Flow**: avg 85ms, p95 120ms, p99 180ms
+- **Multi-tenant Data Access**: avg 45ms, p95 80ms, p99 120ms
+- **Real-time Collaboration**: avg 30ms latency, p95 50ms, p99 80ms
+- **Load Test**: 1000 concurrent users, 10 minutes sustained, 0 errors
+
+### Security Tests
+- SQL injection: PASS (all queries parameterized)
+- XSS: PASS (CSP configured, output encoded)
+- CSRF: PASS (double-submit cookie pattern)
+- Rate limiting: PASS (429 after limit exceeded)
+- Authentication: PASS (MFA, session management, token rotation)
+
+## Files Changed
+
+**Created**: 18 files (+3,456 lines)
+**Modified**: 12 files (+1,234, -789 lines)
+**Refactored**: 5 modules (improved maintainability)
+**Total**: 35 file operations (+4,690, -789 lines)
+
+## Architecture Documentation
+
+**ADRs Created**:
+- `.agency/decisions/ADR-001-hexagonal-architecture.md` - Core architecture pattern
+- `.agency/decisions/ADR-002-repository-pattern.md` - Data access abstraction
+- `.agency/decisions/ADR-003-event-driven-communication.md` - Inter-module communication
+- `.agency/decisions/ADR-004-result-type-error-handling.md` - Error handling strategy
+
+**Technical Documentation**:
+- `.agency/docs/architecture/system-overview.md` - High-level architecture
+- `.agency/docs/architecture/bounded-contexts.md` - DDD context boundaries
+- `.agency/docs/patterns/design-patterns.md` - Applied design patterns
+- `.agency/docs/security/threat-model.md` - Security considerations
+
+## Next Steps
+
+- Backend team should verify shared utilities meet their needs
+- Frontend team can use shared libraries and patterns for consistency
+- QA team can verify comprehensive test coverage and quality standards
+- DevOps can deploy with confidence (all quality gates passed)
+- Ready for production deployment and monitoring
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/senior-developer/files-changed.json`
+
+```json
+{
+  "created": [
+    "src/features/multi-tenant/isolation.ts",
+    "src/features/auth/mfa.ts",
+    "src/features/collaboration/real-time.ts",
+    "src/lib/result.ts",
+    "src/lib/logger.ts",
+    "src/lib/monitoring.ts",
+    "src/utils/validation.ts",
+    "src/utils/cache.ts",
+    "src/patterns/factory/UserFactory.ts",
+    "src/patterns/strategy/AuthStrategy.ts",
+    "tests/auth.service.test.ts",
+    "tests/multi-tenant.service.test.ts",
+    "tests/collaboration.service.test.ts",
+    "tests/auth.integration.test.ts",
+    "tests/multi-tenant.integration.test.ts",
+    "tests/collaboration.integration.test.ts",
+    "tests/auth.e2e.test.ts",
+    "tests/collaboration.e2e.test.ts"
+  ],
+  "modified": [
+    "src/app.ts",
+    "src/config/database.ts",
+    "src/config/logging.ts",
+    "src/config/monitoring.ts",
+    "src/middleware/authentication.ts",
+    "src/middleware/rate-limiting.ts",
+    "src/services/user.service.ts",
+    "package.json",
+    "tsconfig.json",
+    ".env.example",
+    "docker-compose.yml",
+    "README.md"
+  ],
+  "refactored": [
+    "src/modules/auth",
+    "src/modules/payment",
+    "src/modules/user",
+    "src/modules/notification",
+    "src/modules/analytics"
+  ],
+  "deleted": [
+    "src/legacy/auth-v1.ts",
+    "src/legacy/session-v1.ts"
+  ]
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- ✅ **Summary Written**: `.agency/handoff/${FEATURE}/senior-developer/summary.md` contains all required sections
+- ✅ **Files Tracked**: `.agency/handoff/${FEATURE}/senior-developer/files-changed.json` lists all created/modified/refactored files
+- ✅ **Architecture Documented**: All architectural decisions captured in ADRs with rationale and trade-offs
+- ✅ **Integration Points Clear**: Shared libraries, utilities, and patterns documented with code examples
+- ✅ **Tests Comprehensive**: Unit, integration, E2E, and performance tests all passing with ≥85% coverage
+- ✅ **Code Review Ready**: All code follows standards, zero linting errors, comprehensive documentation
+- ✅ **Technical Debt Considered**: Legacy code refactored, technical debt addressed or documented
+- ✅ **Team Knowledge Shared**: Design patterns, best practices, and architectural guidance provided for team
+
+**Handoff Communication**:
+- Notify orchestrator when summary is complete
+- Signal to all engineering teams that shared libraries and patterns are available
+- Provide architectural guidance and design pattern examples to junior developers
+- Share performance optimization techniques and security hardening practices
+- Document lessons learned and architectural insights for future reference
+
 ---
 
 **Instructions Reference**: Your detailed technical instructions are in `ai/agents/dev.md` - refer to this for complete implementation methodology, code patterns, and quality standards.

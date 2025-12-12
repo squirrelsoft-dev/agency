@@ -25,6 +25,8 @@ Generate comprehensive Architecture Decision Record:
 
 ### 1. Activate Agency Workflow Knowledge
 
+<!-- Component: prompts/specialist-selection/skill-activation.md -->
+
 **IMMEDIATELY** activate the agency workflow patterns skill:
 ```
 Use the Skill tool to activate: agency-workflow-patterns
@@ -36,6 +38,8 @@ Also activate the ADR writing skill if available:
 ```
 Use the Skill tool to activate: adr-writing
 ```
+
+**Note**: See `prompts/specialist-selection/skill-activation.md` for detailed skill activation patterns and technology detection rules.
 
 ### 2. ADR Writing Principles
 
@@ -60,84 +64,56 @@ Track ADR creation progress with TodoWrite for transparency.
 
 ## Phase 0: Project Context Detection (1-2 min)
 
+<!-- Component: prompts/context/framework-detection.md -->
+<!-- Component: prompts/context/database-detection.md -->
+
 Quickly gather project context to inform the ADR.
 
 ### Detect Framework/Architecture
 
+Use the framework detection algorithm from `prompts/context/framework-detection.md`:
+
 ```bash
-# Detect JavaScript/TypeScript frameworks
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
+# Execute detection in order, return first match
+if test -f next.config.js || test -f next.config.mjs || test -f next.config.ts; then
   FRAMEWORK="Next.js"
-  Read package.json
-fi
-
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  FRAMEWORK="React + Vite"
-fi
-
-# Check for Python frameworks
-if [ -f "manage.py" ]; then
+elif test -f manage.py; then
   FRAMEWORK="Django"
-fi
-
-if [ -f "main.py" ] || [ -f "app.py" ]; then
-  if grep -q "fastapi" requirements.txt 2>/dev/null; then
-    FRAMEWORK="FastAPI"
-  elif grep -q "flask" requirements.txt 2>/dev/null; then
-    FRAMEWORK="Flask"
-  fi
+elif grep -q "fastapi" requirements.txt 2>/dev/null; then
+  FRAMEWORK="FastAPI"
+elif grep -q "flask" requirements.txt 2>/dev/null; then
+  FRAMEWORK="Flask"
+# ... (see prompts/context/framework-detection.md for complete algorithm)
 fi
 ```
 
 ### Detect Current Architecture
 
+Use the database detection algorithm from `prompts/context/database-detection.md`:
+
 ```bash
-# Database
-if [ -f "package.json" ]; then
-  if grep -q "prisma" package.json; then
-    DATABASE="Prisma (PostgreSQL/MySQL)"
-  elif grep -q "drizzle" package.json; then
-    DATABASE="Drizzle ORM"
-  elif grep -q "mongodb" package.json; then
-    DATABASE="MongoDB"
-  elif grep -q "@supabase" package.json; then
-    DATABASE="Supabase (PostgreSQL)"
-  fi
-fi
-
-# Authentication
-if grep -q "next-auth\|@auth/core" package.json 2>/dev/null; then
-  AUTH="NextAuth.js"
-elif grep -q "@clerk" package.json 2>/dev/null; then
-  AUTH="Clerk"
-elif grep -q "passport" package.json 2>/dev/null; then
-  AUTH="Passport.js"
-fi
-
-# State Management
-if grep -q "zustand" package.json 2>/dev/null; then
-  STATE="Zustand"
-elif grep -q "@reduxjs/toolkit" package.json 2>/dev/null; then
-  STATE="Redux Toolkit"
-elif grep -q "jotai" package.json 2>/dev/null; then
-  STATE="Jotai"
-fi
-
-# Deployment
-if [ -f "vercel.json" ] || [ -d ".vercel" ]; then
-  DEPLOYMENT="Vercel"
-elif [ -f "netlify.toml" ]; then
-  DEPLOYMENT="Netlify"
-elif [ -f "Dockerfile" ]; then
-  DEPLOYMENT="Docker/Containers"
+# Check for ORM/database tools
+if grep -q '"@prisma/client"' package.json 2>/dev/null; then
+  ORM="Prisma"
+  DB=$(grep 'provider =' prisma/schema.prisma | awk '{print $3}' | tr -d '"')
+elif grep -q '"drizzle-orm"' package.json 2>/dev/null; then
+  ORM="Drizzle ORM"
+elif grep -q '"@supabase/supabase-js"' package.json 2>/dev/null; then
+  ORM="Supabase Client"
+  DB="PostgreSQL"
+# ... (see prompts/context/database-detection.md for complete algorithm)
 fi
 ```
+
+**Authentication, State Management, Deployment**: Use similar detection patterns from context components.
 
 **Use this context to**:
 - Understand existing architecture patterns
 - Identify related decisions
 - Suggest appropriate alternatives
 - Tailor recommendations to stack
+
+**See**: `prompts/context/framework-detection.md`, `prompts/context/database-detection.md` for comprehensive detection algorithms.
 
 ---
 
@@ -161,15 +137,45 @@ Analyze `$ARGUMENTS` to understand what decision needs documentation:
 
 ### Create Todo List for ADR Creation
 
-Use TodoWrite to create tracking:
+<!-- Component: prompts/progress/todo-initialization.md -->
 
-```
-1. Analyze decision context and problem
-2. Research current architecture
-3. Identify alternatives
-4. Draft ADR with specialist input
-5. Review and refine ADR
-6. Publish ADR
+Use TodoWrite to create tracking (see `prompts/progress/todo-initialization.md` for format guidelines):
+
+```javascript
+TodoWrite({
+  todos: [
+    {
+      content: "Analyze decision context and problem",
+      status: "in_progress",
+      activeForm: "Analyzing decision context and problem"
+    },
+    {
+      content: "Research current architecture",
+      status: "pending",
+      activeForm: "Researching current architecture"
+    },
+    {
+      content: "Identify alternatives",
+      status: "pending",
+      activeForm: "Identifying alternatives"
+    },
+    {
+      content: "Draft ADR with specialist input",
+      status: "pending",
+      activeForm: "Drafting ADR with specialist input"
+    },
+    {
+      content: "Review and refine ADR",
+      status: "pending",
+      activeForm: "Reviewing and refining ADR"
+    },
+    {
+      content: "Publish ADR",
+      status: "pending",
+      activeForm: "Publishing ADR"
+    }
+  ]
+});
 ```
 
 ### Check for Existing ADRs
@@ -738,11 +744,15 @@ echo "Updated ADR index: $INDEX_FILE"
 
 ### Commit ADR
 
+<!-- Component: prompts/git/commit-formatting.md -->
+
+Stage and commit ADR files following conventional commit format (see `prompts/git/commit-formatting.md`):
+
 ```bash
 # Stage ADR files
 git add "$ADR_FILE" "$INDEX_FILE"
 
-# Create commit
+# Create commit using HEREDOC for proper formatting
 git commit -m "$(cat <<'EOF'
 docs(adr): add ADR-$NEXT_NUMBER - $ADR_TITLE
 
@@ -757,29 +767,34 @@ EOF
 echo "ADR committed to git"
 ```
 
+**Commit Type**: `docs` (documentation-only changes)
+**Scope**: `adr` (ADR-specific)
+**Format**: See `prompts/git/commit-formatting.md` for detailed commit message guidelines.
+
 ### Generate ADR Report
 
-Create summary report:
+<!-- Component: prompts/reporting/summary-template.md -->
+<!-- Component: prompts/reporting/artifact-listing.md -->
+<!-- Component: prompts/reporting/next-steps-template.md -->
+
+Create summary report using templates from `prompts/reporting/`:
 
 ```markdown
-# ADR Creation Report
+# ADR Creation Report: $ADR_TITLE
 
-**Date**: [current date]
+**Date**: [YYYY-MM-DD HH:MM:SS]
 **ADR Number**: ADR-$NEXT_NUMBER
-**Title**: [ADR title]
+**Title**: $ADR_TITLE
 **Status**: [Proposed/Accepted]
+**Duration**: [Approximate time taken]
 
 ---
 
-## Summary
+## Objective
 
 Created Architecture Decision Record documenting: **$ARGUMENTS**
 
-**Decision**: [Brief summary of the decision]
-
-**Alternatives Considered**: [Count]
-
-**Status**: [Current status]
+**Decision**: [Brief summary of the decision made]
 
 ---
 
@@ -800,48 +815,65 @@ Created Architecture Decision Record documenting: **$ARGUMENTS**
 - [Trade-off 1]
 - [Trade-off 2]
 
+**Alternatives Considered**: [Count]
+
+---
+
+## Artifacts Generated
+
+<!-- From prompts/reporting/artifact-listing.md -->
+
+### Documentation Files
+
+- `$ADR_FILE` - Architecture Decision Record ([size])
+- `$INDEX_FILE` - Updated ADR index ([size])
+- `.agency/adr/adr-creation-report-[date].md` - This report
+
+**Total**: 3 files
+
 ---
 
 ## Next Steps
 
-### Implementation
+<!-- From prompts/reporting/next-steps-template.md -->
 
-1. [Implementation step 1]
-2. [Implementation step 2]
+### ✅ ADR Published
 
-### Review
+**Immediate Actions**:
 
-- **Review Date**: [6-12 months from now]
-- **Review Triggers**: [Conditions that would prompt early review]
+1. **Communicate Decision**
+   - Share ADR with team
+   - Add to team meeting agenda
+   - Update stakeholders
 
-### Related Work
+2. **Update Documentation**
+   - [ ] Update architecture diagrams if needed
+   - [ ] Update developer documentation
+   - [ ] Add to onboarding materials
 
-- [ ] Update architecture diagrams if needed
-- [ ] Update developer documentation
-- [ ] Communicate decision to team
-- [ ] Add to onboarding materials
+3. **Track for Review**
+   - **Review Date**: [6-12 months from now]
+   - **Review Triggers**: [Conditions that would prompt early review]
 
----
-
-## Files Created
-
-- `$ADR_FILE` - Architecture Decision Record
-- `$INDEX_FILE` - Updated ADR index
-- `.agency/adr/adr-creation-report-[date].md` - This report
+**Implementation**:
+- If implementation needed, create implementation plan
+- Link to related issues/epics
+- Schedule implementation work
 
 ---
 
 **Status**: ✅ ADR Published
-
 **Commit**: [commit hash]
-
----
-
 **Generated**: [timestamp]
 **Decision**: $ARGUMENTS
 ```
 
 Save to `.agency/adr/adr-creation-report-[date].md`
+
+**See**:
+- `prompts/reporting/summary-template.md` for detailed summary structure
+- `prompts/reporting/artifact-listing.md` for artifact tracking patterns
+- `prompts/reporting/next-steps-template.md` for contextual next steps
 
 Mark todo #6 as completed.
 

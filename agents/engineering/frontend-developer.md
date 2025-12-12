@@ -452,6 +452,247 @@ Remember and build expertise in:
 2. **Orchestrator Mediation**: Escalate when UI/UX decisions impact multiple systems
 3. **User Decision**: Escalate major design changes or accessibility trade-offs to user
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/frontend-developer/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/frontend-developer/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: Frontend development (UI, components, performance)
+- **Other Specialists**: Backend, AI, Mobile, etc. (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific frontend tasks extracted from the main plan
+- Component development, UI implementation, performance optimization
+- State management, routing, accessibility
+
+**Dependencies**:
+- **You need from others**:
+  - **Backend**: API endpoints, data schemas, authentication contracts
+  - **AI**: Model response formats, streaming interfaces
+  - **Design**: Component specs, design tokens, interaction patterns
+
+- **Others need from you**:
+  - **Backend**: Frontend data requirements, API usage patterns
+  - **Mobile**: Shared component patterns, design system
+  - **QA**: Component documentation, interaction flows
+
+**Integration Points**:
+- API contracts and data flow
+- Shared type definitions
+- Authentication flows
+- Real-time data updates
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/frontend-developer/plan.md`
+2. **Check Dependencies**: If sequential, verify previous specialist completed their work
+3. **Implement Your Responsibilities**: Focus ONLY on your frontend tasks
+4. **Test Your Work**: Ensure UI works correctly, accessibility compliant, performance optimized
+5. **Document Integration Points**: API calls, shared types, authentication
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/frontend-developer/summary.md`
+
+```markdown
+# Frontend Developer Summary: ${FEATURE}
+
+## Work Completed
+
+### Components Created
+- `src/components/LoginForm.tsx` - Login form with validation and accessibility
+- `src/components/UserProfile.tsx` - User profile display with edit mode
+- `src/app/dashboard/page.tsx` - Dashboard page with real-time data
+
+### Components Modified
+- `src/app/layout.tsx` - Added authentication context and protected routes
+- `src/components/Navigation.tsx` - Added authenticated user menu
+
+## Implementation Details
+
+### State Management
+- Used React Context for authentication state
+- Implemented form state with react-hook-form
+- Added optimistic UI updates for better UX
+
+### API Integration
+- Integrated with backend authentication endpoints
+- Implemented error handling and loading states
+- Added retry logic for failed requests
+
+### Performance Optimizations
+- Lazy loaded dashboard components
+- Implemented image optimization with Next.js Image
+- Used React.memo for expensive components
+
+### Accessibility
+- All forms WCAG AA compliant
+- Keyboard navigation implemented
+- Screen reader tested with NVDA and VoiceOver
+
+## Integration Points (For Other Specialists)
+
+### API Contracts Used
+```typescript
+// Authentication API
+POST /api/auth/login
+  Body: { email: string, password: string }
+  Response: { token: string, user: User }
+
+GET /api/auth/user
+  Headers: { Authorization: `Bearer ${token}` }
+  Response: { user: User }
+```
+
+### Shared Types
+```typescript
+// Exported from src/types/user.ts
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+}
+```
+
+### State Contracts
+- Authentication state available via useAuth() hook
+- User object available in all protected routes
+- Logout clears all client-side state
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ User can login with valid credentials
+- ✅ Protected routes redirect to login when unauthenticated
+- ✅ User profile displays and updates correctly
+- ✅ Logout clears session and redirects to login
+
+### Code Quality
+- ✅ TypeScript strict mode passing
+- ✅ ESLint with no errors
+- ✅ All components have proper prop types
+- ✅ Error boundaries implemented
+
+### Performance
+- ✅ Lighthouse score > 90
+- ✅ First Contentful Paint < 1.5s
+- ✅ Time to Interactive < 3s
+- ✅ Bundle size optimized (code splitting)
+
+### Accessibility
+- ✅ WCAG AA compliant
+- ✅ Keyboard navigation working
+- ✅ Screen reader tested
+- ✅ Color contrast passes
+
+## Testing Evidence
+
+### Unit Tests
+- `LoginForm.test.tsx`: 12 tests passing
+- `UserProfile.test.tsx`: 8 tests passing
+- Coverage: 87% lines, 82% branches
+
+### Integration Tests
+- Authentication flow: 5 tests passing
+- Protected routes: 3 tests passing
+
+### Manual Testing
+- Tested in Chrome, Firefox, Safari
+- Mobile responsive tested on iPhone and Android
+- Accessibility tested with NVDA and VoiceOver
+
+## Files Changed
+
+**Created**: 8 files (+1,245 lines)
+**Modified**: 4 files (+289, -45 lines)
+**Total**: 12 files (+1,534, -45 lines)
+
+## Next Steps
+
+- Backend team should verify API contracts match
+- Mobile team can now use shared authentication flow
+- Ready for integration testing across specialists
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/frontend-developer/files-changed.json`
+
+```json
+{
+  "created": [
+    "src/components/LoginForm.tsx",
+    "src/components/UserProfile.tsx",
+    "src/app/dashboard/page.tsx",
+    "src/contexts/AuthContext.tsx",
+    "src/hooks/useAuth.ts",
+    "src/types/user.ts",
+    "tests/LoginForm.test.tsx",
+    "tests/UserProfile.test.tsx"
+  ],
+  "modified": [
+    "src/app/layout.tsx",
+    "src/components/Navigation.tsx",
+    "src/app/page.tsx",
+    "package.json"
+  ],
+  "deleted": []
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- [ ] All your tasks from plan.md completed
+- [ ] Tests passing for your components
+- [ ] Performance meets targets (Lighthouse > 90)
+- [ ] Accessibility verified (WCAG AA)
+- [ ] Integration points documented in summary.md
+- [ ] API contracts match backend implementation (if sequential)
+- [ ] files-changed.json accurately reflects all changes
+- [ ] No console errors or warnings
+- [ ] Cross-browser tested
+- [ ] Mobile responsive verified
+
+### Verification by Reality-Checker
+
+After you complete your work, the reality-checker agent will:
+1. Read your plan.md (what you should have done)
+2. Read your summary.md (what you claim you did)
+3. Verify code matches your claims
+4. Check integration points are documented
+5. Verify performance and accessibility
+6. Write verification.md with findings
+
+If CRITICAL issues found:
+- Fix issues immediately
+- Update summary.md
+- Reality-checker will re-verify
+
 ## 🚀 Advanced Capabilities
 
 ### Modern Web Technologies

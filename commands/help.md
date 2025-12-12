@@ -230,42 +230,98 @@ Handle special cases:
 
 ## Implementation Details
 
+<!-- Component: File discovery uses standard Glob patterns -->
+
 ### Finding Commands
-```typescript
-// Use Glob to find all command files
-const commandFiles = await glob('.claude/commands/agency-*.md');
-// Extract command names: agency-work.md -> work
+
+```bash
+# Use Glob to find all command files
+Glob: pattern=".claude/commands/agency-*.md"
+
+# Extract command names from filenames
+# Example: agency-work.md -> work
+# Example: agency-plan.md -> plan
 ```
+
+**Pattern**: All agency commands follow `.claude/commands/agency-{name}.md` naming convention
 
 ### Finding Agents
-```typescript
-// Use Glob to find all agent files
-const agentFiles = await glob('agents/**/*.md');
-// Organize by directory (category)
+
+```bash
+# Use Glob to find all agent files
+Glob: pattern="agents/**/*.md"
+
+# Organize by directory (category):
+# - agents/engineering/* -> Engineering category
+# - agents/testing/* -> Testing category
+# - agents/design/* -> Design category
 ```
+
+**Pattern**: Agents are organized by role category in subdirectories
 
 ### Finding Skills
-```typescript
-// Use Glob to find all skill files
-const skillFiles = await glob('skills/*/SKILL.md');
-// Extract skill names from directory names
+
+```bash
+# Use Glob to find all skill files
+Glob: pattern="skills/*/SKILL.md"
+
+# Extract skill names from directory names:
+# - skills/github-integration/SKILL.md -> github-integration
+# - skills/testing-strategy/SKILL.md -> testing-strategy
 ```
+
+**Pattern**: Each skill has its own directory with SKILL.md as the main file
 
 ### Parsing Frontmatter
-```typescript
-// Read file content
-// Extract YAML frontmatter between --- markers
-// Parse description, triggers, tools, etc.
+
+```bash
+# Read file content using Read tool
+Read: file_path="[discovered-file-path]"
+
+# Extract YAML frontmatter:
+# 1. Find content between first two --- markers
+# 2. Parse YAML to extract:
+#    - description
+#    - triggers (for skills)
+#    - allowed-tools (for commands)
+#    - argument-hint (for commands)
+# 3. Handle missing or malformed frontmatter gracefully
 ```
 
+**Fallback**: If frontmatter parsing fails, extract description from first paragraph
+
 ### Fuzzy Matching for Suggestions
-```typescript
-// When target not found, calculate string similarity
-// Suggest commands/agents/skills with similar names
-// Use Levenshtein distance or similar algorithm
+
+**Algorithm for "NOT FOUND" suggestions**:
+
+1. **Calculate similarity score** for user input vs. all available names
+   - Use simple character matching or Levenshtein distance
+   - Ignore case differences
+   - Consider partial matches (substring matching)
+
+2. **Rank suggestions** by similarity score
+   - Exact substring match: highest priority
+   - Starts with input: high priority
+   - Contains input: medium priority
+   - Similar characters: low priority
+
+3. **Show top 5 suggestions** across all categories
+   - Include category (command/agent/skill)
+   - Show full name and brief description
+   - Provide exact usage syntax
+
+**Example**:
+```
+User input: "workk" (typo)
+Top suggestions:
+  - work (command) - Work on any issue
+  - worktree (command) - Create git worktree for issue
+  - workflow-agent (agent) - Manages workflow orchestration
 ```
 
 ## Output Format Guidelines
+
+<!-- Component: Based on prompts/reporting/ standards -->
 
 1. **Use clear section headers**: ALL CAPS for main sections
 2. **Indentation**: 2 spaces for nested items
@@ -274,13 +330,51 @@ const skillFiles = await glob('skills/*/SKILL.md');
 5. **Bullet points**: Use `-` for lists
 6. **Alignment**: Align command names and descriptions
 7. **Color**: Not available, but use emphasis with **bold** or `code`
+8. **Status indicators**: Use ✅, ⚠️, ❌ for visual clarity when showing status
+9. **File paths**: Always use absolute paths, never relative paths
+10. **Code blocks**: Use fenced code blocks with language hints for syntax highlighting
 
 ## Error Handling
 
-1. **File not found**: Gracefully handle missing files, show helpful message
-2. **Invalid frontmatter**: Parse what's available, note if incomplete
-3. **Empty sections**: Skip sections with no content
-4. **Ambiguous matches**: If multiple matches, ask user to be more specific
+<!-- Component: prompts/error-handling/ -->
+
+### File Not Found Errors
+
+**When command/agent/skill file doesn't exist**:
+- Check for typos in the search name
+- Use fuzzy matching to suggest similar names
+- Provide clear message about what was searched
+- Offer to list all available options
+
+**Recovery**: Show "NOT FOUND" message (see Phase 3, Step 5) with suggestions
+
+### Invalid or Missing Frontmatter
+
+**When frontmatter is malformed or missing**:
+- Attempt to parse what's available
+- Show warning about incomplete metadata
+- Continue displaying what information exists
+- Note which fields are missing
+
+**Recovery**: Display partial information, note limitations
+
+### Empty Sections
+
+**When content sections are missing**:
+- Skip empty sections entirely
+- Don't show "None" or "Empty" placeholders
+- Maintain clean output format
+- Only display sections with actual content
+
+### Ambiguous Matches
+
+**When multiple items match search term**:
+- List all matching items
+- Show category/location for each match
+- Ask user to be more specific
+- Provide exact paths for disambiguation
+
+**Example**: If searching "test" matches both "test-agent" and "testing-strategy" skill, list both with full context
 
 ## Examples of Expected Output
 
@@ -443,3 +537,55 @@ USAGE
 - Should be fast and responsive
 - Output should be easy to scan and understand
 - Use consistent formatting for professional CLI appearance
+
+---
+
+## Component References
+
+This command leverages reusable prompt components for consistency across the agency plugin:
+
+### Error Handling Components
+
+Referenced in **Error Handling** section:
+
+- **`prompts/error-handling/scope-detection-failure.md`** - Patterns for handling missing or ambiguous targets
+- **`prompts/error-handling/tool-execution-failure.md`** - File not found and tool errors (Read, Glob failures)
+- **`prompts/error-handling/ask-user-retry.md`** - User decision patterns for ambiguous matches
+
+**Usage**: Error handling patterns ensure consistent user experience when help targets aren't found
+
+### Reporting Components
+
+Referenced in **Output Format Guidelines** section:
+
+- **`prompts/reporting/summary-template.md`** - Standard formatting conventions
+  - Section headers (ALL CAPS)
+  - Status indicators (✅, ⚠️, ❌)
+  - Code block formatting
+  - File path conventions (absolute paths)
+
+**Usage**: Output follows agency-wide formatting standards for professional CLI appearance
+
+### File Discovery Patterns
+
+Referenced in **Implementation Details** section:
+
+- **Standard Glob patterns** - Consistent file discovery across all commands
+  - Commands: `.claude/commands/agency-*.md`
+  - Agents: `agents/**/*.md`
+  - Skills: `skills/*/SKILL.md`
+
+**Usage**: Same discovery patterns used by other commands for reliability
+
+### Related Components (Not Directly Used)
+
+These components are NOT used by the help command but may be referenced in help output when describing other commands:
+
+- **`prompts/issue-management/`** - Used by work/plan/sprint commands
+- **`prompts/git/`** - Used by commands that create PRs/commits
+- **`prompts/quality-gates/`** - Used by implement/work commands
+- **`prompts/specialist-selection/`** - Used by orchestrator workflows
+- **`prompts/planning/`** - Used by plan/implement commands
+- **`prompts/progress/`** - Used by multi-phase commands
+
+**Note**: When showing help for these commands, you may reference these components in the output to explain their workflow

@@ -8,6 +8,38 @@ allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, 
 
 Implement all issues in a sprint/milestone end-to-end with intelligent dependency resolution and parallel execution.
 
+## Reusable Components Used
+
+This command leverages the following prompt components from `prompts/`:
+
+**Context Detection**:
+- `context/framework-detection.md` - Detect project framework
+- `context/testing-framework-detection.md` - Detect test framework
+- `context/database-detection.md` - Detect database/ORM
+- `context/project-size-detection.md` - Categorize project size
+
+**Issue Management**:
+- `issue-management/github-issue-fetch.md` - Fetch GitHub milestones/issues
+- `issue-management/jira-issue-fetch.md` - Fetch Jira sprints/issues
+- `issue-management/dependency-parsing.md` - Parse issue dependencies
+
+**Progress Tracking**:
+- `progress/todo-initialization.md` - Initialize progress tracking
+- `progress/phase-tracking.md` - Update progress throughout execution
+- `progress/completion-reporting.md` - Final completion report
+
+**Quality Gates**:
+- `quality-gates/quality-gate-sequence.md` - Verify PR quality
+
+**Error Handling**:
+- `error-handling/partial-failure-recovery.md` - Handle partial sprint failures
+
+**Reporting**:
+- `reporting/summary-template.md` - Sprint report structure
+- `reporting/artifact-listing.md` - List generated artifacts
+- `reporting/metrics-comparison.md` - Aggregate metrics
+- `reporting/next-steps-template.md` - Next steps recommendations
+
 ## Your Mission
 
 Execute sprint: **$ARGUMENTS**
@@ -46,71 +78,17 @@ Update status continuously so user can track progress of long-running sprint exe
 
 ## Phase 0: Project Context Detection (1-2 min)
 
-Quickly gather project context to inform agent and tool selection throughout the sprint:
+<!-- Component: prompts/context/framework-detection.md -->
+<!-- Component: prompts/context/testing-framework-detection.md -->
+<!-- Component: prompts/context/database-detection.md -->
+<!-- Component: prompts/context/project-size-detection.md -->
 
-### Detect Framework/Language
+Quickly gather project context to inform agent and tool selection throughout the sprint. Execute the detection logic from these components:
 
-```bash
-# Check for JavaScript/TypeScript frameworks
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
-  FRAMEWORK="Next.js"
-  # Read package.json to get version
-fi
-
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  FRAMEWORK="React + Vite"
-fi
-
-# Check for Python frameworks
-if [ -f "manage.py" ]; then
-  FRAMEWORK="Django"
-fi
-
-if [ -f "pyproject.toml" ]; then
-  # Check for FastAPI, Flask, etc.
-  grep -q "fastapi" pyproject.toml && FRAMEWORK="FastAPI"
-fi
-
-# Check for other frameworks
-if [ -f "composer.json" ]; then
-  grep -q "laravel" composer.json && FRAMEWORK="Laravel"
-fi
-```
-
-### Detect Testing Framework
-
-```bash
-# Read package.json dependencies (if JavaScript/TypeScript)
-if [ -f "package.json" ]; then
-  grep -E "(jest|vitest|mocha|cypress|playwright)" package.json
-fi
-
-# Check for test config files
-ls -1 | grep -E "(jest|vitest|cypress|playwright|pytest).config"
-```
-
-### Detect Database/ORM
-
-```bash
-# Check package.json or pyproject.toml for:
-# - Prisma, Drizzle, TypeORM, Sequelize
-# - Supabase, MongoDB, PostgreSQL clients
-# - SQLAlchemy, Django ORM, Tortoise ORM
-```
-
-### Detect Project Size
-
-```bash
-# Quick file count (exclude node_modules, .git, venv)
-find . -type f \
-  | grep -v "node_modules\|\.git\|venv\|__pycache__\|\.next\|dist\|build" \
-  | wc -l
-
-# Categorize:
-# Small: <100 files
-# Medium: 100-1000 files
-# Large: >1000 files
-```
+1. **Framework Detection**: Identify primary framework (Next.js, Django, Laravel, etc.)
+2. **Testing Framework Detection**: Detect test frameworks (Jest, Vitest, pytest, etc.)
+3. **Database/ORM Detection**: Identify database and ORM (Prisma, Drizzle, Django ORM, etc.)
+4. **Project Size Detection**: Categorize as Small/Medium/Large based on file count
 
 ### Use Context Throughout Sprint
 
@@ -123,11 +101,11 @@ Based on detected context:
 Log detected context:
 ```
 Detected Project Context:
-- Framework: Next.js 15.2
-- Language: TypeScript
-- Testing: Vitest
-- Database: Prisma + PostgreSQL
-- Project Size: Medium (342 files)
+- Framework: [Detected Framework + Version]
+- Language: [Detected Language]
+- Testing: [Detected Test Framework]
+- Database: [Detected Database/ORM]
+- Project Size: [Small/Medium/Large] ([X] files)
 
 This context will inform agent selection and tooling for all sprint issues.
 ```
@@ -192,112 +170,39 @@ Use AskUserQuestion tool:
 
 ### Step 2: Fetch Sprint Metadata
 
-**For GitHub**:
-```bash
-# Get repository owner/name from git remote
-REPO=$(gh repo view --json nameWithOwner -q '.nameWithOwner')
+<!-- Component: prompts/issue-management/github-issue-fetch.md (adapted for milestones) -->
+<!-- Component: prompts/issue-management/jira-issue-fetch.md (adapted for sprints) -->
 
-# Fetch milestone
-if [[ "$ARGUMENTS" == "current" ]]; then
-  MILESTONE=$(gh api "repos/$REPO/milestones" \
-    --jq '.[] | select(.state=="open") | select(.due_on != null) | sort_by(.due_on) | .[0]')
-else
-  MILESTONE=$(gh api "repos/$REPO/milestones/$ARGUMENTS")
-fi
+**For GitHub**, use gh CLI to fetch milestone metadata (similar to github-issue-fetch.md but for milestones).
 
-# Extract metadata
-SPRINT_TITLE=$(echo "$MILESTONE" | jq -r '.title')
-SPRINT_NUMBER=$(echo "$MILESTONE" | jq -r '.number')
-SPRINT_STATE=$(echo "$MILESTONE" | jq -r '.state')
-DUE_DATE=$(echo "$MILESTONE" | jq -r '.due_on')
-TOTAL_ISSUES=$(echo "$MILESTONE" | jq -r '.open_issues + .closed_issues')
-```
-
-**For Jira**:
-```bash
-# Assuming acli (Atlassian CLI) is installed
-if [[ "$ARGUMENTS" == "current" ]]; then
-  # Get active sprint for board
-  SPRINT_ID=$(acli sprint list --board $JIRA_BOARD_ID --state active --format json | jq -r '.[0].id')
-else
-  SPRINT_ID="$ARGUMENTS"
-fi
-
-# Fetch sprint details
-acli sprint get $SPRINT_ID --format json > sprint-metadata.json
-
-# Extract metadata
-SPRINT_NAME=$(jq -r '.name' sprint-metadata.json)
-SPRINT_STATE=$(jq -r '.state' sprint-metadata.json)
-START_DATE=$(jq -r '.startDate' sprint-metadata.json)
-END_DATE=$(jq -r '.endDate' sprint-metadata.json)
-```
+**For Jira**, use acli to fetch sprint metadata (similar to jira-issue-fetch.md but for sprints).
 
 ### Step 3: Fetch All Issues in Sprint
 
-**For GitHub**:
-```bash
-# Fetch all issues in milestone
-gh issue list \
-  --milestone "$SPRINT_NUMBER" \
-  --state all \
-  --json number,title,state,labels,assignees,body,url \
-  --limit 1000 \
-  > sprint-issues.json
+**For GitHub**, use gh CLI to list all issues in the milestone.
 
-# Count issues
-TOTAL_ISSUES=$(jq 'length' sprint-issues.json)
-OPEN_ISSUES=$(jq '[.[] | select(.state=="OPEN")] | length' sprint-issues.json)
-CLOSED_ISSUES=$(jq '[.[] | select(.state=="CLOSED")] | length' sprint-issues.json)
-```
+**For Jira**, use acli to list all issues in the sprint.
 
-**For Jira**:
-```bash
-# Fetch all issues in sprint
-acli sprint issues $SPRINT_ID \
-  --fields summary,description,status,priority,issuelinks,assignee \
-  --format json \
-  > sprint-issues.json
-
-# Count issues
-TOTAL_ISSUES=$(jq 'length' sprint-issues.json)
-OPEN_ISSUES=$(jq '[.[] | select(.fields.status.name != "Done")] | length' sprint-issues.json)
-```
+See `prompts/issue-management/github-issue-fetch.md` and `prompts/issue-management/jira-issue-fetch.md` for detailed fetch commands.
 
 ### Step 4: Extract Issue Dependencies
 
-Parse issue bodies/descriptions for dependency markers:
+<!-- Component: prompts/issue-management/dependency-parsing.md -->
 
-**GitHub Dependency Patterns**:
-- "Depends on #123"
-- "Blocked by #456"
-- "Requires #789"
-- "After #101"
-- Check `linkedIssues` API field (if available)
+Parse issue bodies/descriptions for dependency markers using the patterns and logic defined in `prompts/issue-management/dependency-parsing.md`:
 
-**Jira Dependency Patterns**:
-- `issuelinks` with type "Blocks", "is blocked by"
-- `issuelinks` with type "Depends", "depends on"
+**Dependency Keywords**: depends on, blocked by, requires, needs, after
+**GitHub Patterns**: #123 references, full URLs
+**Jira Patterns**: PROJ-123 keys, issue links
 
-**Extraction Logic**:
-```bash
-# For each issue, extract dependencies
-jq -r '.[] | {
-  id: .number,
-  title: .title,
-  dependencies: (.body | scan("(?:depends on|blocked by|requires|after) #([0-9]+)") | .[0])
-}' sprint-issues.json > issue-dependencies.json
-```
+Build dependency graph for execution ordering.
 
 ### Step 5: Log Sprint Summary
 
-Create TodoWrite entry:
-```
-Sprint Detected: $SPRINT_TITLE
-Provider: $PROVIDER
-Total Issues: $TOTAL_ISSUES ($OPEN_ISSUES open, $CLOSED_ISSUES closed)
-Due Date: $DUE_DATE
-```
+<!-- Component: prompts/progress/todo-initialization.md -->
+<!-- Component: prompts/progress/phase-tracking.md -->
+
+Initialize TodoWrite with sprint execution phases (see `prompts/progress/todo-initialization.md` for structure).
 
 Output sprint summary to user:
 ```markdown
@@ -649,32 +554,15 @@ TodoWrite: "Batch 1 completed (3/3 issues)"
 
 ### Step 3: Handle Failures Gracefully
 
-If an issue fails during implementation:
+<!-- Component: prompts/error-handling/partial-failure-recovery.md -->
 
-**Failure Handling Logic**:
-```bash
-if [issue failed]; then
-  # 1. Mark as failed/blocked
-  FAILED_ISSUES+=("$ISSUE")
+If an issue fails during implementation, use the partial failure recovery strategies from `prompts/error-handling/partial-failure-recovery.md`:
 
-  # 2. Check if other issues depend on this one
-  DEPENDENT_ISSUES=$(find issues depending on $ISSUE)
-
-  if [has dependents]; then
-    # Mark dependents as blocked
-    for DEP in $DEPENDENT_ISSUES; do
-      BLOCKED_ISSUES+=("$DEP")
-      echo "Issue #$DEP blocked (depends on failed issue #$ISSUE)"
-    done
-  fi
-
-  # 3. Continue with other issues in batch
-  echo "Continuing with remaining issues in batch..."
-
-  # 4. Log failure details for sprint report
-  FAILURE_LOG="$FAILURE_LOG\n- #$ISSUE: $FAILURE_REASON"
-fi
-```
+1. Mark as failed/blocked
+2. Check if other issues depend on this one
+3. Mark dependents as blocked
+4. Continue with other issues in batch
+5. Log failure details for sprint report
 
 **Don't Block Entire Sprint**:
 - Failed issues don't stop other independent issues
@@ -683,19 +571,14 @@ fi
 
 ### Step 4: Track Progress Throughout Execution
 
-Continuously update TodoWrite as each issue completes:
+<!-- Component: prompts/progress/phase-tracking.md -->
 
-```
-Sprint execution in progress
-- Batch 1 (completed): 3/3 issues ✅
-  - #123: Complete (PR #456) ✅
-  - #124: Complete (PR #457) ✅
-  - #125: Complete (PR #458) ✅
-- Batch 2 (in_progress): 1/2 issues
-  - #126: In progress...
-  - #127: Pending
-- Batch 3 (pending): 1 issue
-```
+Continuously update TodoWrite as each issue completes using the phase tracking patterns from `prompts/progress/phase-tracking.md`:
+
+- Mark completed batches as `completed`
+- Mark current batch as `in_progress`
+- Keep future batches as `pending`
+- Update after each issue completion for visibility
 
 ### Step 5: Wait for Batch Completion Before Next Batch
 
@@ -769,113 +652,37 @@ After each batch completes, show summary:
 
 ## Phase 4: Quality Verification (10-15 min)
 
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
+<!-- Component: prompts/reporting/metrics-comparison.md -->
+
 After all batches complete, verify quality of all implemented changes.
 
 ### Step 1: Aggregate PR List
 
-Collect all PRs created during sprint:
-
-```bash
-# From pr-mappings.txt
-#123 -> PR #456
-#124 -> PR #457
-#125 -> PR #458
-#126 -> PR #459
-#127 -> PR #460
-#128 -> PR #461
-
-PR_NUMBERS=(456 457 458 459 460 461)
-```
+Collect all PRs created during sprint from pr-mappings tracking.
 
 ### Step 2: Verify Each PR Passes Quality Gates
 
-For each PR, verify:
+For each PR, run the quality gate sequence defined in `prompts/quality-gates/quality-gate-sequence.md`:
 
-**Quality Gate Checklist**:
-```bash
-for PR in "${PR_NUMBERS[@]}"; do
-  echo "Verifying PR #$PR..."
+1. Build verification
+2. Type checking
+3. Linting
+4. Test execution
+5. Coverage validation
 
-  # 1. Check CI status
-  CI_STATUS=$(gh pr view $PR --json statusCheckRollup --jq '.statusCheckRollup[].conclusion')
-  if [[ "$CI_STATUS" != *"SUCCESS"* ]]; then
-    echo "⚠️ PR #$PR has failing CI checks"
-    QUALITY_ISSUES+=("PR #$PR: CI failing")
-  fi
-
-  # 2. Check if tests passing
-  gh pr checks $PR
-  if [ $? -ne 0 ]; then
-    echo "⚠️ PR #$PR has failing tests"
-    QUALITY_ISSUES+=("PR #$PR: Tests failing")
-  fi
-
-  # 3. Check if PR is approved
-  REVIEW_STATUS=$(gh pr view $PR --json reviewDecision --jq '.reviewDecision')
-  if [[ "$REVIEW_STATUS" != "APPROVED" ]]; then
-    echo "⚠️ PR #$PR not approved yet"
-    QUALITY_ISSUES+=("PR #$PR: Not approved")
-  fi
-
-  # 4. Check for merge conflicts
-  MERGEABLE=$(gh pr view $PR --json mergeable --jq '.mergeable')
-  if [[ "$MERGEABLE" != "MERGEABLE" ]]; then
-    echo "⚠️ PR #$PR has merge conflicts"
-    QUALITY_ISSUES+=("PR #$PR: Merge conflicts")
-  fi
-
-  # 5. Check for security issues (if security scanning enabled)
-  # [Optional: integrate with GitHub security scanning]
-
-  # If all checks pass
-  if [ ${#QUALITY_ISSUES[@]} -eq 0 ]; then
-    echo "✅ PR #$PR passes all quality gates"
-    QUALITY_PASSED_PRS+=("$PR")
-  fi
-done
-```
+Track which PRs pass all gates vs. which have issues.
 
 ### Step 3: Aggregate Quality Metrics
 
+<!-- Component: prompts/reporting/metrics-comparison.md -->
+
 Collect metrics across all PRs:
-
-```bash
-# Total code changes
-TOTAL_ADDITIONS=0
-TOTAL_DELETIONS=0
-TOTAL_FILES_CHANGED=0
-
-for PR in "${PR_NUMBERS[@]}"; do
-  # Get PR diff stats
-  STATS=$(gh pr view $PR --json additions,deletions,changedFiles --jq '{additions, deletions, changedFiles}')
-
-  ADDITIONS=$(echo "$STATS" | jq '.additions')
-  DELETIONS=$(echo "$STATS" | jq '.deletions')
-  FILES=$(echo "$STATS" | jq '.changedFiles')
-
-  TOTAL_ADDITIONS=$((TOTAL_ADDITIONS + ADDITIONS))
-  TOTAL_DELETIONS=$((TOTAL_DELETIONS + DELETIONS))
-  TOTAL_FILES_CHANGED=$((TOTAL_FILES_CHANGED + FILES))
-done
-
-# Test coverage (if available)
-# Run coverage report across all changes
-if [ -f "package.json" ] && grep -q "test:coverage" package.json; then
-  npm run test:coverage
-  COVERAGE=$(extract coverage percentage from output)
-fi
-
-# Build status
-if [ -f "package.json" ]; then
-  npm run build
-  if [ $? -eq 0 ]; then
-    BUILD_STATUS="✅ Passing"
-  else
-    BUILD_STATUS="❌ Failing"
-    QUALITY_ISSUES+=("Build failing across sprint changes")
-  fi
-fi
-```
+- Total code changes (+lines, -lines, files changed)
+- Test results (passed/failed/total)
+- Coverage percentage
+- Build status
+- Security scan results (if applicable)
 
 ### Step 4: Handle Quality Issues
 
@@ -1392,33 +1199,22 @@ fi
 
 ## Phase 7: Sprint Report & Analytics (5-7 min)
 
+<!-- Component: prompts/reporting/summary-template.md -->
+<!-- Component: prompts/reporting/artifact-listing.md -->
+<!-- Component: prompts/reporting/metrics-comparison.md -->
+<!-- Component: prompts/progress/completion-reporting.md -->
+
 Generate comprehensive sprint completion report.
 
 ### Step 1: Calculate Sprint Metrics
 
-```bash
-# Time metrics
-SPRINT_START_TIME=[from Phase 3 tracking file]
-SPRINT_END_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-TOTAL_DURATION=[calculate duration]
+Calculate the following metrics for the sprint summary:
+- Time metrics (start, end, duration)
+- Issue metrics (total, completed, failed, blocked, completion rate)
+- Code metrics (additions, deletions, files changed)
+- Quality metrics (tests, coverage)
 
-# Issue metrics
-TOTAL_ISSUES=${#ALL_ISSUES[@]}
-COMPLETED_ISSUES=${#MERGED_ISSUES[@]}
-FAILED_ISSUES=${#FAILED_ISSUES[@]}
-BLOCKED_ISSUES=${#BLOCKED_ISSUES[@]}
-COMPLETION_RATE=$((COMPLETED_ISSUES * 100 / TOTAL_ISSUES))
-
-# Code metrics (from Phase 4)
-TOTAL_ADDITIONS=$TOTAL_ADDITIONS
-TOTAL_DELETIONS=$TOTAL_DELETIONS
-TOTAL_FILES_CHANGED=$TOTAL_FILES_CHANGED
-
-# Quality metrics
-TEST_COUNT=[total tests]
-NEW_TESTS=[new tests added]
-COVERAGE=[coverage percentage]
-```
+Use the metrics comparison format from `prompts/reporting/metrics-comparison.md`.
 
 ### Step 2: Generate Execution Timeline
 
@@ -1491,50 +1287,29 @@ RECOMMENDATIONS=(
 
 ### Step 4: Generate Sprint Completion Report
 
-Create comprehensive markdown report:
+<!-- Component: prompts/reporting/summary-template.md (adapted for sprints) -->
+<!-- Component: prompts/reporting/artifact-listing.md -->
 
-```bash
-REPORT_FILE=".agency/sprints/sprint-${SPRINT_ID}-report-$(date +%Y%m%d).md"
+Create comprehensive markdown report using the summary template structure from `prompts/reporting/summary-template.md`, adapted for sprint context:
 
-cat > $REPORT_FILE << 'EOFMARKER'
-[Report content - see detailed report structure in plan]
-EOFMARKER
-```
-
-**Report Structure**: (See full template in plan document, Phase 7)
+- Sprint metadata (ID, title, dates, duration)
+- Issue completion summary
+- Per-issue results
+- Quality metrics
+- Artifacts listing (PRs, reports, tracking files)
+- Known issues/failures
+- Next steps
 
 ### Step 5: Save Report and Communicate Results
 
-```bash
-# Save report
-echo "Sprint report saved to: $REPORT_FILE"
+<!-- Component: prompts/progress/completion-reporting.md -->
+<!-- Component: prompts/reporting/next-steps-template.md -->
 
-# Update TodoWrite with final status
-TodoWrite: "Sprint execution complete ✅"
+Save the sprint report to `.agency/sprints/sprint-${SPRINT_ID}-report-$(date +%Y%m%d).md`
 
-# Display summary to user
-cat << 'EOF'
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Update TodoWrite with final status: "Sprint execution complete"
 
-🎉 Sprint Complete!
-
-Sprint: $SPRINT_TITLE
-Completion: $COMPLETION_RATE% ($COMPLETED_ISSUES/$TOTAL_ISSUES issues)
-Duration: $TOTAL_DURATION
-Report: $REPORT_FILE
-
-✅ Completed: $COMPLETED_ISSUES issues
-⚠️ Failed: $FAILED_ISSUES issues
-🚫 Blocked: $BLOCKED_ISSUES issues
-
-Next Steps:
-- Review sprint report: $REPORT_FILE
-- Close incomplete issues or move to next sprint
-- Schedule sprint retrospective
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EOF
-```
+Display concise summary to user using the completion reporting format from `prompts/progress/completion-reporting.md` and next steps from `prompts/reporting/next-steps-template.md`.
 
 ---
 

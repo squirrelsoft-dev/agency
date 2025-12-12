@@ -4,6 +4,26 @@ argument-hint: file-path, directory, component-name, or pattern
 allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion]
 ---
 
+<!--
+REFACTORED: This command uses reusable prompt components from prompts/ directory.
+Components used:
+- prompts/context/framework-detection.md
+- prompts/context/testing-framework-detection.md
+- prompts/quality-gates/quality-gate-sequence.md
+- prompts/quality-gates/build-verification.md
+- prompts/quality-gates/type-checking.md
+- prompts/quality-gates/linting.md
+- prompts/quality-gates/test-execution.md
+- prompts/quality-gates/coverage-validation.md
+- prompts/specialist-selection/multi-specialist-routing.md
+- prompts/git/branch-creation.md
+- prompts/reporting/metrics-comparison.md
+- prompts/error-handling/scope-detection-failure.md
+
+Size reduction: ~100 lines (6.6% reduction)
+Maintainability: Improved - updates to components automatically benefit all commands
+-->
+
 # Refactor Code: $ARGUMENTS
 
 Safely refactor code with automatic quality analysis, incremental execution, and test preservation.
@@ -65,121 +85,24 @@ Track refactoring progress:
 
 ## Phase 0: Project Context Detection (1-2 min)
 
-Quickly gather project context to select appropriate analysis tools:
+<!-- Component: prompts/context/framework-detection.md -->
+<!-- Component: prompts/context/testing-framework-detection.md -->
 
-### Detect Language/Framework
+Quickly gather project context to select appropriate analysis tools.
 
-```bash
-# Detect primary language
-if [ -f "package.json" ]; then
-  # Check for TypeScript
-  if grep -q "typescript" package.json || [ -f "tsconfig.json" ]; then
-    LANGUAGE="TypeScript"
-    PRIMARY_EXT="ts"
-  else
-    LANGUAGE="JavaScript"
-    PRIMARY_EXT="js"
-  fi
+**Execute framework detection** using the algorithm from `prompts/context/framework-detection.md`:
 
-  # Check framework
-  if grep -q "next" package.json; then
-    FRAMEWORK="Next.js"
-  elif grep -q "react" package.json; then
-    FRAMEWORK="React"
-  elif grep -q "vue" package.json; then
-    FRAMEWORK="Vue"
-  fi
+- Detect primary language and framework
+- Identify build tools and package manager
+- Select appropriate analysis tools based on detected stack
 
-elif [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then
-  LANGUAGE="Python"
-  PRIMARY_EXT="py"
+**Execute testing framework detection** using `prompts/context/testing-framework-detection.md`:
 
-  # Check framework
-  if [ -f "manage.py" ]; then
-    FRAMEWORK="Django"
-  elif grep -q "fastapi" pyproject.toml 2>/dev/null; then
-    FRAMEWORK="FastAPI"
-  elif grep -q "flask" pyproject.toml 2>/dev/null; then
-    FRAMEWORK="Flask"
-  fi
+- Detect test framework (Jest, Vitest, pytest, etc.)
+- Identify test commands (run, coverage)
+- Detect test file patterns
 
-elif [ -f "Cargo.toml" ]; then
-  LANGUAGE="Rust"
-  PRIMARY_EXT="rs"
-  FRAMEWORK="Rust"
-
-elif [ -f "go.mod" ]; then
-  LANGUAGE="Go"
-  PRIMARY_EXT="go"
-  FRAMEWORK="Go"
-
-elif [ -f "composer.json" ]; then
-  LANGUAGE="PHP"
-  PRIMARY_EXT="php"
-
-  if grep -q "laravel" composer.json; then
-    FRAMEWORK="Laravel"
-  fi
-fi
-```
-
-### Select Analysis Tools Based on Language
-
-**TypeScript/JavaScript**:
-- **Complexity**: eslint with complexity rules
-- **Duplication**: jscpd
-- **Circular deps**: madge
-- **Unused code**: ts-prune (TypeScript only)
-- **Type coverage**: typescript (--noEmit)
-
-**Python**:
-- **Complexity**: radon, pylint
-- **Duplication**: pylint --duplicate-code-only
-- **Type coverage**: mypy --strict
-- **Code quality**: flake8, black --check
-
-**Rust**:
-- **Complexity**: cargo clippy
-- **Unused code**: cargo +nightly udeps
-- **Format check**: cargo fmt --check
-
-**Go**:
-- **Complexity**: gocyclo
-- **Duplication**: dupl
-- **Unused code**: golangci-lint
-- **Format check**: gofmt -l
-
-### Detect Testing Framework
-
-```bash
-if [ -f "package.json" ]; then
-  if grep -q "jest" package.json; then
-    TEST_FRAMEWORK="jest"
-    TEST_COMMAND="npm test"
-    COVERAGE_COMMAND="npm run test:coverage"
-  elif grep -q "vitest" package.json; then
-    TEST_FRAMEWORK="vitest"
-    TEST_COMMAND="npm test"
-    COVERAGE_COMMAND="npm run test:coverage"
-  fi
-
-elif [ -f "pytest.ini" ] || grep -q "pytest" pyproject.toml 2>/dev/null; then
-  TEST_FRAMEWORK="pytest"
-  TEST_COMMAND="pytest"
-  COVERAGE_COMMAND="pytest --cov"
-
-elif [ -f "Cargo.toml" ]; then
-  TEST_FRAMEWORK="cargo test"
-  TEST_COMMAND="cargo test"
-
-elif [ -f "go.mod" ]; then
-  TEST_FRAMEWORK="go test"
-  TEST_COMMAND="go test ./..."
-fi
-```
-
-### Log Detected Context
-
+**Log Detected Context**:
 ```
 Detected Project Context:
 - Language: $LANGUAGE
@@ -189,6 +112,8 @@ Detected Project Context:
 
 This context will inform code analysis and refactoring tools.
 ```
+
+**Note**: See the full framework detection component at `/Users/sbeardsley/Developer/squirrelsoft-dev/agency/prompts/context/framework-detection.md` for complete detection logic and all supported frameworks.
 
 ---
 
@@ -487,19 +412,24 @@ Code analysis complete
 
 ### Step 1: Spawn Planning Agent
 
-Select appropriate specialist based on language:
+<!-- Component: prompts/specialist-selection/multi-specialist-routing.md -->
+
+**Select appropriate specialist** based on detected framework and refactoring scope:
 
 ```bash
-# Select agent based on language/framework
+# Map framework to specialist
 if [[ "$FRAMEWORK" == "Next.js" ]] || [[ "$FRAMEWORK" == "React" ]]; then
   SPECIALIST="frontend-developer"
 elif [[ "$FRAMEWORK" == "Django" ]] || [[ "$FRAMEWORK" == "FastAPI" ]]; then
   SPECIALIST="backend-architect"
 else
-  SPECIALIST="senior-developer"  # Default
+  SPECIALIST="senior-developer"  # Default for general refactoring
 fi
+```
 
-# Spawn planning agent
+**Spawn planning agent** with refactoring-specific context:
+
+```markdown
 Task tool with:
   subagent_type: $SPECIALIST
   description: "Create refactoring plan for $SCOPE_DESCRIPTION"
@@ -533,6 +463,8 @@ Focus on the High Priority opportunities from the analysis.
 Include a rollback strategy if any step fails.
 "
 ```
+
+**Note**: For complex refactorings spanning multiple domains (e.g., full-stack refactoring), see `prompts/specialist-selection/multi-specialist-routing.md` for coordination between multiple specialists.
 
 ### Step 2: Review Generated Plan
 
@@ -858,17 +790,29 @@ Use AskUserQuestion tool:
 
 ### Step 1: Create Refactoring Branch
 
+<!-- Component: prompts/git/branch-creation.md -->
+
+**Create refactoring branch** following standard naming conventions from `prompts/git/branch-creation.md`:
+
 ```bash
 # Ensure on latest main
 git checkout main
 git pull origin main
 
-# Create refactoring branch
+# Create refactoring branch with standard naming
 REFACTOR_BRANCH="refactor/$(echo $SCOPE_DESCRIPTION | tr ' ' '-' | tr '[:upper:]' '[:lower:]')"
 git checkout -b $REFACTOR_BRANCH
 
 echo "Created branch: $REFACTOR_BRANCH"
 ```
+
+**Branch naming format**: `refactor/[scope-description]`
+- Use lowercase
+- Use hyphens, not underscores
+- Keep concise but descriptive
+- Examples: `refactor/api-client`, `refactor/user-service`, `refactor/cleanup-auth-logic`
+
+**Note**: See `prompts/git/branch-creation.md` for pre-flight checks, error handling, and validation steps.
 
 ### Step 2: Capture Baseline Test Coverage
 
@@ -1043,135 +987,93 @@ Refactoring in progress
 
 ## Phase 4: Safety Verification (10-15 min)
 
-### Step 1: Run Full Test Suite
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
+<!-- Component: prompts/quality-gates/build-verification.md -->
+<!-- Component: prompts/quality-gates/type-checking.md -->
+<!-- Component: prompts/quality-gates/linting.md -->
+<!-- Component: prompts/quality-gates/test-execution.md -->
+<!-- Component: prompts/quality-gates/coverage-validation.md -->
 
+**Execute quality gate sequence** following the standard order defined in `prompts/quality-gates/quality-gate-sequence.md`:
+
+### Gate 1: Build Verification (BLOCKING)
+Use `prompts/quality-gates/build-verification.md` for framework-specific build commands and error handling.
+
+**Quick Summary**:
 ```bash
-echo "Running full test suite for safety verification..."
-
-# Run all tests
-$TEST_COMMAND
-
-if [ $? -ne 0 ]; then
-  echo "❌ Some tests failing"
-  SAFETY_VERIFIED=false
-else
-  echo "✅ All tests passing"
-  SAFETY_VERIFIED=true
-fi
+# Run build command for detected framework
+$BUILD_COMMAND  # npm run build, cargo build, go build, etc.
 ```
 
-### Step 2: Check Test Coverage
+### Gate 2: Type Checking (BLOCKING)
+Use `prompts/quality-gates/type-checking.md` for type verification.
+
+**Quick Summary**:
+```bash
+# TypeScript projects
+npx tsc --noEmit || npm run type-check
+```
+
+### Gate 3: Linting (HIGH PRIORITY - Errors block, warnings allow)
+Use `prompts/quality-gates/linting.md` with auto-fix attempt.
+
+**Quick Summary**:
+```bash
+# Run linter with auto-fix first
+npm run lint -- --fix || npm run lint
+```
+
+### Gate 4: Test Execution (BLOCKING)
+Use `prompts/quality-gates/test-execution.md` for comprehensive test execution.
+
+**Critical**: All tests MUST pass before proceeding.
+
+```bash
+# Run full test suite
+$TEST_COMMAND
+```
+
+### Gate 5: Coverage Validation (RECOMMENDED - Non-blocking)
+Use `prompts/quality-gates/coverage-validation.md` to check coverage baseline.
+
+**Critical**: Coverage must NOT decrease below baseline ($BASELINE_COVERAGE%).
 
 ```bash
 # Run coverage
 $COVERAGE_COMMAND > final-coverage.txt
-
 FINAL_COVERAGE=$(extract coverage from final-coverage.txt)
 
 # Compare to baseline
-if [ $(bc <<< "$FINAL_COVERAGE < $BASELINE_COVERAGE") -eq 1 ]; then
+if [ $FINAL_COVERAGE < $BASELINE_COVERAGE ]; then
   echo "❌ Coverage decreased: $BASELINE_COVERAGE% → $FINAL_COVERAGE%"
-  COVERAGE_MAINTAINED=false
-else
-  echo "✅ Coverage maintained or improved: $FINAL_COVERAGE% (baseline: $BASELINE_COVERAGE%)"
-  COVERAGE_MAINTAINED=true
+  echo "⚠️ Add tests to restore coverage before proceeding"
 fi
 ```
 
-### Step 3: Build Verification
-
-```bash
-# Verify build still works
-if [ -f "package.json" ]; then
-  npm run build
-  BUILD_RESULT=$?
-
-elif [ -f "Cargo.toml" ]; then
-  cargo build
-  BUILD_RESULT=$?
-
-elif [ -f "go.mod" ]; then
-  go build ./...
-  BUILD_RESULT=$?
-fi
-
-if [ $BUILD_RESULT -eq 0 ]; then
-  echo "✅ Build successful"
-  BUILD_PASSED=true
-else
-  echo "❌ Build failed"
-  BUILD_PASSED=false
-fi
-```
-
-### Step 4: Linting and Type Checking
-
-```bash
-# Run linting
-if command -v npm &> /dev/null && grep -q "lint" package.json; then
-  npm run lint
-  LINT_RESULT=$?
-
-  if [ $LINT_RESULT -eq 0 ]; then
-    echo "✅ Linting passed"
-  else
-    echo "⚠️ Linting issues detected"
-  fi
-fi
-
-# Type checking (TypeScript)
-if [ "$LANGUAGE" = "TypeScript" ]; then
-  npx tsc --noEmit
-  TYPE_CHECK_RESULT=$?
-
-  if [ $TYPE_CHECK_RESULT -eq 0 ]; then
-    echo "✅ Type checking passed"
-    TYPE_CHECK_PASSED=true
-  else
-    echo "❌ Type checking failed"
-    TYPE_CHECK_PASSED=false
-  fi
-fi
-```
-
-### Step 5: Safety Verification Summary
+### Verification Summary
 
 ```markdown
 ## Safety Verification Results
 
-### ✅ All Safety Checks
+**Gate 1 - Build**: ✅/❌ [Status]
+**Gate 2 - Type Check**: ✅/❌ [Status]
+**Gate 3 - Linting**: ✅/⚠️ [Status]
+**Gate 4 - Tests**: ✅/❌ [Status] ([X] total, [Y] passed, [Z] failed)
+**Gate 5 - Coverage**: ✅/⚠️ [Status] ([X]%, baseline: [Y]%)
 
-**Tests**: ✅ All 234 tests passing (no failures)
-- Unit tests: 156/156 ✅
-- Integration tests: 65/65 ✅
-- E2E tests: 13/13 ✅
+**Overall Status**: ✅ PASS / ❌ FAIL
 
-**Coverage**: ✅ Improved from $BASELINE_COVERAGE% to $FINAL_COVERAGE%
-- Baseline: $BASELINE_COVERAGE%
-- Final: $FINAL_COVERAGE%
-- Change: +$(($FINAL_COVERAGE - $BASELINE_COVERAGE))% ✅
-
-**Build**: ✅ Successful
-
-**Type Checking**: ✅ No type errors
-
-**Linting**: ✅ No errors, 2 warnings (acceptable)
-
----
-
-**Verification Status**: ✅ PASS
-
-All safety criteria met. Refactoring is safe to merge.
+[Details from each gate's reporting template]
 ```
 
-If any safety check fails:
+**If any BLOCKING gate fails**:
 ```
 Use AskUserQuestion:
-  Question: "Safety verification failed. How to proceed?"
+  Question: "Safety verification failed at Gate [X]. How to proceed?"
 
   Options:
     - "Fix issues (Recommended)"
-      Description: "Address the $ISSUE_COUNT failed safety checks before proceeding."
+      Description: "Address the failed quality gate before proceeding."
 
     - "Rollback refactoring"
       Description: "Undo all refactoring changes and return to original code."
@@ -1180,33 +1082,43 @@ Use AskUserQuestion:
       Description: "Proceed despite safety issues. May introduce bugs."
 ```
 
+**Note**: See individual quality gate components in `prompts/quality-gates/` for detailed execution logic, error handling, and reporting templates.
+
 ---
 
 ## Phase 5: Refactoring Report & Documentation (3-5 min)
 
 ### Step 1: Calculate Before/After Metrics
 
-```bash
-# Re-run code analysis on refactored code
-# [Same analysis tools as Phase 1]
+<!-- Component: prompts/reporting/metrics-comparison.md -->
 
-# Compare metrics
+**Re-run code analysis** on refactored code using the same tools from Phase 1.
+
+**Calculate improvements** using formulas from `prompts/reporting/metrics-comparison.md`:
+
+```bash
+# Complexity improvement (lower is better)
 COMPLEXITY_BEFORE=$AVG_COMPLEXITY
 COMPLEXITY_AFTER=$FINAL_AVG_COMPLEXITY
 COMPLEXITY_IMPROVEMENT=$(bc <<< "scale=1; ($COMPLEXITY_BEFORE - $COMPLEXITY_AFTER) / $COMPLEXITY_BEFORE * 100")
 
+# Duplication reduction (lower is better)
 DUPLICATION_BEFORE=$DUPLICATE_LINES
 DUPLICATION_AFTER=$FINAL_DUPLICATE_LINES
 DUPLICATION_IMPROVEMENT=$(bc <<< "scale=1; ($DUPLICATION_BEFORE - $DUPLICATION_AFTER) / $DUPLICATION_BEFORE * 100")
 
+# Type coverage increase (higher is better)
 TYPE_COVERAGE_BEFORE=$TYPE_COVERAGE
 TYPE_COVERAGE_AFTER=$FINAL_TYPE_COVERAGE
 TYPE_COVERAGE_IMPROVEMENT=$(($TYPE_COVERAGE_AFTER - $TYPE_COVERAGE_BEFORE))
 
+# Lines of code change
 LOC_BEFORE=$TOTAL_LOC
 LOC_AFTER=$FINAL_LOC
 LOC_CHANGE=$(($LOC_AFTER - $LOC_BEFORE))
 ```
+
+**Note**: See `prompts/reporting/metrics-comparison.md` for complete metrics table templates, formatting guidelines, and calculation formulas.
 
 ### Step 2: Generate Comprehensive Report
 
@@ -1237,14 +1149,16 @@ Refactored ${#SCOPE_FILES[@]} files to improve code quality, reduce complexity, 
 
 ## Metrics Comparison
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Avg Complexity | $COMPLEXITY_BEFORE | $COMPLEXITY_AFTER | -$COMPLEXITY_IMPROVEMENT% ✅ |
-| Max Complexity | $MAX_COMPLEXITY_BEFORE | $MAX_COMPLEXITY_AFTER | -50% ✅ |
-| Duplicate Lines | $DUPLICATION_BEFORE | $DUPLICATION_AFTER | -$DUPLICATION_IMPROVEMENT% ✅ |
-| Type Coverage | $TYPE_COVERAGE_BEFORE% | $TYPE_COVERAGE_AFTER% | +$TYPE_COVERAGE_IMPROVEMENT% ✅ |
-| Test Coverage | $BASELINE_COVERAGE% | $FINAL_COVERAGE% | +$(($FINAL_COVERAGE - $BASELINE_COVERAGE))% ✅ |
-| Total LOC | $LOC_BEFORE | $LOC_AFTER | $LOC_CHANGE ✅ |
+<!-- Using template from prompts/reporting/metrics-comparison.md -->
+
+| Metric | Before | After | Change | Improvement |
+|--------|--------|-------|--------|-------------|
+| Avg Complexity | $COMPLEXITY_BEFORE | $COMPLEXITY_AFTER | -$(bc <<< "$COMPLEXITY_BEFORE - $COMPLEXITY_AFTER") | -$COMPLEXITY_IMPROVEMENT% ↓ |
+| Max Complexity | $MAX_COMPLEXITY_BEFORE | $MAX_COMPLEXITY_AFTER | -$(bc <<< "$MAX_COMPLEXITY_BEFORE - $MAX_COMPLEXITY_AFTER") | ✅ Reduced |
+| Duplicate Lines | $DUPLICATION_BEFORE | $DUPLICATION_AFTER | -$(bc <<< "$DUPLICATION_BEFORE - $DUPLICATION_AFTER") | -$DUPLICATION_IMPROVEMENT% ↓ |
+| Type Coverage | $TYPE_COVERAGE_BEFORE% | $TYPE_COVERAGE_AFTER% | +$TYPE_COVERAGE_IMPROVEMENT% | +$TYPE_COVERAGE_IMPROVEMENT% ↑ |
+| Test Coverage | $BASELINE_COVERAGE% | $FINAL_COVERAGE% | +$(($FINAL_COVERAGE - $BASELINE_COVERAGE))% | ✅ Improved |
+| Total LOC | $LOC_BEFORE | $LOC_AFTER | $LOC_CHANGE | $([ $LOC_CHANGE -lt 0 ] && echo "↓ Reduced" || echo "↑") |
 
 ---
 
@@ -1492,6 +1406,10 @@ Don't refactor if:
 
 ### If Scope Detection Fails
 
+<!-- Component: prompts/error-handling/scope-detection-failure.md -->
+
+**Use scope detection failure workflow** from `prompts/error-handling/scope-detection-failure.md`:
+
 **Ambiguous Scope**:
 - Ask user for clarification with AskUserQuestion
 - Provide options: specific file, directory, component pattern
@@ -1502,10 +1420,12 @@ Don't refactor if:
 - Check for typos in component name
 - Suggest using glob pattern for flexible matching
 
-**Too Many Files**:
-- If scope would affect >50 files, confirm with user
+**Too Many Files** (>50 files):
+- Confirm with user before proceeding
 - Recommend narrowing scope
-- Offer to analyze first 10 and let user decide
+- Offer to analyze subset first
+
+**Note**: See `prompts/error-handling/scope-detection-failure.md` for complete error messages, recovery strategies, and user interaction patterns.
 
 ### If Code Analysis Fails
 

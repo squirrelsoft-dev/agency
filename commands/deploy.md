@@ -52,63 +52,92 @@ This skill contains critical orchestration patterns, agent selection guidelines,
 
 ### 3. Use TodoWrite Throughout
 
+<!-- Component: prompts/progress/todo-initialization.md -->
+
 Track deployment progress with TodoWrite for transparency and rollback reference.
+
+**Initialize deployment todo list**:
+
+```javascript
+[
+  {
+    "content": "Validate deployment environment",
+    "status": "in_progress",
+    "activeForm": "Validating deployment environment"
+  },
+  {
+    "content": "Run pre-flight checks (tests, build, security)",
+    "status": "pending",
+    "activeForm": "Running pre-flight checks"
+  },
+  {
+    "content": "Create deployment snapshot/backup",
+    "status": "pending",
+    "activeForm": "Creating deployment snapshot/backup"
+  },
+  {
+    "content": "Execute deployment",
+    "status": "pending",
+    "activeForm": "Executing deployment"
+  },
+  {
+    "content": "Run post-deployment verification",
+    "status": "pending",
+    "activeForm": "Running post-deployment verification"
+  },
+  {
+    "content": "Generate deployment report",
+    "status": "pending",
+    "activeForm": "Generating deployment report"
+  }
+]
+```
 
 ---
 
 ## Phase 0: Project Context Detection (1-2 min)
 
+<!-- Component: prompts/context/framework-detection.md -->
+
 Quickly gather project context to determine deployment strategy.
 
 ### Detect Framework/Platform
 
+Use the framework detection algorithm from `prompts/context/framework-detection.md`:
+
 ```bash
-# Detect JavaScript/TypeScript frameworks
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
-  FRAMEWORK="Next.js"
-  Read package.json
+# Execute in order, return first match:
 
-  # Check for App Router vs Pages Router
-  if [ -d "app" ]; then
-    ROUTER="App Router"
-  else
-    ROUTER="Pages Router"
-  fi
-fi
-
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  FRAMEWORK="Vite"
-fi
-
-if [ -f "angular.json" ]; then
-  FRAMEWORK="Angular"
-fi
-
-# Check for Python frameworks
-if [ -f "manage.py" ]; then
-  FRAMEWORK="Django"
-  RUNTIME="Python"
-fi
-
-if [ -f "app.py" ] || [ -f "main.py" ]; then
-  if grep -q "fastapi" requirements.txt 2>/dev/null; then
-    FRAMEWORK="FastAPI"
-    RUNTIME="Python"
-  elif grep -q "flask" requirements.txt 2>/dev/null; then
-    FRAMEWORK="Flask"
-    RUNTIME="Python"
-  fi
-fi
-
-# Check for other frameworks
-if [ -f "Gemfile" ]; then
-  FRAMEWORK="Rails"
-  RUNTIME="Ruby"
-fi
-
-if [ -f "go.mod" ]; then
-  FRAMEWORK="Go"
-  RUNTIME="Go"
+if test -f next.config.js || test -f next.config.mjs || test -f next.config.ts; then
+  echo "Next.js"
+elif test -f manage.py; then
+  echo "Django"
+elif test -f artisan; then
+  echo "Laravel"
+elif grep -q "fastapi" requirements.txt 2>/dev/null || grep -q "fastapi" pyproject.toml 2>/dev/null; then
+  echo "FastAPI"
+elif grep -q "flask" requirements.txt 2>/dev/null || grep -q "flask" pyproject.toml 2>/dev/null; then
+  echo "Flask"
+elif test -f bin/rails || test -f config/application.rb; then
+  echo "Ruby on Rails"
+elif test -f remix.config.js || test -f remix.config.ts; then
+  echo "Remix"
+elif test -f svelte.config.js; then
+  echo "SvelteKit"
+elif test -f astro.config.mjs || test -f astro.config.ts; then
+  echo "Astro"
+elif test -f nuxt.config.js || test -f nuxt.config.ts; then
+  echo "Nuxt"
+elif test -f angular.json; then
+  echo "Angular"
+elif grep -q '"express"' package.json 2>/dev/null; then
+  echo "Express.js"
+elif grep -q '"react"' package.json 2>/dev/null; then
+  echo "React"
+elif grep -q '"vue"' package.json 2>/dev/null; then
+  echo "Vue.js"
+else
+  echo "Unknown"
 fi
 ```
 
@@ -136,34 +165,6 @@ if [ -f "Dockerfile" ]; then
   fi
 fi
 
-if [ -f ".platform.app.yaml" ]; then
-  PLATFORM="Platform.sh"
-  DETECTED="Yes"
-fi
-
-if [ -d ".github/workflows" ]; then
-  # Check for deployment workflows
-  if grep -q "vercel" .github/workflows/*.yml 2>/dev/null; then
-    CI_PLATFORM="GitHub Actions → Vercel"
-  elif grep -q "aws" .github/workflows/*.yml 2>/dev/null; then
-    CI_PLATFORM="GitHub Actions → AWS"
-  elif grep -q "azure" .github/workflows/*.yml 2>/dev/null; then
-    CI_PLATFORM="GitHub Actions → Azure"
-  else
-    CI_PLATFORM="GitHub Actions"
-  fi
-fi
-
-if [ -f ".gitlab-ci.yml" ]; then
-  CI_PLATFORM="GitLab CI"
-fi
-
-if [ -f "azure-pipelines.yml" ]; then
-  PLATFORM="Azure"
-  CI_PLATFORM="Azure Pipelines"
-  DETECTED="Yes"
-fi
-
 # AWS detection
 if [ -f "serverless.yml" ]; then
   PLATFORM="AWS Serverless (Serverless Framework)"
@@ -182,44 +183,8 @@ if [ -f "Procfile" ] && [ -f "app.json" ]; then
   DETECTED="Yes"
 fi
 
-# Railway
-if [ -f "railway.json" ]; then
-  PLATFORM="Railway"
-  DETECTED="Yes"
-fi
-
-# Render
-if [ -f "render.yaml" ]; then
-  PLATFORM="Render"
-  DETECTED="Yes"
-fi
-
 echo "Detected platform: $PLATFORM"
 echo "Framework: $FRAMEWORK"
-```
-
-### Detect Environment Variables System
-
-```bash
-# Check for environment variable configuration
-if [ -f ".env.production" ]; then
-  ENV_SYSTEM="Dotenv (production)"
-fi
-
-if [ -f ".env.staging" ]; then
-  ENV_SYSTEM_STAGING="Dotenv (staging)"
-fi
-
-if [ -f ".env.local" ]; then
-  echo "⚠️ WARNING: .env.local detected (should not be deployed)"
-fi
-
-# Check if .env is gitignored
-if [ -f ".gitignore" ] && grep -q "\.env" .gitignore; then
-  echo "✓ .env files properly gitignored"
-else
-  echo "✗ WARNING: .env files may not be gitignored"
-fi
 ```
 
 **Use this context to**:
@@ -231,6 +196,8 @@ fi
 ---
 
 ## Phase 1: Environment & Target Detection (2-3 min)
+
+Mark todo #1 as in_progress.
 
 ### Parse Deployment Argument
 
@@ -245,25 +212,9 @@ Analyze `$ARGUMENTS` to determine deployment target:
 - `$ARGUMENTS` = "vercel" or "netlify" or "aws" or "heroku" etc.
 - Override auto-detected platform
 
-**URL-Based** if:
-- `$ARGUMENTS` contains URL pattern (e.g., "https://app-staging.vercel.app")
-
 **Auto-Detect** if:
 - `$ARGUMENTS` = "auto" or empty
 - Use detected platform and infer environment from branch
-
-### Create Todo List for Deployment
-
-Use TodoWrite to create tracking:
-
-```
-1. Validate deployment environment
-2. Run pre-flight checks (tests, build, security)
-3. Create deployment snapshot/backup
-4. Execute deployment
-5. Run post-deployment verification
-6. Generate deployment report
-```
 
 ### Determine Environment
 
@@ -290,6 +241,8 @@ echo "Deployment environment: $ENVIRONMENT"
 ```
 
 ### Get User Confirmation
+
+<!-- Component: prompts/error-handling/ask-user-retry.md -->
 
 Use AskUserQuestion to confirm deployment:
 
@@ -318,6 +271,8 @@ Mark todo #1 as completed.
 
 ## Phase 2: Pre-Flight Checks (10-30 min)
 
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
+
 Mark todo #2 as in_progress.
 
 ### Create Deployment Directory
@@ -334,6 +289,8 @@ echo "Tracking directory: $DEPLOYMENT_DIR"
 ```
 
 ### Git Status Check
+
+<!-- Component: prompts/git/status-validation.md -->
 
 ```bash
 echo "Checking git status..."
@@ -362,49 +319,16 @@ echo "$DEPLOY_COMMIT" > "$DEPLOYMENT_DIR/commit-hash.txt"
 echo "$DEPLOY_COMMIT_MSG" > "$DEPLOYMENT_DIR/commit-message.txt"
 ```
 
-### Run Tests
+### Execute Quality Gate Sequence
+
+Run all quality gates in order. **Do NOT skip any gate.**
+
+<!-- Component: prompts/quality-gates/build-verification.md -->
+
+#### Gate 1: Build (CRITICAL)
 
 ```bash
-echo "Running tests..."
-
-# Detect test command
-if [ -f "package.json" ]; then
-  if grep -q '"test":' package.json; then
-    TEST_COMMAND="npm test"
-  elif grep -q '"test":' package.json; then
-    TEST_COMMAND="pnpm test"
-  fi
-elif [ -f "pytest.ini" ] || grep -q "pytest" requirements.txt 2>/dev/null; then
-  TEST_COMMAND="pytest"
-elif [ -f "Cargo.toml" ]; then
-  TEST_COMMAND="cargo test"
-fi
-
-if [ -n "$TEST_COMMAND" ]; then
-  echo "Running: $TEST_COMMAND"
-
-  if $TEST_COMMAND > "$DEPLOYMENT_DIR/test-results.txt" 2>&1; then
-    echo "✓ Tests passed"
-  else
-    echo "✗ Tests failed"
-    cat "$DEPLOYMENT_DIR/test-results.txt"
-
-    Use AskUserQuestion:
-      Question: "Tests failed. How to proceed?"
-      Options:
-        - "Cancel deployment (Recommended)"
-        - "Fix tests and retry"
-        - "Deploy anyway (DANGEROUS)"
-  fi
-else
-  echo "⚠️ No test command found - skipping tests"
-fi
-```
-
-### Run Build
-
-```bash
-echo "Running build..."
+echo "Running build verification..."
 
 # Detect build command
 if [ -f "package.json" ]; then
@@ -439,6 +363,7 @@ if [ -n "$BUILD_COMMAND" ]; then
     tail -50 "$DEPLOYMENT_DIR/build-output.txt"
 
     echo "❌ DEPLOYMENT BLOCKED: Build failed"
+    # Trigger rollback
     exit 1
   fi
 else
@@ -446,7 +371,94 @@ else
 fi
 ```
 
-### Security Scan (Quick)
+<!-- Component: prompts/quality-gates/type-checking.md -->
+
+#### Gate 2: Type Checking (if TypeScript)
+
+```bash
+if [ -f "tsconfig.json" ]; then
+  echo "Running TypeScript type checking..."
+
+  npx tsc --noEmit > "$DEPLOYMENT_DIR/type-check.txt" 2>&1
+
+  if [ $? -eq 0 ]; then
+    echo "✓ Type checking passed"
+  else
+    echo "⚠️ Type errors detected"
+    tail -20 "$DEPLOYMENT_DIR/type-check.txt"
+
+    Use AskUserQuestion:
+      Question: "Type errors detected. How to proceed?"
+      Options:
+        - "Cancel and fix type errors (Recommended)"
+        - "Deploy anyway (may cause runtime errors)"
+  fi
+fi
+```
+
+<!-- Component: prompts/quality-gates/linting.md -->
+
+#### Gate 3: Linting
+
+```bash
+if [ -f "package.json" ] && grep -q '"lint":' package.json; then
+  echo "Running linter..."
+
+  npm run lint > "$DEPLOYMENT_DIR/lint-output.txt" 2>&1 || true
+
+  ERROR_COUNT=$(grep -c "error" "$DEPLOYMENT_DIR/lint-output.txt" || echo "0")
+
+  if [ "$ERROR_COUNT" -gt 0 ]; then
+    echo "⚠️ $ERROR_COUNT linting errors"
+    # Warnings are OK, errors might be concerning
+  else
+    echo "✓ Linting passed"
+  fi
+fi
+```
+
+<!-- Component: prompts/quality-gates/test-execution.md -->
+
+#### Gate 4: Tests
+
+```bash
+echo "Running tests..."
+
+# Detect test command
+if [ -f "package.json" ]; then
+  if grep -q '"test":' package.json; then
+    TEST_COMMAND="npm test"
+  fi
+elif [ -f "pytest.ini" ] || grep -q "pytest" requirements.txt 2>/dev/null; then
+  TEST_COMMAND="pytest"
+elif [ -f "Cargo.toml" ]; then
+  TEST_COMMAND="cargo test"
+fi
+
+if [ -n "$TEST_COMMAND" ]; then
+  echo "Running: $TEST_COMMAND"
+
+  if $TEST_COMMAND > "$DEPLOYMENT_DIR/test-results.txt" 2>&1; then
+    echo "✓ Tests passed"
+  else
+    echo "✗ Tests failed"
+    cat "$DEPLOYMENT_DIR/test-results.txt"
+
+    Use AskUserQuestion:
+      Question: "Tests failed. How to proceed?"
+      Options:
+        - "Cancel deployment (Recommended)"
+        - "Fix tests and retry"
+        - "Deploy anyway (DANGEROUS)"
+  fi
+else
+  echo "⚠️ No test command found - skipping tests"
+fi
+```
+
+<!-- Component: prompts/quality-gates/security-scan-quick.md -->
+
+#### Gate 5: Security Scan (Quick)
 
 ```bash
 echo "Running security scan..."
@@ -483,53 +495,13 @@ if command -v gitleaks &> /dev/null; then
 fi
 ```
 
-### Type Checking (if TypeScript)
-
-```bash
-if [ -f "tsconfig.json" ]; then
-  echo "Running TypeScript type checking..."
-
-  npx tsc --noEmit > "$DEPLOYMENT_DIR/type-check.txt" 2>&1
-
-  if [ $? -eq 0 ]; then
-    echo "✓ Type checking passed"
-  else
-    echo "⚠️ Type errors detected"
-    tail -20 "$DEPLOYMENT_DIR/type-check.txt"
-
-    Use AskUserQuestion:
-      Question: "Type errors detected. How to proceed?"
-      Options:
-        - "Cancel and fix type errors (Recommended)"
-        - "Deploy anyway (may cause runtime errors)"
-  fi
-fi
-```
-
-### Linting
-
-```bash
-if [ -f "package.json" ] && grep -q '"lint":' package.json; then
-  echo "Running linter..."
-
-  npm run lint > "$DEPLOYMENT_DIR/lint-output.txt" 2>&1 || true
-
-  ERROR_COUNT=$(grep -c "error" "$DEPLOYMENT_DIR/lint-output.txt" || echo "0")
-
-  if [ "$ERROR_COUNT" -gt 0 ]; then
-    echo "⚠️ $ERROR_COUNT linting errors"
-    # Warnings are OK, errors might be concerning
-  else
-    echo "✓ Linting passed"
-  fi
-fi
-```
-
 Mark todo #2 as completed.
 
 ---
 
 ## Phase 3: Create Deployment Snapshot (2-5 min)
+
+<!-- Component: prompts/git/tag-creation.md -->
 
 Mark todo #3 as in_progress.
 
@@ -548,27 +520,9 @@ echo "$TAG_NAME" > "$DEPLOYMENT_DIR/deployment-tag.txt"
 git push origin "$TAG_NAME"
 ```
 
-### Backup Current Deployment (if applicable)
-
-```bash
-# For platforms that support snapshots/backups
-case "$PLATFORM" in
-  "Vercel")
-    # Vercel keeps deployment history automatically
-    echo "ℹ️ Vercel maintains deployment history"
-    ;;
-  "AWS"*)
-    # Create AMI snapshot or similar
-    echo "ℹ️ Consider creating AMI snapshot for AWS deployments"
-    ;;
-  "Docker"|"Kubernetes")
-    # Tag current image as backup
-    echo "ℹ️ Tag current container image as backup before deploying"
-    ;;
-esac
-```
-
 ### Save Deployment Manifest
+
+<!-- Component: prompts/reporting/artifact-listing.md -->
 
 ```bash
 # Create deployment manifest
@@ -643,7 +597,6 @@ if [ "$PLATFORM" = "Netlify" ]; then
     npm install -g netlify-cli
   fi
 
-  # Build is already done in pre-flight
   # Deploy based on environment
   if [ "$ENVIRONMENT" = "production" ]; then
     netlify deploy --prod --dir=dist > "$DEPLOYMENT_DIR/netlify-deploy.log" 2>&1
@@ -675,81 +628,11 @@ if [ "$PLATFORM" = "Docker" ]; then
     # Tag as latest for this environment
     docker tag "app:$IMAGE_TAG" "app:$ENVIRONMENT-latest"
 
-    # Push to registry (if configured)
-    if [ -n "$DOCKER_REGISTRY" ]; then
-      docker push "$DOCKER_REGISTRY/app:$IMAGE_TAG"
-      docker push "$DOCKER_REGISTRY/app:$ENVIRONMENT-latest"
-    fi
-
-    # Deploy container (example for local/single server)
-    # Actual deployment depends on your infrastructure
     echo "ℹ️ Docker image ready: app:$IMAGE_TAG"
   else
     echo "✗ Docker build failed"
     cat "$DEPLOYMENT_DIR/docker-build.log"
     exit 1
-  fi
-fi
-```
-
-#### AWS Serverless Deployment
-
-```bash
-if [[ "$PLATFORM" == AWS* ]]; then
-  echo "Deploying to AWS..."
-
-  if [ -f "serverless.yml" ]; then
-    # Serverless Framework
-    serverless deploy --stage "$ENVIRONMENT" > "$DEPLOYMENT_DIR/aws-deploy.log" 2>&1
-
-    # Extract API endpoint
-    DEPLOY_URL=$(grep -o "https://[^ ]*\.execute-api\.[^ ]*" "$DEPLOYMENT_DIR/aws-deploy.log" | head -1)
-
-  elif [ -f "template.yaml" ]; then
-    # AWS SAM
-    sam deploy --stack-name "app-$ENVIRONMENT" > "$DEPLOYMENT_DIR/aws-sam-deploy.log" 2>&1
-
-    # Extract outputs
-    aws cloudformation describe-stacks --stack-name "app-$ENVIRONMENT" --query 'Stacks[0].Outputs' > "$DEPLOYMENT_DIR/aws-outputs.json"
-  fi
-
-  echo "Deployment URL: $DEPLOY_URL"
-  echo "$DEPLOY_URL" > "$DEPLOYMENT_DIR/deployment-url.txt"
-fi
-```
-
-#### Heroku Deployment
-
-```bash
-if [ "$PLATFORM" = "Heroku" ]; then
-  echo "Deploying to Heroku..."
-
-  # Determine Heroku app name
-  if [ "$ENVIRONMENT" = "production" ]; then
-    HEROKU_APP="app-production"
-  else
-    HEROKU_APP="app-staging"
-  fi
-
-  # Deploy via git push
-  git push heroku main:main > "$DEPLOYMENT_DIR/heroku-deploy.log" 2>&1
-
-  DEPLOY_URL="https://$HEROKU_APP.herokuapp.com"
-  echo "Deployment URL: $DEPLOY_URL"
-  echo "$DEPLOY_URL" > "$DEPLOYMENT_DIR/deployment-url.txt"
-fi
-```
-
-#### Generic/CI-Based Deployment
-
-```bash
-if [ -z "$DEPLOY_URL" ]; then
-  echo "ℹ️ Using CI/CD pipeline for deployment"
-
-  # Trigger CI/CD pipeline (example for GitHub Actions)
-  if [ -n "$CI_PLATFORM" ] && [ "$CI_PLATFORM" = "GitHub Actions" ]; then
-    echo "Deployment triggered via GitHub Actions workflow"
-    echo "Monitor deployment: https://github.com/$(git remote get-url origin | sed 's/.*github.com[:\/]//' | sed 's/.git$//')/actions"
   fi
 fi
 ```
@@ -818,51 +701,7 @@ if [ -n "$DEPLOY_URL" ]; then
   else
     echo "ℹ️ API health endpoint not found (may not exist)"
   fi
-
-  # Check for JavaScript errors (basic check)
-  if grep -q "console.error\|Uncaught\|TypeError" "$DEPLOYMENT_DIR/homepage.html"; then
-    echo "⚠️ Potential JavaScript errors detected"
-  fi
 fi
-```
-
-### Performance Check (Optional)
-
-```bash
-if [ -n "$DEPLOY_URL" ]; then
-  echo "Running performance check..."
-
-  # Measure response time
-  RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$DEPLOY_URL")
-
-  echo "Response time: ${RESPONSE_TIME}s"
-  echo "$RESPONSE_TIME" > "$DEPLOYMENT_DIR/response-time.txt"
-
-  # Run Lighthouse (if installed)
-  if command -v lighthouse &> /dev/null; then
-    lighthouse "$DEPLOY_URL" --output=json --output-path="$DEPLOYMENT_DIR/lighthouse.json" --chrome-flags="--headless" || true
-  fi
-fi
-```
-
-### Verify Environment Variables
-
-```bash
-echo "Verifying environment configuration..."
-
-# Check that environment-specific configs are loaded
-# This is platform-specific
-case "$PLATFORM" in
-  "Vercel")
-    vercel env ls "$ENVIRONMENT" > "$DEPLOYMENT_DIR/env-vars.txt" 2>&1 || true
-    ;;
-  "Netlify")
-    netlify env:list > "$DEPLOYMENT_DIR/env-vars.txt" 2>&1 || true
-    ;;
-  *)
-    echo "ℹ️ Manual verification recommended for $PLATFORM"
-    ;;
-esac
 ```
 
 Mark todo #5 as completed.
@@ -870,6 +709,9 @@ Mark todo #5 as completed.
 ---
 
 ## Phase 6: Deployment Report (3-5 min)
+
+<!-- Component: prompts/reporting/summary-template.md -->
+<!-- Component: prompts/reporting/artifact-listing.md -->
 
 Mark todo #6 as in_progress.
 
@@ -932,14 +774,12 @@ Mark todo #6 as in_progress.
 | HTTP Status | ✓ 200 | Site is accessible |
 | API Health | ✓ | API responding |
 | Response Time | ✓ | [X.XX]s |
-| Lighthouse Score | [Score] | [Link to report] |
 
 ### Smoke Tests
 
 - ✓ Homepage loads correctly
 - ✓ Static assets loading
 - ✓ API endpoints responding
-- ⚠️ Minor JavaScript warnings (non-blocking)
 
 ---
 
@@ -951,30 +791,14 @@ Mark todo #6 as in_progress.
 [platform-specific rollback command]
 ```
 
-**Previous Deployment**:
-- Tag: [previous-tag]
-- Commit: [previous-commit]
-- URL: [previous-url]
-
 **Rollback Procedure**:
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
----
-
-## Environment Configuration
-
-**Environment Variables** (count): [N]
-
-**Critical Configs Verified**:
-- ✓ Database connection
-- ✓ API keys configured
-- ✓ Third-party integrations
+See `prompts/quality-gates/rollback-on-failure.md` for detailed rollback instructions.
 
 ---
 
 ## Deployment Artifacts
+
+<!-- Component: prompts/reporting/artifact-listing.md -->
 
 All deployment artifacts saved to `.agency/deployments/$DEPLOYMENT_ID/`:
 
@@ -1002,48 +826,6 @@ All deployment artifacts saved to `.agency/deployments/$DEPLOYMENT_ID/`:
 1. **Notify Team**: Deployment to $ENVIRONMENT complete
 2. **Update Status Page**: If applicable
 3. **Document Changes**: Update changelog/release notes
-
-### Follow-Up
-
-- [ ] Monitor application for 1 hour
-- [ ] Check error tracking dashboard
-- [ ] Verify all integrations working
-- [ ] Update deployment documentation
-
----
-
-## Rollback Plan (If Needed)
-
-If issues are detected:
-
-1. **Immediate**: Rollback to previous version
-2. **Investigate**: Review logs and error reports
-3. **Fix**: Address issues in development
-4. **Re-deploy**: After fixes verified
-
----
-
-## Issues Encountered
-
-[List any issues encountered during deployment and how they were resolved]
-
----
-
-## Performance Baseline
-
-**Response Times**:
-- Homepage: [X.XX]s
-- API: [X.XX]s
-
-**Resource Usage**:
-- Memory: [X MB]
-- CPU: [X%]
-
-**Lighthouse Scores** (if available):
-- Performance: [X/100]
-- Accessibility: [X/100]
-- Best Practices: [X/100]
-- SEO: [X/100]
 
 ---
 
@@ -1084,6 +866,8 @@ Mark todo #6 as completed.
 ---
 
 ## Error Handling
+
+<!-- Component: prompts/quality-gates/rollback-on-failure.md -->
 
 ### If Pre-Flight Checks Fail
 
@@ -1135,20 +919,18 @@ Use AskUserQuestion:
 
 ### If Rollback Needed
 
-**Rollback Procedure**:
+See `prompts/quality-gates/rollback-on-failure.md` for comprehensive rollback procedures.
+
+**Platform-specific rollback examples**:
 ```bash
-# Platform-specific rollback
 case "$PLATFORM" in
   "Vercel")
-    # Vercel allows promoting previous deployment
     vercel rollback
     ;;
   "Netlify")
-    # Restore previous deployment
     netlify deploy --prod --dir=.netlify/previous
     ;;
   "Heroku")
-    # Rollback release
     heroku releases:rollback
     ;;
   *)
@@ -1187,22 +969,6 @@ After deploying:
 - [ ] Monitor logs for errors
 - [ ] Verify integrations working
 - [ ] Update documentation
-
-### Zero-Downtime Deployments
-
-For production:
-- Use blue-green deployments
-- Or canary deployments
-- Or rolling deployments
-- Avoid direct replacement
-
-### Database Migrations
-
-**CRITICAL**: Handle migrations carefully:
-1. Deploy backward-compatible migrations first
-2. Deploy code
-3. Run forward migrations
-4. Never skip migration rollback planning
 
 ---
 

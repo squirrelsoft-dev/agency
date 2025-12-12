@@ -444,6 +444,21 @@ The plugin includes specialized knowledge skills that agents can reference:
 - **Code Review Standards**: Security, quality, and performance criteria
 - **Testing Strategy & Standards**: Test frameworks and coverage standards
 
+### Prompt Component System
+
+The plugin uses a modular prompt component system located in `prompts/` that provides reusable workflow patterns for agents:
+
+- **Context Detection** (`context/`) - Framework, testing tools, database, build tool detection
+- **Specialist Selection** (`specialist-selection/`) - Keyword analysis, dependency detection, routing
+- **Quality Gates** (`quality-gates/`) - Build verification, type checking, linting, testing, coverage
+- **Git Operations** (`git/`) - Branch creation, commit formatting, PR creation, status validation
+- **Issue Management** (`issue-management/`) - GitHub/Jira issue fetching, metadata extraction
+- **Error Handling** (`error-handling/`) - Scope detection failures, tool errors, retry logic
+- **Progress Tracking** (`progress/`) - Todo initialization, phase tracking, completion reporting
+- **Reporting** (`reporting/`) - Summary templates, metrics comparison, artifact listing
+
+These components enable consistent, high-quality execution across all commands and agents.
+
 ## Configuration
 
 Create `.claude/agency.local.md` in your project for custom configuration:

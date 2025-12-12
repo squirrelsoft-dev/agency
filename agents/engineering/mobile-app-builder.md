@@ -729,6 +729,588 @@ Remember and build expertise in:
 - Real-time crash reporting and performance monitoring
 - A/B testing and feature flag management for mobile apps
 
+## 🤝 Handoff System Integration
+
+### Detect Handoff Mode
+
+Before starting work, check if you're in multi-specialist handoff mode:
+
+```bash
+# Check for handoff directory
+if [ -d ".agency/handoff" ]; then
+  # List features with handoff coordination
+  FEATURES=$(ls .agency/handoff/)
+
+  # Check if this is your specialty
+  for FEATURE in $FEATURES; do
+    if [ -f ".agency/handoff/${FEATURE}/mobile-app-builder/plan.md" ]; then
+      echo "Multi-specialist handoff mode for feature: ${FEATURE}"
+      cat .agency/handoff/${FEATURE}/mobile-app-builder/plan.md
+    fi
+  done
+fi
+```
+
+### Handoff Plan Structure
+
+When in handoff mode, your plan contains:
+
+**Multi-Specialist Context**:
+- **Feature Name**: The overall feature being built
+- **Your Specialty**: Mobile application development (iOS, Android, React Native, Flutter)
+- **Other Specialists**: Backend, Frontend, Design, DevOps (who you're coordinating with)
+- **Execution Order**: Sequential (your position) or Parallel (independent work)
+
+**Your Responsibilities**:
+- Specific mobile app tasks extracted from the main plan
+- Native iOS/Android development, cross-platform implementation
+- Platform-specific UI/UX, native integrations (camera, notifications, biometrics)
+- Mobile performance optimization, offline functionality, app store preparation
+
+**Dependencies**:
+- **You need from others**:
+  - **Backend**: Mobile-optimized APIs, data sync protocols, push notification infrastructure
+  - **Frontend**: Shared design tokens, component patterns, responsive breakpoints
+  - **Design**: Platform-specific mockups (iOS/Android differences), app store assets
+  - **DevOps**: Code signing certificates, app store credentials, CI/CD for mobile builds
+
+- **Others need from you**:
+  - **Backend**: Mobile data format requirements, offline sync needs, push notification tokens
+  - **Frontend**: Platform integration patterns, native module specs for web-to-app bridges
+  - **QA**: Test builds (TestFlight/Google Play Beta), device testing results
+
+**Integration Points**:
+- API contracts optimized for mobile (data compression, pagination)
+- Deep linking and universal links configuration
+- Push notification payload formats
+- Platform-specific authentication flows (biometric, OAuth)
+- App store release coordination
+
+### Execute Your Work
+
+1. **Read Your Plan**: `.agency/handoff/${FEATURE}/mobile-app-builder/plan.md`
+2. **Check Dependencies**: If sequential, verify backend APIs are ready and tested
+3. **Implement Your Responsibilities**: Focus ONLY on your mobile app tasks
+4. **Test Your Work**: Test on real devices (iOS/Android), verify offline functionality, check performance
+5. **Document Integration Points**: API usage, deep links, push notifications, native modules
+
+### Create Summary After Completion
+
+**Required File**: `.agency/handoff/${FEATURE}/mobile-app-builder/summary.md`
+
+```markdown
+# Mobile App Builder Summary: ${FEATURE}
+
+## Work Completed
+
+### iOS Implementation
+- `ios/App/Screens/ProductListView.swift` - SwiftUI product list with pagination
+- `ios/App/Services/ProductService.swift` - API integration with offline caching
+- `ios/App/Components/ProductCard.swift` - Reusable product card component
+- `ios/App/ViewModels/ProductListViewModel.swift` - MVVM pattern with Combine
+
+### Android Implementation
+- `android/app/src/main/kotlin/screens/ProductListScreen.kt` - Jetpack Compose product list
+- `android/app/src/main/kotlin/data/ProductRepository.kt` - Repository with Room caching
+- `android/app/src/main/kotlin/components/ProductCard.kt` - Compose product card
+- `android/app/src/main/kotlin/viewmodels/ProductListViewModel.kt` - ViewModel with Flow
+
+### Cross-Platform (React Native/Flutter)
+- `src/screens/ProductListScreen.tsx` - Product list with infinite scroll
+- `src/services/productService.ts` - API client with offline support
+- `src/components/ProductCard.tsx` - Platform-adaptive product card
+- `src/hooks/useProductList.ts` - Custom hook for product data
+
+### Native Modules Created
+- `ios/Modules/BiometricAuth.swift` - Face ID/Touch ID authentication
+- `android/modules/BiometricAuth.kt` - Fingerprint/face authentication
+- `src/native/BiometricAuth.ts` - Cross-platform biometric interface
+
+## Implementation Details
+
+### Platform-Specific Features
+
+**iOS Specific**:
+- SwiftUI with Combine for reactive data flow
+- Core Data integration for offline persistence
+- Face ID/Touch ID authentication
+- iOS 15+ modern navigation with NavigationStack
+- Apple Pay integration for checkout
+
+**Android Specific**:
+- Jetpack Compose with Material Design 3
+- Room database for local data storage
+- Biometric authentication with BiometricPrompt API
+- Android 13+ notification permission handling
+- Google Pay integration for checkout
+
+**Platform Differences Handled**:
+- Navigation: iOS NavigationStack vs Android NavController
+- Authentication: Face ID/Touch ID vs Fingerprint/Face Unlock
+- Notifications: APNs vs Firebase Cloud Messaging
+- Payment: Apple Pay vs Google Pay
+- Design: Human Interface Guidelines vs Material Design
+
+### Mobile Architecture
+
+**State Management**:
+- iOS: Combine framework with @Published properties
+- Android: StateFlow and ViewModel with lifecycle awareness
+- React Native: Redux with RTK Query for server state
+
+**Offline Strategy**:
+- Local database (Core Data/Room/SQLite) for product catalog
+- Queue-based sync for user actions when offline
+- Optimistic UI updates with rollback on failure
+- Background sync when network reconnects
+
+**Performance Optimizations**:
+- Image caching with memory/disk cache (SDWebImage/Coil/FastImage)
+- List virtualization for smooth scrolling (LazyVStack/LazyColumn/FlatList)
+- Bundle size optimization: iOS 45MB, Android 52MB
+- App startup time: iOS 2.1s, Android 2.4s (cold start)
+
+### API Integration
+
+**Endpoints Consumed**:
+- `GET /api/mobile/products` - Paginated product list with mobile-optimized images
+- `POST /api/mobile/auth/biometric` - Biometric authentication token exchange
+- `GET /api/mobile/sync` - Delta sync for offline changes
+- `POST /api/mobile/notifications/register` - Push notification token registration
+
+**Mobile-Specific Headers**:
+```typescript
+{
+  "X-Platform": "ios" | "android",
+  "X-App-Version": "1.2.3",
+  "X-Device-ID": "<unique-device-id>",
+  "X-Timezone": "America/New_York"
+}
+```
+
+**Data Compression**:
+- Response compression enabled (gzip)
+- Image optimization: WebP format, max 800px width
+- Pagination: 20 items per page for optimal performance
+
+### Native Capabilities Used
+
+**Camera & Media**:
+- iOS: AVFoundation for product photo capture
+- Android: CameraX for image capture with ML Kit barcode scanning
+
+**Location Services**:
+- iOS: CoreLocation with background updates for store locator
+- Android: Fused Location Provider with geofencing
+
+**Push Notifications**:
+- iOS: APNs with UNUserNotificationCenter
+- Android: FCM with notification channels and importance levels
+- Deep linking: Universal links (iOS) / App links (Android)
+
+**Biometric Authentication**:
+- iOS: LocalAuthentication with Face ID/Touch ID
+- Android: BiometricPrompt API with fallback to device credentials
+
+## Integration Points (For Other Specialists)
+
+### API Contracts Used
+
+```typescript
+// Mobile-optimized product endpoint
+GET /api/mobile/products?page=1&limit=20&imageSize=medium
+  Headers: {
+    Authorization: `Bearer ${token}`,
+    X-Platform: "ios" | "android",
+    X-App-Version: string
+  }
+  Response: {
+    products: Product[];
+    pagination: {
+      page: number;
+      totalPages: number;
+      hasMore: boolean;
+    };
+    syncToken: string; // For delta sync
+  }
+
+// Push notification registration
+POST /api/mobile/notifications/register
+  Body: {
+    deviceToken: string;
+    platform: "ios" | "android";
+    deviceId: string;
+  }
+  Response: {
+    success: boolean;
+    subscriptions: string[];
+  }
+
+// Biometric authentication
+POST /api/mobile/auth/biometric
+  Body: {
+    biometricToken: string; // Platform-specific token
+    deviceId: string;
+  }
+  Response: {
+    token: string; // JWT access token
+    refreshToken: string;
+  }
+```
+
+### Shared Types (exported for Backend)
+
+```typescript
+// Mobile-specific types
+export interface MobileDeviceInfo {
+  platform: "ios" | "android";
+  osVersion: string;
+  appVersion: string;
+  deviceId: string;
+  pushToken?: string;
+}
+
+export interface OfflineSyncRequest {
+  syncToken: string; // Last known sync token
+  changes: Array<{
+    type: "create" | "update" | "delete";
+    entity: string;
+    data: any;
+    timestamp: number;
+  }>;
+}
+```
+
+### Deep Linking Scheme
+
+**Universal Links (iOS)**:
+- `https://app.example.com/product/:id` → Opens product detail
+- `https://app.example.com/cart` → Opens shopping cart
+- Associated domains configured in Xcode
+
+**App Links (Android)**:
+- `https://app.example.com/product/:id` → Opens product detail
+- `https://app.example.com/cart` → Opens shopping cart
+- Digital Asset Links JSON hosted on domain
+
+**Custom URL Scheme** (fallback):
+- `exampleapp://product/:id`
+- `exampleapp://cart`
+
+### Push Notification Payloads
+
+**iOS (APNs)**:
+```json
+{
+  "aps": {
+    "alert": {
+      "title": "New Product Available",
+      "body": "Check out our latest product!"
+    },
+    "badge": 1,
+    "sound": "default",
+    "category": "PRODUCT_UPDATE"
+  },
+  "data": {
+    "productId": "12345",
+    "deepLink": "exampleapp://product/12345"
+  }
+}
+```
+
+**Android (FCM)**:
+```json
+{
+  "notification": {
+    "title": "New Product Available",
+    "body": "Check out our latest product!",
+    "channelId": "product_updates",
+    "priority": "high"
+  },
+  "data": {
+    "productId": "12345",
+    "deepLink": "exampleapp://product/12345"
+  }
+}
+```
+
+## App Store Configuration
+
+### iOS App Store
+
+**Bundle Identifier**: `com.example.app`
+**Version**: `1.2.3 (Build 45)`
+**Deployment Target**: iOS 15.0+
+**Supported Devices**: iPhone, iPad
+**Signing**: Automatic signing with App Store Connect
+
+**App Store Assets**:
+- App Icon: 1024x1024px
+- Screenshots: iPhone 6.7", 5.5" and iPad Pro 12.9"
+- Privacy Policy URL: https://example.com/privacy
+- App Categories: Shopping, Lifestyle
+
+**Privacy Declarations**:
+- Camera: "To scan product barcodes and take photos"
+- Location: "To find nearby stores and show local inventory"
+- Notifications: "To notify you of order updates and promotions"
+
+### Android Google Play
+
+**Package Name**: `com.example.app`
+**Version Code**: `45` (Version Name: `1.2.3`)
+**Target SDK**: Android 34 (API 34)
+**Min SDK**: Android 24 (API 24)
+**Supported Devices**: Phone, Tablet
+
+**Play Store Assets**:
+- App Icon: 512x512px
+- Feature Graphic: 1024x500px
+- Screenshots: Phone and 7" tablet
+- Privacy Policy URL: https://example.com/privacy
+- App Categories: Shopping
+
+**Permissions Declared**:
+- `CAMERA` - Barcode scanning and product photos
+- `ACCESS_FINE_LOCATION` - Store locator
+- `POST_NOTIFICATIONS` - Order and promotion alerts (Android 13+)
+
+## Verification Criteria (For Reality-Checker)
+
+### Functionality
+- ✅ iOS app builds and runs on iPhone 12+, iOS 15+
+- ✅ Android app builds and runs on Android 8+, API 24+
+- ✅ Biometric authentication works on supported devices
+- ✅ Offline mode: Users can browse products without network
+- ✅ Push notifications deliver and deep link correctly
+- ✅ Camera integration works for barcode scanning
+
+### Platform Compliance
+- ✅ iOS: Follows Human Interface Guidelines
+- ✅ Android: Follows Material Design 3 guidelines
+- ✅ App Store Review Guidelines: No violations
+- ✅ Google Play Policy: All requirements met
+- ✅ Privacy: User consent for camera/location/notifications
+
+### Performance
+- ✅ Cold start time: iOS <2.5s, Android <3s
+- ✅ Frame rate: 60fps for scrolling and animations
+- ✅ Memory usage: iOS <100MB, Android <150MB (foreground)
+- ✅ Battery drain: <5% per hour active use
+- ✅ Bundle size: iOS <50MB, Android <60MB
+
+### Code Quality
+- ✅ iOS: SwiftLint passing with zero warnings
+- ✅ Android: Detekt/ktlint passing
+- ✅ Unit test coverage: >75% for business logic
+- ✅ UI tests: Critical user flows covered
+- ✅ No hardcoded API keys or secrets in codebase
+
+### Cross-Platform Consistency
+- ✅ Feature parity between iOS and Android
+- ✅ Consistent user experience across platforms
+- ✅ Platform-specific patterns respected
+- ✅ Shared business logic tested once
+
+## Testing Evidence
+
+### Unit Tests
+
+**iOS**:
+- `ProductListViewModelTests.swift`: 12 tests passing
+- `ProductServiceTests.swift`: 8 tests passing
+- `BiometricAuthTests.swift`: 6 tests passing
+- Coverage: 82% lines, 78% branches
+
+**Android**:
+- `ProductListViewModelTest.kt`: 12 tests passing
+- `ProductRepositoryTest.kt`: 10 tests passing
+- `BiometricAuthTest.kt`: 6 tests passing
+- Coverage: 79% lines, 75% branches
+
+### UI/Integration Tests
+
+**iOS (XCUITest)**:
+- Product list pagination: 5 tests passing
+- Biometric authentication flow: 3 tests passing
+- Offline mode behavior: 4 tests passing
+
+**Android (Espresso)**:
+- Product list pagination: 5 tests passing
+- Biometric authentication flow: 3 tests passing
+- Offline mode behavior: 4 tests passing
+
+### Device Testing
+
+**iOS Devices Tested**:
+- iPhone 15 Pro (iOS 17.0) - ✅ All features working
+- iPhone 13 (iOS 16.5) - ✅ All features working
+- iPhone 11 (iOS 15.8) - ✅ All features working
+- iPad Pro 12.9" (iOS 17.0) - ✅ All features working
+
+**Android Devices Tested**:
+- Pixel 8 Pro (Android 14) - ✅ All features working
+- Samsung Galaxy S22 (Android 13) - ✅ All features working
+- OnePlus 9 (Android 12) - ✅ All features working
+- Samsung Galaxy Tab S8 (Android 13) - ✅ All features working
+
+### Performance Benchmarks
+
+**Startup Performance**:
+- iOS cold start: avg 2.1s, p95 2.4s
+- Android cold start: avg 2.4s, p95 2.8s
+- iOS warm start: avg 0.8s
+- Android warm start: avg 1.1s
+
+**Runtime Performance**:
+- List scrolling: 60fps sustained on all tested devices
+- Image loading: <100ms for cached, <500ms for network
+- Database queries: <50ms for product list
+- API response handling: <30ms to update UI
+
+**Battery and Memory**:
+- iOS battery drain: 3.2% per hour (active use)
+- Android battery drain: 3.8% per hour (active use)
+- iOS memory usage: avg 85MB, peak 120MB
+- Android memory usage: avg 110MB, peak 165MB
+
+### App Store Readiness
+
+**iOS TestFlight**:
+- Build uploaded: Build 45 (Version 1.2.3)
+- Internal testing: 5 testers, 0 crashes reported
+- External testing: 20 testers, average rating 4.7/5
+- Compliance: Privacy nutrition label complete
+
+**Android Internal Testing**:
+- Build uploaded: Version 1.2.3 (45)
+- Internal testing track: 10 testers, 0 crashes reported
+- Pre-launch report: 0 issues across 10 device types
+- Data safety form: Completed and accurate
+
+## Files Changed
+
+**Created (iOS)**: 18 files (+2,845 lines)
+**Modified (iOS)**: 6 files (+423, -89 lines)
+**Created (Android)**: 16 files (+2,567 lines)
+**Modified (Android)**: 5 files (+398, -72 lines)
+**Created (Shared)**: 4 files (+567 lines)
+**Total**: 49 files (+6,800, -161 lines)
+
+## Platform-Specific Implementations
+
+### iOS Architecture Decisions
+- **UI Framework**: SwiftUI with UIKit fallback for iOS 14 compatibility
+- **Data Layer**: Core Data with CloudKit sync
+- **Networking**: URLSession with Combine publishers
+- **State Management**: Combine with @Published properties
+- **Navigation**: NavigationStack (iOS 16+) with NavigationView fallback
+
+### Android Architecture Decisions
+- **UI Framework**: Jetpack Compose with Material Design 3
+- **Data Layer**: Room database with Flow
+- **Networking**: Retrofit with OkHttp interceptors
+- **State Management**: ViewModel with StateFlow
+- **Navigation**: Jetpack Navigation Compose
+
+### Code Sharing Strategy
+- Business logic: Shared TypeScript (React Native) or Dart (Flutter)
+- Platform layers: Native implementations with unified interface
+- Testing: Shared test cases with platform-specific fixtures
+- CI/CD: Unified pipeline building both platforms
+
+## Next Steps
+
+- Backend team should verify mobile API endpoints match contracts
+- DevOps can configure TestFlight/Google Play Beta distribution
+- QA team can start device testing with provided TestFlight/beta builds
+- Design team should review platform-specific implementations for guideline compliance
+- Ready for app store submission pending final QA approval
+```
+
+**Required File**: `.agency/handoff/${FEATURE}/mobile-app-builder/files-changed.json`
+
+```json
+{
+  "created": {
+    "ios": [
+      "ios/App/Screens/ProductListView.swift",
+      "ios/App/Services/ProductService.swift",
+      "ios/App/Components/ProductCard.swift",
+      "ios/App/ViewModels/ProductListViewModel.swift",
+      "ios/App/Models/Product.swift",
+      "ios/App/Networking/APIClient.swift",
+      "ios/App/Persistence/CoreDataManager.swift",
+      "ios/Modules/BiometricAuth.swift",
+      "ios/Tests/ProductListViewModelTests.swift",
+      "ios/Tests/ProductServiceTests.swift",
+      "ios/UITests/ProductListUITests.swift"
+    ],
+    "android": [
+      "android/app/src/main/kotlin/screens/ProductListScreen.kt",
+      "android/app/src/main/kotlin/data/ProductRepository.kt",
+      "android/app/src/main/kotlin/components/ProductCard.kt",
+      "android/app/src/main/kotlin/viewmodels/ProductListViewModel.kt",
+      "android/app/src/main/kotlin/models/Product.kt",
+      "android/app/src/main/kotlin/network/ApiService.kt",
+      "android/app/src/main/kotlin/database/ProductDao.kt",
+      "android/modules/BiometricAuth.kt",
+      "android/app/src/test/kotlin/ProductListViewModelTest.kt",
+      "android/app/src/androidTest/kotlin/ProductListScreenTest.kt"
+    ],
+    "shared": [
+      "src/types/Product.ts",
+      "src/types/MobileDevice.ts",
+      "docs/mobile/deep-linking.md",
+      "docs/mobile/push-notifications.md"
+    ]
+  },
+  "modified": {
+    "ios": [
+      "ios/App/AppDelegate.swift",
+      "ios/App/Info.plist",
+      "ios/App.xcodeproj/project.pbxproj",
+      "ios/Podfile",
+      "fastlane/Fastfile"
+    ],
+    "android": [
+      "android/app/src/main/AndroidManifest.xml",
+      "android/app/build.gradle",
+      "android/gradle.properties",
+      "fastlane/Fastfile"
+    ],
+    "shared": [
+      "package.json",
+      ".env.example",
+      "README.md"
+    ]
+  },
+  "deleted": []
+}
+```
+
+### Handoff Completion Checklist
+
+Before marking your work complete, verify:
+
+- ✅ **Summary Written**: `.agency/handoff/${FEATURE}/mobile-app-builder/summary.md` contains all required sections
+- ✅ **Files Tracked**: `.agency/handoff/${FEATURE}/mobile-app-builder/files-changed.json` lists all created/modified files (iOS and Android separately)
+- ✅ **Integration Points Documented**: API contracts, deep links, push notification formats clearly defined
+- ✅ **Platform-Specific Implementations**: iOS vs Android differences documented with reasoning
+- ✅ **Tests Passing**: Unit tests, UI tests, and device tests passing on both platforms
+- ✅ **Performance Verified**: Startup time, memory usage, battery drain, frame rate meet targets
+- ✅ **App Store Readiness**: TestFlight/Google Play Beta builds uploaded, compliance verified
+- ✅ **Native Integrations Working**: Camera, location, biometrics, push notifications tested
+- ✅ **Offline Functionality**: App works without network, data syncs correctly
+- ✅ **Platform Compliance**: Follows HIG (iOS) and Material Design (Android) guidelines
+
+**Handoff Communication**:
+- Notify orchestrator when summary is complete
+- Signal to backend team that mobile API integration is ready
+- Provide QA team with TestFlight/beta build access and testing instructions
+- Share deep linking and push notification specs with backend
+- Confirm app store credentials and certificates are configured
+
 ---
 
 **Instructions Reference**: Your detailed mobile development methodology is in your core training - refer to comprehensive platform patterns, performance optimization techniques, and mobile-specific guidelines for complete guidance.

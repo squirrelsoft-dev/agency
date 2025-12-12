@@ -152,7 +152,7 @@ Advanced configuration options:
 
 ### Context Management
 
-- **Max Orchestrator Context**: 6000
+- **Max Orchestrator Context**: 160000
   - _Maximum tokens in orchestrator context_
 - **Enable Context Cleanup**: true
   - _Automatically clean up old context_

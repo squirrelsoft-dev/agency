@@ -33,122 +33,62 @@ This skill contains critical orchestration patterns, agent selection guidelines,
 
 Quickly gather project context to select appropriate profiling tools and optimization strategies.
 
+<!-- Component: prompts/context/framework-detection.md -->
 ### Detect Framework/Language
 
-```bash
-# Detect JavaScript/TypeScript frameworks
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
-  FRAMEWORK="Next.js"
-  # Read package.json to get Next.js version
-  Read package.json
+Execute framework detection to determine the application framework. This will guide profiling tool selection and optimization strategies.
 
-  # Check for App Router vs Pages Router
-  if [ -d "app" ]; then
-    ROUTER="App Router"
-  else
-    ROUTER="Pages Router"
-  fi
-fi
+Refer to framework detection component for full detection logic covering:
+- Next.js (React framework)
+- Django, Flask, FastAPI (Python)
+- Laravel (PHP)
+- Express.js (Node.js)
+- And others
 
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  FRAMEWORK="React + Vite"
-fi
+**Store result in**: `FRAMEWORK` variable
 
-if [ -f "webpack.config.js" ]; then
-  FRAMEWORK="Webpack-based"
-fi
-
-# Check for Python frameworks
-if [ -f "manage.py" ]; then
-  FRAMEWORK="Django"
-fi
-
-if [ -f "app.py" ] || [ -f "main.py" ]; then
-  # Check requirements.txt for FastAPI
-  if grep -q "fastapi" requirements.txt 2>/dev/null; then
-    FRAMEWORK="FastAPI"
-  elif grep -q "flask" requirements.txt 2>/dev/null; then
-    FRAMEWORK="Flask"
-  fi
-fi
-
-# Check for other frameworks
-if [ -f "composer.json" ]; then
-  if grep -q "laravel" composer.json; then
-    FRAMEWORK="Laravel"
-  fi
-fi
-```
-
+<!-- Component: prompts/context/database-detection.md -->
 ### Detect Database/ORM
 
-```bash
-# Check package.json for database libraries
-if [ -f "package.json" ]; then
-  if grep -q "prisma" package.json; then
-    DATABASE="Prisma"
-  elif grep -q "drizzle-orm" package.json; then
-    DATABASE="Drizzle"
-  elif grep -q "typeorm" package.json; then
-    DATABASE="TypeORM"
-  elif grep -q "@supabase/supabase-js" package.json; then
-    DATABASE="Supabase"
-  elif grep -q "mongodb" package.json; then
-    DATABASE="MongoDB"
-  elif grep -q "pg" package.json; then
-    DATABASE="PostgreSQL"
-  fi
-fi
+Execute database/ORM detection to identify the data layer technology. This is essential for database optimization targets.
 
-# Check Python requirements
-if [ -f "requirements.txt" ]; then
-  if grep -q "sqlalchemy" requirements.txt; then
-    DATABASE="SQLAlchemy"
-  elif grep -q "django" requirements.txt; then
-    DATABASE="Django ORM"
-  elif grep -q "pymongo" requirements.txt; then
-    DATABASE="MongoDB (PyMongo)"
-  fi
-fi
-```
+Refer to database detection component for full detection logic covering:
+- Prisma, Drizzle ORM, TypeORM, Sequelize (Node.js)
+- Django ORM, SQLAlchemy (Python)
+- Eloquent (Laravel)
+- ActiveRecord (Rails)
 
+**Store result in**: `DATABASE` variable
+
+<!-- Component: prompts/context/build-tool-detection.md -->
 ### Detect Build Tool
 
-```bash
-# Detect bundler/build tool
-if [ -f "next.config.js" ] || [ -f "next.config.ts" ]; then
-  BUILD_TOOL="Next.js (webpack/turbopack)"
-fi
+Execute build tool detection to identify the bundler/build system. Required for bundle optimization targets.
 
-if [ -f "vite.config.ts" ] || [ -f "vite.config.js" ]; then
-  BUILD_TOOL="Vite"
-fi
+Refer to build tool detection component for full detection logic covering:
+- Next.js (built-in)
+- Vite
+- Webpack
+- Rollup
+- Parcel
+- esbuild
 
-if [ -f "webpack.config.js" ]; then
-  BUILD_TOOL="Webpack"
-fi
+**Store result in**: `BUILD_TOOL` variable
 
-if [ -f "rollup.config.js" ]; then
-  BUILD_TOOL="Rollup"
-fi
-```
-
+<!-- Component: prompts/context/testing-framework-detection.md -->
 ### Detect Testing Framework
 
-```bash
-# Check for test frameworks (for benchmark verification)
-if [ -f "package.json" ]; then
-  if grep -q "jest" package.json; then
-    TEST_FRAMEWORK="Jest"
-  elif grep -q "vitest" package.json; then
-    TEST_FRAMEWORK="Vitest"
-  elif grep -q "mocha" package.json; then
-    TEST_FRAMEWORK="Mocha"
-  fi
-fi
-```
+Execute testing framework detection for benchmark verification.
 
-**Use this context to**:
+Refer to testing framework detection component for full detection logic covering:
+- Jest, Vitest, Mocha (JavaScript/TypeScript)
+- Playwright, Cypress (E2E)
+- pytest, unittest (Python)
+- PHPUnit (PHP)
+
+**Store result in**: `TEST_FRAMEWORK` variable
+
+**Use detected context to**:
 - Select appropriate profiling tools (bundle analyzer, Lighthouse, database profiler)
 - Choose optimization strategies (code splitting, query optimization, caching)
 - Determine benchmark commands
@@ -186,19 +126,47 @@ Analyze `$ARGUMENTS` to determine optimization target:
 - `$ARGUMENTS` = "auto" or empty or unclear
 - Run all profilers and prioritize by biggest issues
 
+<!-- Component: prompts/progress/todo-initialization.md -->
 ### Create Todo List for Optimization
 
 Use TodoWrite to create tracking for optimization phases:
 
-```
-1. Detect optimization target
-2. Profile current performance (baseline)
-3. Create optimization plan
-4. Implement optimizations incrementally
-5. Verify improvements with benchmarks
-6. Generate performance report
+```javascript
+[
+  {
+    "content": "Detect optimization target",
+    "status": "in_progress",
+    "activeForm": "Detecting optimization target"
+  },
+  {
+    "content": "Profile current performance (baseline)",
+    "status": "pending",
+    "activeForm": "Profiling current performance"
+  },
+  {
+    "content": "Create optimization plan",
+    "status": "pending",
+    "activeForm": "Creating optimization plan"
+  },
+  {
+    "content": "Implement optimizations incrementally",
+    "status": "pending",
+    "activeForm": "Implementing optimizations"
+  },
+  {
+    "content": "Verify improvements with benchmarks",
+    "status": "pending",
+    "activeForm": "Verifying improvements"
+  },
+  {
+    "content": "Generate performance report",
+    "status": "pending",
+    "activeForm": "Generating performance report"
+  }
+]
 ```
 
+<!-- Component: prompts/specialist-selection/user-approval.md -->
 ### Get User Confirmation
 
 If target is auto-detected, use AskUserQuestion to confirm:
@@ -733,20 +701,31 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
+<!-- Component: prompts/git/commit-formatting.md -->
 #### Step 6: Commit or Rollback
 
 **If improvement is acceptable and tests pass**:
+
+Use conventional commit format with the `perf` type for performance improvements:
+
 ```bash
 git add -A
-git commit -m "perf($ARGUMENTS): $CURRENT_OPT
+git commit -m "$(cat <<'EOF'
+perf($ARGUMENTS): $CURRENT_OPT
 
 Improved [metric] by [X%]
 Baseline: [baseline value]
-Current: [current value]"
+Current: [current value]
+
+Performance optimization as part of incremental improvement workflow.
+EOF
+)"
 
 echo "✅ Committed: $CURRENT_OPT" >> .agency/optimizations/execution-log.md
 echo "Improvement: [X%]" >> .agency/optimizations/execution-log.md
 ```
+
+Refer to commit formatting component for detailed commit message standards and best practices.
 
 **If no improvement or regression**:
 ```bash
@@ -774,18 +753,18 @@ Mark todo #4 as completed when all optimizations attempted.
 
 Mark todo #5 as in_progress.
 
-### Run Full Test Suite
+<!-- Component: prompts/quality-gates/quality-gate-sequence.md -->
+### Run Quality Gates
 
-```bash
-# Ensure all tests still pass
-npm test
+Execute quality gates in order to ensure optimizations haven't broken functionality:
 
-# Check coverage hasn't decreased
-npm run test:coverage
+1. **Build** - Verify code compiles/builds successfully
+2. **Type Check** - Verify TypeScript types are correct
+3. **Linter** - Check code style and quality
+4. **Tests** - Execute test suite to verify functionality
+5. **Coverage** - Verify sufficient test coverage (target 80%+)
 
-# Save coverage report
-cp coverage/coverage-summary.json .agency/optimizations/final-coverage.json
-```
+Refer to quality gate sequence component for detailed execution instructions and failure handling.
 
 ### Run Final Comprehensive Benchmark
 
@@ -806,38 +785,25 @@ autocannon -c 10 -d 30 http://localhost:3000/api/endpoint > .agency/optimization
 # Re-run slow queries and compare
 ```
 
+<!-- Component: prompts/reporting/metrics-comparison.md -->
 ### Compare Final vs Baseline
 
-Create comparison showing improvements:
+Create metrics comparison showing improvements using the standard metrics comparison template.
 
-```markdown
-# Final vs Baseline Comparison
+Generate a comparison table showing:
+- Before/After values for each key metric
+- Absolute change (+/- values)
+- Percentage improvement
+- Status indicators (✅/⚠️/❌)
 
-## Bundle Size (if applicable)
-- Baseline: [X MB]
-- Final: [Y MB]
-- **Improvement: [Z%] reduction**
+**Key Metrics by Target**:
+- **Bundle**: Total size, chunk sizes, lazy loading
+- **Database**: Query time, query count, N+1 issues
+- **Rendering**: LCP, FCP, TTI, CLS, TBT
+- **API**: Response time, throughput (RPS), P95/P99 latency
+- **Memory**: Heap size, GC frequency, leak detection
 
-## Database Queries (if applicable)
-- Baseline avg query time: [X ms]
-- Final avg query time: [Y ms]
-- **Improvement: [Z%] faster**
-
-## Rendering Performance (if applicable)
-- Baseline LCP: [X ms]
-- Final LCP: [Y ms]
-- **Improvement: [Z%] faster**
-
-## API Performance (if applicable)
-- Baseline RPS: [X]
-- Final RPS: [Y]
-- **Improvement: [Z%] more requests/sec**
-
-## Memory Usage (if applicable)
-- Baseline heap: [X MB]
-- Final heap: [Y MB]
-- **Improvement: [Z%] reduction**
-```
+Refer to metrics comparison component for detailed table formats and calculation formulas.
 
 ### Verify No Regressions
 
@@ -874,191 +840,101 @@ Mark todo #5 as completed.
 
 Mark todo #6 as in_progress.
 
+<!-- Component: prompts/reporting/summary-template.md -->
+<!-- Component: prompts/reporting/metrics-comparison.md -->
 ### Generate Comprehensive Performance Report
 
-Create detailed report with all findings:
+Create a detailed performance optimization report using an adapted version of the implementation summary template.
 
+**Report Structure**:
+
+#### Header Section
 ```markdown
-# Performance Optimization Report
+# Performance Optimization Report: [Target]
 
-**Date**: [current date]
+**Date**: [YYYY-MM-DD HH:MM:SS]
 **Target**: [optimization target]
 **Framework**: [detected framework]
 **Duration**: [total time spent]
-
----
-
-## Executive Summary
-
-[Brief overview of what was optimized and overall results]
-
-**Key Results**:
-- [Metric 1]: [X%] improvement ([baseline] → [final])
-- [Metric 2]: [Y%] improvement ([baseline] → [final])
-- [Metric 3]: [Z%] improvement ([baseline] → [final])
-
-**Optimizations Implemented**: [N successful] / [M attempted]
-
----
-
-## Baseline Performance
-
-[Include baseline metrics from Phase 2]
-
-### Bottlenecks Identified
-
-1. **[Bottleneck 1]**: [description]
-   - Impact: High
-   - Root cause: [explanation]
-
-2. **[Bottleneck 2]**: [description]
-   - Impact: Medium
-   - Root cause: [explanation]
-
----
-
-## Optimizations Implemented
-
-### Successfully Implemented
-
-#### 1. [Optimization Name] ✅
-
-**Type**: [bundle/database/rendering/api/memory]
-**Impact**: [High/Medium/Low]
-**Effort**: [Low/Medium/High]
-
-**Changes Made**:
-- [File 1]: [changes]
-- [File 2]: [changes]
-
-**Results**:
-- Baseline: [value]
-- Final: [value]
-- **Improvement: [X%]**
-
-**Commit**: [commit hash]
-
----
-
-#### 2. [Optimization Name] ✅
-
-[Same structure as above]
-
----
-
-### Attempted but Rolled Back
-
-#### 1. [Optimization Name] ⏪
-
-**Reason for Rollback**: [No improvement / Test failures / Regression in other area]
-
-**What We Learned**: [Insight from attempt]
-
----
-
-## Final Performance Metrics
-
-### [Target-Specific Metrics]
-
-[Include final benchmark results]
-
-**Comparison to Baseline**:
-
-| Metric | Baseline | Final | Improvement |
-|--------|----------|-------|-------------|
-| [Metric 1] | [X] | [Y] | **[Z%]** |
-| [Metric 2] | [X] | [Y] | **[Z%]** |
-| [Metric 3] | [X] | [Y] | **[Z%]** |
-
-**Overall Performance Improvement**: [Overall %]
-
----
-
-## Verification
-
-### Tests
-- ✅ All tests passing ([N] tests)
-- ✅ Coverage maintained: [X%]
-
-### Build
-- ✅ Build successful
-- ✅ Build time: [X seconds] (baseline: [Y seconds])
-
-### No Regressions Detected
-- ✅ Bundle size for other chunks stable
-- ✅ Development server startup time stable
-- ✅ Test execution time stable
-
----
-
-## Recommendations for Further Optimization
-
-### Immediate Opportunities (Not Implemented)
-
-1. **[Opportunity 1]**: [description]
-   - Expected impact: [X%]
-   - Reason not implemented: [time/complexity/risk]
-   - Recommended for next optimization cycle
-
-2. **[Opportunity 2]**: [description]
-   - Expected impact: [Y%]
-   - Reason not implemented: [time/complexity/risk]
-
-### Long-Term Recommendations
-
-1. **[Recommendation 1]**: [description]
-   - Requires: [infrastructure/refactoring/new tool]
-   - Expected impact: [X%]
-
-2. **[Recommendation 2]**: [description]
-   - Requires: [infrastructure/refactoring/new tool]
-   - Expected impact: [Y%]
-
-### Monitoring Recommendations
-
-To maintain performance improvements:
-
-1. **Set up performance monitoring**:
-   - [Tool recommendation]: [why]
-   - Key metrics to track: [list]
-
-2. **Establish performance budgets**:
-   - Bundle size: max [X] MB
-   - LCP: max [Y] ms
-   - API p95: max [Z] ms
-
-3. **Regular performance audits**:
-   - Frequency: [monthly/quarterly]
-   - Triggers: [before major releases, after large features]
-
----
-
-## Artifacts
-
-All optimization artifacts saved to `.agency/optimizations/`:
-
-- `baseline-report.md` - Initial profiling results
-- `baseline/` - Baseline benchmark data
-- `benchmarks/` - Per-optimization benchmarks
-- `execution-log.md` - Detailed execution log
-- `final-*.txt` - Final benchmark results
-- `optimization-report-[date].md` - This report
-
----
-
-## Conclusion
-
-[Summary of optimization success, key learnings, and next steps]
-
-**Status**: ✅ Optimization Complete
-
----
-
-**Generated**: [timestamp]
-**Optimization Target**: $ARGUMENTS
+**Status**: ✅ SUCCESS / ⚠️ PARTIAL / ❌ FAILED
 ```
 
-Save this report to `.agency/optimizations/optimization-report-[date].md`
+#### Executive Summary
+Brief overview (2-3 sentences) of what was optimized and overall results.
+
+**Key Results** (top 3 metrics improved)
+
+**Optimizations**: [N successful] / [M attempted]
+
+#### Baseline Performance
+- Reference baseline report from Phase 2
+- List key bottlenecks identified
+- Root causes of performance issues
+
+#### Optimizations Implemented
+
+For each optimization:
+- **Successfully Implemented** ✅
+  - Type (bundle/database/rendering/api/memory)
+  - Impact level (High/Medium/Low)
+  - Changes made (files modified)
+  - Before/After metrics
+  - Improvement percentage
+  - Commit hash
+
+- **Attempted but Rolled Back** ⏪
+  - Reason for rollback
+  - Learnings from the attempt
+
+#### Final Performance Metrics
+
+Use **metrics comparison component** to generate comparison tables showing:
+- Baseline vs Final for all key metrics
+- Percentage improvements
+- Status indicators
+- Target achievement
+
+#### Verification Results
+- Build: ✅/❌
+- Type Check: ✅/❌
+- Linter: ✅/⚠️/❌
+- Tests: [X/Y passed]
+- Coverage: [X%]
+- No regressions detected
+
+#### Recommendations
+
+**Immediate Opportunities** (not implemented):
+- Description
+- Expected impact
+- Reason not implemented
+- Recommendation for next cycle
+
+**Long-Term Recommendations**:
+- Infrastructure improvements
+- Expected impact
+- Requirements
+
+**Monitoring Recommendations**:
+- Performance monitoring setup
+- Performance budgets
+- Audit frequency and triggers
+
+#### Artifacts
+List all files saved to `.agency/optimizations/`:
+- baseline-report.md
+- baseline/ directory
+- benchmarks/ directory
+- execution-log.md
+- final-* files
+- This report
+
+#### Conclusion
+Summary of success, key learnings, and next steps.
+
+**Save report to**: `.agency/optimizations/optimization-report-[YYYYMMDD-HHMMSS].md`
+
+Refer to summary template component for detailed section formats and best practices.
 
 Mark todo #6 as completed.
 

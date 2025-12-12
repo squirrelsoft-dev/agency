@@ -16,6 +16,7 @@ Create comprehensive test suite: analyze → strategy → generate → validate 
 
 ---
 
+<!-- Component: prompts/specialist-selection/skill-activation.md -->
 ## Critical Instructions
 
 ### 1. Activate Testing Strategy Knowledge
@@ -46,13 +47,25 @@ Glob pattern="**/$ARGUMENTS"
 Glob pattern="**/$ARGUMENTS.{ts,tsx,js,jsx,vue,svelte}"
 ```
 
+<!-- Component: prompts/error-handling/scope-detection-failure.md -->
 Use Glob tool to find the file. If multiple matches, ask user which one.
+
+If component cannot be found:
+```
+❌ Unable to locate component: $ARGUMENTS
+
+Please provide:
+1. Full path to component file, OR
+2. Component filename with extension, OR
+3. More specific search criteria
+```
 
 ### Read Component Code
 
 Use Read tool to load the component file contents.
 
-### Detect Component Type
+<!-- Component: prompts/context/framework-detection.md -->
+### Detect Component Type and Framework
 
 Analyze the code to determine component type:
 
@@ -93,16 +106,10 @@ Analyze the code to determine component type:
 - `<script>`, `<style>` in .svelte file
 - Svelte reactive declarations (`$:`)
 
+<!-- Component: prompts/context/testing-framework-detection.md -->
 ### Find Test Framework
 
 Detect testing framework from `package.json`:
-
-```bash
-# Read package.json
-Read file_path="package.json"
-
-# Check devDependencies for:
-```
 
 **Jest** if contains:
 - `"jest"`
@@ -126,6 +133,8 @@ Read file_path="package.json"
 - `"@testing-library/react"`
 - `"@testing-library/vue"`
 - `"@testing-library/user-event"`
+
+**If no test framework detected**, see `prompts/context/testing-framework-detection.md` for fallback strategy and recommendations.
 
 ### Analyze Existing Tests
 
@@ -245,86 +254,25 @@ Based on component type:
 
 ### Identify Test Scenarios
 
-Create comprehensive test scenario list:
+Create comprehensive test scenario list based on component type:
 
 **For React Components** (28 unit tests minimum):
-```
-Rendering Tests (8):
-1. Renders without crashing
-2. Renders with default props
-3. Renders with all props provided
-4. Renders with minimal props
-5. Renders in loading state
-6. Renders in error state
-7. Renders with empty data
-8. Matches snapshot
-
-Interaction Tests (8):
-9. Handles click events
-10. Handles form input changes
-11. Handles form submission
-12. Handles keyboard events
-13. Handles focus events
-14. Handles hover events (if applicable)
-15. Handles touch events (if mobile)
-16. Handles disabled state
-
-State Management Tests (6):
-17. Initial state is correct
-18. State updates on user action
-19. State persists correctly
-20. State resets when needed
-21. Multiple state updates work correctly
-22. State updates trigger re-renders
-
-Props Tests (6):
-23. Required props validation
-24. Optional props work
-25. Props with different types
-26. Props trigger correct behavior
-27. Callback props are called
-28. Children props render correctly
-```
+- **Rendering Tests** (8): Renders without crashing, with default/all/minimal props, loading/error/empty states, snapshot
+- **Interaction Tests** (8): Click, form input/submission, keyboard, focus, hover, touch, disabled state
+- **State Management Tests** (6): Initial state, updates on action, persistence, reset, multiple updates, re-renders
+- **Props Tests** (6): Required/optional props, different types, behavior triggers, callbacks, children
 
 **For API Endpoints** (12 integration tests minimum):
-```
-Request Tests (4):
-1. GET request returns data
-2. POST request creates resource
-3. PUT request updates resource
-4. DELETE request removes resource
-
-Validation Tests (4):
-5. Invalid request body is rejected
-6. Missing required fields return 400
-7. Invalid data types return 400
-8. Request size limits enforced
-
-Authentication Tests (4):
-9. Unauthenticated request returns 401
-10. Unauthorized access returns 403
-11. Valid token allows access
-12. Expired token returns 401
-```
+- **Request Tests** (4): GET, POST, PUT, DELETE
+- **Validation Tests** (4): Invalid body, missing fields, invalid types, size limits
+- **Authentication Tests** (4): Unauthenticated (401), unauthorized (403), valid token, expired token
 
 **For Utility Functions** (10+ unit tests):
-```
-Happy Path (3):
-1. Returns correct result for valid input
-2. Handles typical use cases
-3. Returns expected type
+- **Happy Path** (3): Valid input, typical use cases, expected type
+- **Edge Cases** (4): Empty/null/undefined, zero/negative, very large, boundaries
+- **Error Cases** (3): Invalid type, out of range, null handling
 
-Edge Cases (4):
-4. Empty input ([], "", null, undefined)
-5. Zero, negative numbers (if applicable)
-6. Very large inputs
-7. Boundary values
-
-Error Cases (3):
-8. Invalid input type throws/returns error
-9. Out of range values handled
-10. Null/undefined handled gracefully
-```
+**Note**: Detailed test scenario checklists are available in the `testing-strategy` skill (activated in Phase 1).
 
 ### Calculate Coverage Target
 
@@ -445,11 +393,12 @@ The specialist will:
 
 ---
 
+<!-- Component: prompts/quality-gates/test-execution.md -->
 ## Phase 4: Test Validation (5-10 min)
 
 ### Run Generated Tests
 
-Execute the test suite:
+Execute the test suite using framework-specific commands (see `prompts/quality-gates/test-execution.md` for full details):
 
 ```bash
 # Run specific test file
@@ -464,12 +413,13 @@ npm test -- --coverage --testPathPattern=$COMPONENT_NAME
 
 **Expected Result**: All tests should PASS
 
-If tests FAIL:
-1. Read failure messages
-2. Analyze root cause
-3. Fix tests or component (if bug found)
-4. Re-run until all pass
+**If tests FAIL**: See `prompts/quality-gates/test-execution.md` for:
+- Common failure patterns (assertion, timeout, mock failures)
+- Root cause analysis steps
+- Suggested fixes
+- Retry logic
 
+<!-- Component: prompts/quality-gates/coverage-validation.md -->
 ### Check Test Coverage
 
 Generate coverage report:
@@ -477,12 +427,9 @@ Generate coverage report:
 ```bash
 # Jest/Vitest with coverage
 npm test -- --coverage $TEST_FILE_PATH
-
-# View coverage report
-# Look for coverage/lcov-report/index.html
 ```
 
-Extract coverage metrics:
+**Coverage Metrics**:
 - **Line Coverage**: % of lines executed
 - **Branch Coverage**: % of branches (if/else) taken
 - **Function Coverage**: % of functions called
@@ -490,11 +437,11 @@ Extract coverage metrics:
 
 **Target**: All metrics ≥ 80%
 
-If coverage < 80%:
-1. Identify uncovered lines (coverage report shows them)
-2. Add tests for uncovered code paths
-3. Re-run coverage
-4. Repeat until target met
+**Coverage Analysis**: See `prompts/quality-gates/coverage-validation.md` for:
+- Coverage gap identification
+- High-priority untested areas
+- Improvement strategies
+- Coverage recommendations
 
 ### Verify Test Quality
 
@@ -523,118 +470,48 @@ Check generated tests for quality:
 
 ### Review Test Coverage
 
-Analyze coverage gaps:
+Analyze coverage gaps (see `prompts/quality-gates/coverage-validation.md` for detailed analysis):
 
 ```bash
-# View uncovered lines
 npm test -- --coverage --testPathPattern=$COMPONENT_NAME
-
-# Check coverage report
-cat coverage/coverage-summary.json
 ```
 
-**If gaps exist**:
+**Gap Assessment**:
 - **Uncovered lines < 10**: Acceptable (may be unreachable code)
 - **Uncovered lines 10-30**: Should add tests
 - **Uncovered lines > 30**: Must add tests
 
-**Common gaps**:
-- Error handling paths
-- Edge cases
-- Conditional branches
-- Async callbacks
-- Event handlers
+**Common gaps**: Error handling, edge cases, conditional branches, async callbacks, event handlers
 
 ### Review for Anti-Patterns
 
-Check tests for common anti-patterns:
+**Check tests for common anti-patterns**:
 
-**Anti-Pattern 1**: Testing implementation details
-```typescript
-// BAD - tests implementation
-expect(component.state.count).toBe(1)
+1. **Testing implementation details** - Test behavior users see, not internal state
+2. **Not testing user behavior** - Simulate user interactions, don't call functions directly
+3. **Vague test names** - Use descriptive "should..." format
+4. **Multiple unrelated assertions** - One logical assertion per test
+5. **Shared state between tests** - Create fresh state in each test
 
-// GOOD - tests behavior
-expect(screen.getByText('Count: 1')).toBeInTheDocument()
-```
-
-**Anti-Pattern 2**: Not testing user behavior
-```typescript
-// BAD - calls function directly
-component.handleClick()
-
-// GOOD - simulates user interaction
-await userEvent.click(screen.getByRole('button'))
-```
-
-**Anti-Pattern 3**: Vague test names
-```typescript
-// BAD
-it('works', () => {})
-
-// GOOD
-it('should display error message when form submission fails', () => {})
-```
-
-**Anti-Pattern 4**: Multiple unrelated assertions
-```typescript
-// BAD
-it('component works', () => {
-  expect(component).toBeTruthy()
-  expect(component.props.name).toBe('John')
-  expect(component.state.count).toBe(0)
-})
-
-// GOOD - separate tests
-it('should render component', () => {
-  expect(component).toBeTruthy()
-})
-
-it('should receive name prop', () => {
-  expect(component.props.name).toBe('John')
-})
-```
-
-**Anti-Pattern 5**: Shared state between tests
-```typescript
-// BAD
-let component
-beforeEach(() => { component = render(<Component />) })
-
-it('test 1', () => { component.click() })
-it('test 2', () => { /* uses modified component */ })
-
-// GOOD - fresh state each test
-it('test 1', () => {
-  const component = render(<Component />)
-  component.click()
-})
-
-it('test 2', () => {
-  const component = render(<Component />)
-  // ...
-})
-```
+**Detailed examples and fixes**: See the `testing-strategy` skill for comprehensive anti-pattern examples with good/bad code comparisons.
 
 ---
 
+<!-- Component: prompts/reporting/summary-template.md -->
 ## Phase 6: Test Documentation & Reporting (2-3 min)
 
 ### Save Test Report
 
-Create test documentation:
+Create test documentation in `.agency/tests/`:
 
 ```bash
-# Generate filename
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 COMPONENT_NAME=[extracted from $ARGUMENTS]
 REPORT_FILE=".agency/tests/test-report-${COMPONENT_NAME}-${TIMESTAMP}.md"
-
-# Create directory if needed
 mkdir -p .agency/tests
 ```
 
-Write report using Write tool:
+**Report Structure** (adapted from `prompts/reporting/summary-template.md`):
 
 ```markdown
 # Test Report: [Component Name]
@@ -667,47 +544,20 @@ Write report using Write tool:
 **Overall Coverage**: [X]%
 
 **Detailed Metrics**:
-- Line Coverage: [X]% ([target: 80%])
-- Branch Coverage: [X]% ([target: 80%])
-- Function Coverage: [X]% ([target: 80%])
-- Statement Coverage: [X]% ([target: 80%])
+- Line Coverage: [X]% (target: 80%)
+- Branch Coverage: [X]% (target: 80%)
+- Function Coverage: [X]% (target: 80%)
+- Statement Coverage: [X]% (target: 80%)
 
 **Coverage Status**: ✅ MEETS TARGET / ⚠️ BELOW TARGET
 
-**Uncovered Lines**: [X]
-[List if significant]
+**Coverage Gaps**: See `prompts/quality-gates/coverage-validation.md` for gap analysis
 
 ---
 
 ## Test Scenarios Covered
 
-### Rendering Tests (8 scenarios)
-- [x] Renders without crashing
-- [x] Renders with default props
-- [x] Renders with all props provided
-- [x] Renders with minimal props
-- [x] Renders in loading state
-- [x] Renders in error state
-- [x] Renders with empty data
-- [x] Matches snapshot
-
-### Interaction Tests (8 scenarios)
-- [x] Handles click events
-- [x] Handles form input changes
-- [x] Handles form submission
-- [x] Handles keyboard events
-- [x] Handles focus events
-- [x] Handles hover events
-- [x] Handles touch events
-- [x] Handles disabled state
-
-### State Management Tests (6 scenarios)
-[...]
-
-### Props Tests (6 scenarios)
-[...]
-
-[Additional scenario groups based on component type]
+[List test scenarios by category: Rendering, Interaction, State Management, Props, etc.]
 
 ---
 
@@ -715,220 +565,91 @@ Write report using Write tool:
 
 **Quality Score**: [X]/10
 
-**Strengths**:
-- ✅ [Quality aspect 1]
-- ✅ [Quality aspect 2]
-- ✅ [Quality aspect 3]
-
-**Areas for Improvement**:
-- ⚠️ [Improvement area 1]
-- ⚠️ [Improvement area 2]
-
-**Anti-Patterns Found**: [X]
-[List if any, or "None"]
-
----
-
-## Coverage Gaps
-
-**Uncovered Code Paths**: [X]
-
-1. **[File:Line]**: [Description]
-   - **Reason**: [Why uncovered]
-   - **Recommendation**: [Add test scenario or mark as unreachable]
-
-[List significant gaps]
+**Strengths**: [List strengths]
+**Areas for Improvement**: [List improvements]
+**Anti-Patterns Found**: [List or "None"]
 
 ---
 
 ## Test Files Created
 
-### Test File
-**Path**: `[test file path]`
-**Lines**: [X]
-**Test Count**: [Y]
-
-### Supporting Files (if any)
-- Test utilities: `[path]`
-- Fixtures: `[path]`
-- Factories: `[path]`
+**Test File**: `[test file path]` ([X] lines, [Y] tests)
+**Supporting Files**: [List utilities, fixtures, factories if any]
 
 ---
 
 ## Next Steps
 
-[If coverage ≥ 80% and all tests pass]:
-✅ **Test Suite Complete**
-- Coverage target met ([X]%)
-- All tests passing
-- Good test quality
-- Ready for code review
-
-[If coverage < 80%]:
-⚠️ **Additional Tests Needed**
-- Current coverage: [X]%
-- Target coverage: 80%
-- Gap: [Y]%
-- Add tests for: [uncovered areas]
-
-[If test failures]:
-❌ **Test Failures to Address**
-- [X] tests failing
-- Fix: [recommendations]
+[Based on coverage and test results - see `prompts/reporting/summary-template.md` for recommendations format]
 
 ---
 
-## Recommendations
-
-1. **Immediate**:
-   [Actions to take right now]
-
-2. **Short-term**:
-   [Actions for next iteration]
-
-3. **Long-term**:
-   [Ongoing test improvements]
-
----
-
-## Appendix: Test Commands
+## Test Commands
 
 ```bash
-# Run all tests for this component
+# Run tests
 npm test -- [test file name]
 
 # Run with coverage
 npm test -- --coverage [test file name]
 
-# Run in watch mode
+# Watch mode
 npm test -- --watch [test file name]
-
-# Run specific test
-npm test -- --testNamePattern="test name"
-
-# Update snapshots
-npm test -- --updateSnapshot [test file name]
 ```
 ```
 
 ### Present Summary to User
-
-Provide concise report:
 
 ```
 ## Test Generation Complete: [Component Name]
 
 **Status**: ✅ SUCCESS / ⚠️ PARTIAL / ❌ FAILED
 
-**Test Suite**:
-- Total Tests: [X]
-- Unit: [Y] (70%)
-- Integration: [Z] (20%)
-- E2E: [W] (10%)
-
-**Coverage**:
-- Line: [X]% ([✅ Above / ⚠️ Below] 80%)
-- Branch: [X]% ([✅ Above / ⚠️ Below] 80%)
-- Function: [X]% ([✅ Above / ⚠️ Below] 80%)
-- Statement: [X]% ([✅ Above / ⚠️ Below] 80%)
-
+**Test Suite**: [X] total ([Y] unit, [Z] integration, [W] E2E)
+**Coverage**: Line [X]%, Branch [Y]%, Function [Z]%, Statement [W]%
 **Test Results**: [X/Y passed]
-
 **Quality Score**: [X]/10
 
 **Test File**: [path]
-
 **Detailed Report**: $REPORT_FILE
 
-**Next Steps**:
-[Recommendations]
+**Next Steps**: [Recommendations]
 ```
 
+<!-- Component: prompts/progress/todo-initialization.md -->
 ### Update TodoWrite
 
 Mark all test generation tasks as completed.
 
 ---
 
+<!-- Component: prompts/context/testing-framework-detection.md -->
 ## Framework-Specific Patterns
 
-### Jest + Testing Library (React)
+**Reference**: See `prompts/context/testing-framework-detection.md` for complete framework-specific patterns and examples.
 
-```typescript
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { Button } from './Button'
+**Key Patterns**:
 
-describe('Button', () => {
-  it('should render with text', () => {
-    render(<Button>Click me</Button>)
-    expect(screen.getByText('Click me')).toBeInTheDocument()
-  })
+- **Jest + Testing Library (React)**: `render`, `screen`, `userEvent`, `waitFor`
+- **Vitest**: Similar to Jest, imports from `vitest`
+- **Supertest (API Testing)**: `request(app).get().expect()`
+- **Playwright (E2E)**: `page.goto()`, `page.fill()`, `expect(page).toHaveURL()`
+- **Cypress (E2E)**: `cy.visit()`, `cy.get()`, `cy.contains()`
+- **pytest (Python)**: fixtures, parametrize, markers
 
-  it('should call onClick when clicked', async () => {
-    const handleClick = jest.fn()
-    render(<Button onClick={handleClick}>Click</Button>)
-
-    await userEvent.click(screen.getByRole('button'))
-    expect(handleClick).toHaveBeenCalledTimes(1)
-  })
-})
-```
-
-### Vitest (Similar to Jest)
-
-```typescript
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-
-describe('Component', () => {
-  it('should work', () => {
-    // Same as Jest, but imports from 'vitest'
-  })
-})
-```
-
-### Supertest (API Testing)
-
-```typescript
-import request from 'supertest'
-import { app } from './app'
-
-describe('GET /api/users', () => {
-  it('should return users list', async () => {
-    const response = await request(app)
-      .get('/api/users')
-      .expect(200)
-
-    expect(response.body).toHaveLength(5)
-    expect(response.body[0]).toHaveProperty('name')
-  })
-})
-```
-
-### Playwright (E2E)
-
-```typescript
-import { test, expect } from '@playwright/test'
-
-test('user can login', async ({ page }) => {
-  await page.goto('/login')
-  await page.fill('[name="email"]', 'user@example.com')
-  await page.fill('[name="password"]', 'password')
-  await page.click('button[type="submit"]')
-
-  await expect(page).toHaveURL('/dashboard')
-})
-```
+See the testing framework detection component for detailed syntax and best practices per framework.
 
 ---
 
+<!-- Component: prompts/error-handling/scope-detection-failure.md -->
 ## Error Handling
 
 ### If Component Not Found
 
+Use error handling pattern from `prompts/error-handling/scope-detection-failure.md`:
+
 ```
-Error: Component not found: $ARGUMENTS
+❌ Unable to locate component: $ARGUMENTS
 
 Searched locations:
 - [path 1]
@@ -937,41 +658,42 @@ Searched locations:
 
 Please provide:
 1. Full path to component file, OR
-2. Component filename, OR
-3. Use Glob pattern to search
+2. Component filename with extension, OR
+3. More specific search criteria
 ```
 
 ### If Test Framework Not Detected
 
 ```
-Error: No test framework found in package.json
+❌ No test framework found in package.json
+
+See `prompts/context/testing-framework-detection.md` for recommendations.
 
 Common frameworks:
 - Jest: npm install -D jest @types/jest
 - Vitest: npm install -D vitest
 - Mocha: npm install -D mocha chai
 
-Please install a test framework first.
+Please install a test framework first, or specify which framework to use.
 ```
 
 ### If Generated Tests Fail
 
+See `prompts/quality-gates/test-execution.md` for comprehensive failure analysis:
+
 ```
-Warning: [X] generated tests are failing
+⚠️ [X] generated tests are failing
 
-Failed tests:
-[List of failures]
+**Failure Analysis**: See `prompts/quality-gates/test-execution.md` for:
+- Common failure patterns (assertion, timeout, mock, reference errors)
+- Root cause analysis steps
+- Suggested fixes per failure type
+- Retry logic and recovery strategies
 
-Possible causes:
-1. Component has bugs
-2. Test assumptions incorrect
-3. Dependencies not mocked properly
-4. Async operations not handled
-
-Recommendation:
-1. Review component code
-2. Fix bugs if found
-3. Adjust test expectations
+**Immediate Actions**:
+1. Review test failure output
+2. Identify failure category
+3. Apply recommended fixes
 4. Re-run tests
 ```
 
@@ -979,14 +701,17 @@ Recommendation:
 
 ## Best Practices
 
+**Core Principles** (from `testing-strategy` skill):
 1. **Test Pyramid**: 70% unit, 20% integration, 10% E2E
-2. **Coverage Target**: Aim for 80%+, but don't obsess over 100%
+2. **Coverage Target**: 80%+ (see `prompts/quality-gates/coverage-validation.md`)
 3. **Test Behavior**: What users see, not implementation details
-4. **Fast Tests**: Unit tests should run in milliseconds
+4. **Fast Tests**: Unit tests in milliseconds
 5. **Independent Tests**: No shared state between tests
-6. **Descriptive Names**: Test names should describe expected behavior
+6. **Descriptive Names**: "should..." format describing expected behavior
 7. **AAA Pattern**: Arrange, Act, Assert structure
-8. **Mock External**: Mock HTTP calls, databases, external dependencies
+8. **Mock External**: Mock HTTP, databases, external dependencies
+
+**Detailed best practices**: Available in `testing-strategy` skill (activated in Phase 1).
 
 ---
 
@@ -1002,23 +727,9 @@ Recommendation:
 # Generate tests for a utility function
 /agency:test src/lib/formatDate.ts
 
-# Generate tests for a service
-/agency:test src/services/UserService.ts
-
-# Generate tests using glob pattern
+# Using component name only (will search)
 /agency:test Button
 ```
-
----
-
-## Tips
-
-- **Start with existing tests**: Review patterns in codebase first
-- **Use factories**: Create test data factories for complex objects
-- **Mock wisely**: Mock external dependencies, not internal logic
-- **Test edge cases**: Empty arrays, null, undefined, boundaries
-- **Run tests often**: Use watch mode during development
-- **Refactor tests**: Tests are code too, keep them clean
 
 ---
 
