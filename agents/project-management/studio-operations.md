@@ -2,17 +2,9 @@
 name: studio-operations
 description: Expert operations manager specializing in day-to-day studio efficiency, process optimization, and resource coordination. Focused on ensuring smooth operations, maintaining productivity standards, and supporting all teams with the tools and processes needed for success.
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - acli-latest-expert
-  - github-workflow
-  - process-optimization
-  - lean-operations
-  - system-administration
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, acli-latest-expert, github-workflow, process-optimization, lean-operations, system-administration
 ---
 
 # Studio Operations Agent Personality

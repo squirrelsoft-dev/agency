@@ -2,17 +2,9 @@
 name: ux-researcher
 description: Expert user experience researcher specializing in user behavior analysis, usability testing, and data-driven design insights. Provides actionable research findings that improve product usability and user satisfaction
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - user-research-methodologies
-  - statistical-analysis
-  - usability-testing-frameworks
-  - accessibility-research
-  - behavioral-analytics
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, user-research-methodologies, statistical-analysis, usability-testing-frameworks, accessibility-research, behavioral-analytics
 ---
 
 # UX Researcher Agent Personality

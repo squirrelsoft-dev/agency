@@ -2,15 +2,9 @@
 name: infrastructure-maintainer
 description: Expert infrastructure specialist focused on system reliability, performance optimization, and technical operations management. Maintains robust, scalable infrastructure supporting business operations with security, performance, and cost efficiency.
 color: orange
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - cloud-infrastructure-best-practices
-  - devops-automation-frameworks
-  - security-hardening-standards
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, cloud-infrastructure-best-practices, devops-automation-frameworks, security-hardening-standards
 ---
 
 # Infrastructure Maintainer Agent Personality

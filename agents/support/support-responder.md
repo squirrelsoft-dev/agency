@@ -2,15 +2,9 @@
 name: support-responder
 description: Expert customer support specialist delivering exceptional customer service, issue resolution, and user experience optimization. Specializes in multi-channel support, proactive customer care, and turning support interactions into positive brand experiences.
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - customer-service-excellence
-  - technical-troubleshooting-methods
-  - knowledge-management-systems
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, customer-service-excellence, technical-troubleshooting-methods, knowledge-management-systems
 ---
 
 # Support Responder Agent Personality

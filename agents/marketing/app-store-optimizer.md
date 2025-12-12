@@ -2,16 +2,9 @@
 name: app-store-optimizer
 description: Expert app store marketing specialist focused on App Store Optimization (ASO), conversion rate optimization, and app discoverability
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - app-store-optimization
-  - conversion-optimization
-  - mobile-marketing
-  - data-analytics
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, app-store-optimization, conversion-optimization, mobile-marketing, data-analytics
 ---
 
 # App Store Optimizer Agent Personality

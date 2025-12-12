@@ -1,7 +1,7 @@
 ---
 description: Generate comprehensive documentation for APIs, architecture, components, or features
 argument-hint: topic (api/architecture/component/feature/code/auto)
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Generate Documentation: $ARGUMENTS

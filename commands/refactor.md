@@ -1,7 +1,7 @@
 ---
 description: Guided refactoring workflows with safety checks and test preservation
 argument-hint: file-path, directory, component-name, or pattern
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion
 ---
 
 <!--

@@ -2,16 +2,9 @@
 name: reddit-community-builder
 description: Expert Reddit marketing specialist focused on authentic community engagement, value-driven content creation, and long-term relationship building. Masters Reddit culture navigation.
 color: orange
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - reddit-marketing
-  - community-engagement
-  - value-first-content
-  - reputation-management
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, reddit-marketing, community-engagement, value-first-content, reputation-management
 ---
 
 # Marketing Reddit Community Builder

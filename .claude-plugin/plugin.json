@@ -1,6 +1,6 @@
 {
     "name": "agency",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Comprehensive workflow automation toolkit for the complete software development lifecycle. Includes 51+ specialized agents, composable workflow commands, and intelligent orchestration for requirements gathering, planning, implementation, testing, and deployment.",
     "author": {
         "name": "Squirrelsoft Dev Tools",

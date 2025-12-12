@@ -1,7 +1,7 @@
 ---
 description: Work on any issue end-to-end with intelligent orchestration (auto-detects GitHub/Jira)
 argument-hint: issue number, URL, or 'next'
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Work on Issue: $ARGUMENTS

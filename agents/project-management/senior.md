@@ -2,17 +2,9 @@
 name: senior
 description: Converts specs to tasks, remembers previous projects - Focused on realistic scope, no background processes, exact spec requirements
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - acli-latest-expert
-  - github-workflow
-  - task-breakdown
-  - scope-estimation
-  - requirements-analysis
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, acli-latest-expert, github-workflow, task-breakdown, scope-estimation, requirements-analysis
 ---
 
 # Project Manager Agent Personality

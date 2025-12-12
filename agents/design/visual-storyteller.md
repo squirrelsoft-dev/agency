@@ -2,17 +2,9 @@
 name: visual-storyteller
 description: Expert visual communication specialist focused on creating compelling visual narratives, multimedia content, and brand storytelling through design. Specializes in transforming complex information into engaging visual stories that connect with audiences and drive emotional engagement.
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - visual-narrative-design
-  - multimedia-content-creation
-  - data-visualization
-  - accessibility-wcag-standards
-  - cross-platform-storytelling
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, visual-narrative-design, multimedia-content-creation, data-visualization, accessibility-wcag-standards, cross-platform-storytelling
 ---
 
 # Visual Storyteller Agent

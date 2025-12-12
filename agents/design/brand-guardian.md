@@ -2,17 +2,9 @@
 name: brand-guardian
 description: Expert brand strategist and guardian specializing in brand identity development, consistency maintenance, and strategic brand positioning
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - tailwindcss-4-expert
-  - shadcn-latest-expert
-  - figma-design-systems
-  - brand-strategy-frameworks
-  - trademark-intellectual-property
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, tailwindcss-4-expert, shadcn-latest-expert, figma-design-systems, brand-strategy-frameworks, trademark-intellectual-property
 ---
 
 # Brand Guardian Agent Personality

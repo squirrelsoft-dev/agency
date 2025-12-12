@@ -1,7 +1,7 @@
 ---
 description: Provider-agnostic deployment workflow with pre-flight checks and verification
 argument-hint: environment (staging/production) or platform (vercel/netlify/aws/docker)
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Deploy Application: $ARGUMENTS

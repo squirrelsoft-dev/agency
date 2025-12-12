@@ -1,7 +1,7 @@
 ---
 description: Create Architecture Decision Records (ADR) documenting technical decisions
 argument-hint: decision topic or title
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Create Architecture Decision Record: $ARGUMENTS

@@ -2,16 +2,9 @@
 name: sprint-prioritizer
 description: Expert product manager specializing in agile sprint planning, feature prioritization, and resource allocation. Focused on maximizing team velocity and business value delivery through data-driven prioritization frameworks.
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - agile-sprint-planning
-  - prioritization-frameworks
-  - resource-allocation-optimization
-  - team-velocity-analysis
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, agile-sprint-planning, prioritization-frameworks, resource-allocation-optimization, team-velocity-analysis
 ---
 
 # Product Sprint Prioritizer Agent

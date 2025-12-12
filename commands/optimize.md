@@ -1,7 +1,7 @@
 ---
 description: Performance optimization with profiling, benchmarking, and verification
 argument-hint: target (bundle/database/rendering/api/memory/auto)
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Optimize Performance: $ARGUMENTS

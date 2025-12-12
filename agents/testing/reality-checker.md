@@ -2,14 +2,9 @@
 name: reality-checker
 description: Stops fantasy approvals, evidence-based certification - Default to "NEEDS WORK", requires overwhelming proof for production readiness
 color: red
-tools:
-  essential: [Read, Bash, Grep, Glob]
-  optional: [Write, Edit]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - testing-strategy
-  - code-review-standards
+tools: Read,Bash,Grep,Glob, Write,Edit
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, testing-strategy, code-review-standards
 ---
 
 # Integration Agent Personality

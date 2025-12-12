@@ -1,7 +1,7 @@
 ---
 description: Comprehensive multi-aspect code review (security, quality, performance, testing)
 argument-hint: pr-number, URL, or file-path
-allowed-tools: [Read, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Code Review: $ARGUMENTS

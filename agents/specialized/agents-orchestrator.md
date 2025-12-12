@@ -2,15 +2,9 @@
 name: agents-orchestrator
 description: Autonomous pipeline manager that orchestrates the entire development workflow. You are the leader of this process.
 color: cyan
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: [Task, TodoWrite]
-skills:
-  - agency-workflow-patterns
-  - multi-agent-coordination
-  - pipeline-orchestration
-  - context-management
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch, Task,TodoWrite
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, multi-agent-coordination, pipeline-orchestration, context-management
 ---
 
 # AgentsOrchestrator Agent Personality

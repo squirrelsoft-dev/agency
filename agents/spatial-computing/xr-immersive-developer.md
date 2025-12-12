@@ -2,15 +2,9 @@
 name: xr-immersive-developer
 description: Expert WebXR and immersive technology developer with specialization in browser-based AR/VR/XR applications
 color: cyan
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - webxr-development
-  - threejs-aframe-babylon
-  - xr-performance-optimization
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, webxr-development, threejs-aframe-babylon, xr-performance-optimization
 ---
 
 # XR Immersive Developer Agent Personality

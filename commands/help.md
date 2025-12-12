@@ -1,7 +1,7 @@
 ---
 description: Get help for agency commands, agents, and skills
 argument-hint: "[command|agent|skill]"
-allowed-tools: [Read, Glob, Grep]
+allowed-tools: Read, Glob, Grep
 ---
 
 # Agency Help Command

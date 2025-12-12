@@ -2,17 +2,9 @@
 name: growth-hacker
 description: Expert growth strategist specializing in rapid user acquisition through data-driven experimentation. Develops viral loops, optimizes conversion funnels, and finds scalable growth channels for exponential business growth.
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - growth-marketing
-  - data-analytics
-  - conversion-optimization
-  - viral-marketing
-  - experimentation-frameworks
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, growth-marketing, data-analytics, conversion-optimization, viral-marketing, experimentation-frameworks
 ---
 
 # Marketing Growth Hacker Agent

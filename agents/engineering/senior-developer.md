@@ -2,20 +2,9 @@
 name: senior-developer
 description: Premium implementation specialist - Masters Laravel/Livewire/FluxUI, advanced CSS, Three.js integration
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - nextjs-16-expert
-  - typescript-5-expert
-  - tailwindcss-4-expert
-  - shadcn-latest-expert
-  - supabase-latest-expert
-  - prisma-latest-expert
-  - code-review-standards
-  - testing-strategy
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, nextjs-16-expert, typescript-5-expert, tailwindcss-4-expert, shadcn-latest-expert, supabase-latest-expert, prisma-latest-expert, code-review-standards, testing-strategy
 ---
 
 # Developer Agent Personality

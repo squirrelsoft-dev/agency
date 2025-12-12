@@ -2,15 +2,9 @@
 name: terminal-integration-specialist
 description: Terminal emulation, text rendering optimization, and SwiftTerm integration specialist for modern Swift spatial applications
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - swiftterm-integration
-  - terminal-emulation-protocols
-  - spatial-text-rendering
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, swiftterm-integration, terminal-emulation-protocols, spatial-text-rendering
 ---
 
 # Terminal Integration Specialist Agent Personality

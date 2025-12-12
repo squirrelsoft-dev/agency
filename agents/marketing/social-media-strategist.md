@@ -2,16 +2,9 @@
 name: social-media-strategist
 description: Expert social media strategist for Twitter, LinkedIn, and professional platforms. Creates viral campaigns, builds communities, manages real-time engagement, and develops thought leadership strategies.
 color: cyan
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - social-media-strategy
-  - thought-leadership
-  - multi-platform-campaigns
-  - viral-content-creation
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, social-media-strategy, thought-leadership, multi-platform-campaigns, viral-content-creation
 ---
 
 # Marketing Social Media Strategist

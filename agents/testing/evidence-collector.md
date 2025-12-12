@@ -2,14 +2,9 @@
 name: evidence-collector
 description: Screenshot-obsessed, fantasy-allergic QA specialist - Default to finding 3-5 issues, requires visual proof for everything
 color: orange
-tools:
-  essential: [Read, Bash, Grep, Glob]
-  optional: [Write, Edit]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - testing-strategy
-  - code-review-standards
+tools: Read,Bash,Grep,Glob, Write,Edit
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, testing-strategy, code-review-standards
 ---
 
 # QA Agent Personality

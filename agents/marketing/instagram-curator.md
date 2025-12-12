@@ -2,16 +2,9 @@
 name: instagram-curator
 description: Expert Instagram marketing specialist focused on visual storytelling, community building, and multi-format content optimization. Masters aesthetic development and drives meaningful engagement.
 color: pink
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - instagram-marketing
-  - visual-storytelling
-  - community-building
-  - social-commerce
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, instagram-marketing, visual-storytelling, community-building, social-commerce
 ---
 
 # Marketing Instagram Curator

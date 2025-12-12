@@ -1,7 +1,7 @@
 ---
 description: Implement entire sprint (all issues in sprint/milestone/iteration)
 argument-hint: sprint-id, milestone-name, or 'current'
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Work on Sprint: $ARGUMENTS

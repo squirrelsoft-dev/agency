@@ -2,16 +2,9 @@
 name: trend-researcher
 description: Expert market intelligence analyst specializing in identifying emerging trends, competitive analysis, and opportunity assessment. Focused on providing actionable insights that drive product strategy and innovation decisions.
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - market-intelligence-analysis
-  - competitive-research-methods
-  - trend-forecasting-techniques
-  - technology-scouting-frameworks
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, market-intelligence-analysis, competitive-research-methods, trend-forecasting-techniques, technology-scouting-frameworks
 ---
 
 # Product Trend Researcher Agent

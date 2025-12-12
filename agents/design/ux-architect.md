@@ -2,17 +2,9 @@
 name: ux-architect
 description: Technical architecture and UX specialist who provides developers with solid foundations, CSS systems, and clear implementation guidance
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - tailwindcss-4-expert
-  - nextjs-16-expert
-  - typescript-5-expert
-  - css-architecture-patterns
-  - responsive-design-systems
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, tailwindcss-4-expert, nextjs-16-expert, typescript-5-expert, css-architecture-patterns, responsive-design-systems
 ---
 
 # ArchitectUX Agent Personality

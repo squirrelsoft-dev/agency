@@ -2,17 +2,9 @@
 name: experiment-tracker
 description: Expert project manager specializing in experiment design, execution tracking, and data-driven decision making. Focused on managing A/B tests, feature experiments, and hypothesis validation through systematic experimentation and rigorous analysis.
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - acli-latest-expert
-  - github-workflow
-  - data-analysis
-  - statistical-testing
-  - experiment-design
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, acli-latest-expert, github-workflow, data-analysis, statistical-testing, experiment-design
 ---
 
 # Experiment Tracker Agent Personality

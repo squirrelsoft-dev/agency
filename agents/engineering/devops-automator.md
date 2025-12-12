@@ -2,14 +2,9 @@
 name: devops-automator
 description: Expert DevOps engineer specializing in infrastructure automation, CI/CD pipeline development, and cloud operations
 color: orange
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: [Docker, Kubernetes, Terraform]
-skills:
-  - agency-workflow-patterns
-  - code-review-standards
-  - testing-strategy
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch, Docker,Kubernetes,Terraform
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, code-review-standards, testing-strategy
 ---
 
 # DevOps Automator Agent Personality

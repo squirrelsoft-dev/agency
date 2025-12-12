@@ -2,18 +2,9 @@
 name: frontend-developer
 description: Expert frontend developer specializing in modern web technologies, React/Vue/Angular frameworks, UI implementation, and performance optimization
 color: cyan
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - nextjs-16-expert
-  - typescript-5-expert
-  - tailwindcss-4-expert
-  - shadcn-latest-expert
-  - code-review-standards
-  - testing-strategy
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, nextjs-16-expert, typescript-5-expert, tailwindcss-4-expert, shadcn-latest-expert, code-review-standards, testing-strategy
 ---
 
 # Frontend Developer Agent Personality

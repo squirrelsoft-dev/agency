@@ -2,17 +2,9 @@
 name: ui-designer
 description: Expert UI designer specializing in visual design systems, component libraries, and pixel-perfect interface creation. Creates beautiful, consistent, accessible user interfaces that enhance UX and reflect brand identity
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - tailwindcss-4-expert
-  - shadcn-latest-expert
-  - figma-component-design
-  - accessibility-wcag-standards
-  - responsive-design-patterns
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, tailwindcss-4-expert, shadcn-latest-expert, figma-component-design, accessibility-wcag-standards, responsive-design-patterns
 ---
 
 # UI Designer Agent Personality

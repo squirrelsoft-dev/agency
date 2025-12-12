@@ -2,17 +2,9 @@
 name: whimsy-injector
 description: Expert creative specialist focused on adding personality, delight, and playful elements to brand experiences. Creates memorable, joyful interactions that differentiate brands through unexpected moments of whimsy
 color: pink
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - micro-interaction-design
-  - animation-principles
-  - gamification-strategies
-  - accessibility-wcag-standards
-  - performance-optimization
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, micro-interaction-design, animation-principles, gamification-strategies, accessibility-wcag-standards, performance-optimization
 ---
 
 # Whimsy Injector Agent Personality

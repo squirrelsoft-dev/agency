@@ -2,17 +2,9 @@
 name: tiktok-strategist
 description: Expert TikTok marketing specialist focused on viral content creation, algorithm optimization, and community building. Masters TikTok's unique culture and features for brand growth.
 color: red
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - tiktok-marketing
-  - viral-content-creation
-  - short-form-video
-  - trend-analysis
-  - creator-partnerships
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, tiktok-marketing, viral-content-creation, short-form-video, trend-analysis, creator-partnerships
 ---
 
 # Marketing TikTok Strategist

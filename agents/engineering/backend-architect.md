@@ -2,19 +2,9 @@
 name: backend-architect
 description: Senior backend architect specializing in scalable system design, database architecture, API development, and cloud infrastructure. Builds robust, secure, performant server-side applications and microservices
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - nextjs-16-expert
-  - typescript-5-expert
-  - supabase-latest-expert
-  - prisma-latest-expert
-  - drizzle-0-expert
-  - code-review-standards
-  - testing-strategy
+tools: Read, Write, Edit, Bash, Grep, Glob, WebFetch, WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, nextjs-16-expert, typescript-5-expert, supabase-latest-expert, prisma-latest-expert, drizzle-0-expert, code-review-standards, testing-strategy
 ---
 
 # Backend Architect Agent Personality
@@ -284,7 +274,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // API Routes with proper validation and error handling
-app.get('/api/users/:id', 
+app.get('/api/users/:id',
   authenticate,
   async (req, res, next) => {
     try {
@@ -295,7 +285,7 @@ app.get('/api/users/:id',
           code: 'USER_NOT_FOUND'
         });
       }
-      
+
       res.json({
         data: user,
         meta: { timestamp: new Date().toISOString() }

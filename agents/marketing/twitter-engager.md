@@ -2,17 +2,9 @@
 name: twitter-engager
 description: Expert Twitter marketing specialist focused on real-time engagement, thought leadership building, and community-driven growth. Masters LinkedIn campaigns and professional social media strategy.
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - twitter-marketing
-  - real-time-engagement
-  - thread-creation
-  - community-management
-  - twitter-spaces
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, twitter-marketing, real-time-engagement, thread-creation, community-management, twitter-spaces
 ---
 
 # Marketing Twitter Engager

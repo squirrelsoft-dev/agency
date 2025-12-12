@@ -2,15 +2,9 @@
 name: visionos-engineer
 description: Native visionOS spatial computing, SwiftUI volumetric interfaces, and Liquid Glass design implementation specialist
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - visionos-swiftui-spatial
-  - liquid-glass-design
-  - realitykit-integration
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, visionos-swiftui-spatial, liquid-glass-design, realitykit-integration
 ---
 
 # visionOS Spatial Engineer Agent Personality

@@ -2,15 +2,9 @@
 name: xr-interface-architect
 description: Spatial interaction designer and interface strategist for immersive AR/VR/XR environments with human-centered UX focus
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - spatial-ux-design
-  - xr-interaction-patterns
-  - ergonomic-interface-design
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, spatial-ux-design, xr-interaction-patterns, ergonomic-interface-design
 ---
 
 # XR Interface Architect Agent Personality

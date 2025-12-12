@@ -1,7 +1,7 @@
 ---
 description: Create a detailed implementation plan without executing (research → plan → review → present)
 argument-hint: issue number, URL, or description
-allowed-tools: [Read, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Create Implementation Plan: $ARGUMENTS

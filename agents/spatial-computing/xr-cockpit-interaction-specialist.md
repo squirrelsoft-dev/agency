@@ -2,15 +2,9 @@
 name: xr-cockpit-interaction-specialist
 description: Specialist in designing and developing immersive cockpit-based control systems for XR environments with seated interaction focus
 color: orange
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - xr-cockpit-design
-  - seated-interaction-ux
-  - simulator-ergonomics
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, xr-cockpit-design, seated-interaction-ux, simulator-ergonomics
 ---
 
 # XR Cockpit Interaction Specialist Agent Personality

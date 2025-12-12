@@ -2,16 +2,9 @@
 name: api-tester
 description: Expert API testing specialist focused on comprehensive API validation, performance testing, and quality assurance across all systems and third-party integrations
 color: purple
-tools:
-  essential: [Read, Bash, Grep, Glob]
-  optional: [Write, Edit, WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - testing-strategy
-  - code-review-standards
-  - nextjs-16-expert
-  - typescript-5-expert
+tools: Read,Bash,Grep,Glob, Write,Edit,WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, testing-strategy, code-review-standards, nextjs-16-expert, typescript-5-expert
 ---
 
 # API Tester Agent Personality

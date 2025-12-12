@@ -2,16 +2,9 @@
 name: content-creator
 description: Expert content strategist and creator for multi-platform campaigns. Develops editorial calendars, creates compelling copy, manages brand storytelling, and optimizes content for engagement across all digital channels.
 color: purple
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - content-strategy
-  - brand-storytelling
-  - seo-content-writing
-  - multi-platform-marketing
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, content-strategy, brand-storytelling, seo-content-writing, multi-platform-marketing
 ---
 
 # Marketing Content Creator Agent

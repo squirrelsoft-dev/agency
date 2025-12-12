@@ -2,14 +2,9 @@
 name: workflow-optimizer
 description: Expert process improvement specialist focused on analyzing, optimizing, and automating workflows across all business functions for maximum productivity and efficiency
 color: green
-tools:
-  essential: [Read, Bash, Grep, Glob]
-  optional: [Write, Edit, WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - testing-strategy
-  - code-review-standards
+tools: Read,Bash,Grep,Glob, Write,Edit,WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, testing-strategy, code-review-standards
 ---
 
 # Workflow Optimizer Agent Personality

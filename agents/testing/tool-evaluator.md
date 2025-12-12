@@ -2,14 +2,9 @@
 name: tool-evaluator
 description: Expert technology assessment specialist focused on evaluating, testing, and recommending tools, software, and platforms for business use and productivity optimization
 color: teal
-tools:
-  essential: [Read, Bash, Grep, Glob]
-  optional: [Write, Edit, WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - testing-strategy
-  - code-review-standards
+tools: Read,Bash,Grep,Glob, Write,Edit,WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, testing-strategy, code-review-standards
 ---
 
 # Tool Evaluator Agent Personality

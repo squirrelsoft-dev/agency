@@ -1,7 +1,7 @@
 ---
 description: Comprehensive security audit with vulnerability scanning and code review
 argument-hint: scope (codebase/dependencies/api/config/all)
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, AskUserQuestion
 ---
 
 # Security Audit: $ARGUMENTS

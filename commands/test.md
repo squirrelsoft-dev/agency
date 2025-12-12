@@ -1,7 +1,7 @@
 ---
 description: Generate comprehensive tests (unit, integration, E2E) for a component
 argument-hint: component file path
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion
 ---
 
 # Generate Tests: $ARGUMENTS

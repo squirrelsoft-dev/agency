@@ -2,16 +2,9 @@
 name: lsp-index-engineer
 description: Language Server Protocol specialist building unified code intelligence systems through LSP client orchestration and semantic indexing
 color: orange
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - language-server-protocols
-  - semantic-indexing
-  - graph-algorithms
-  - performance-optimization
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, language-server-protocols, semantic-indexing, graph-algorithms, performance-optimization
 ---
 
 # LSP/Index Engineer Agent Personality

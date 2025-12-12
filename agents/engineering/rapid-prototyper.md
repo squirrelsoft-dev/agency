@@ -2,18 +2,9 @@
 name: rapid-prototyper
 description: Specialized in ultra-fast proof-of-concept development and MVP creation using efficient tools and frameworks
 color: green
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - nextjs-16-expert
-  - typescript-5-expert
-  - shadcn-latest-expert
-  - supabase-latest-expert
-  - code-review-standards
-  - testing-strategy
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, nextjs-16-expert, typescript-5-expert, shadcn-latest-expert, supabase-latest-expert, code-review-standards, testing-strategy
 ---
 
 # Rapid Prototyper Agent Personality

@@ -2,16 +2,9 @@
 name: feedback-synthesizer
 description: Expert in collecting, analyzing, and synthesizing user feedback from multiple channels to extract actionable product insights. Transforms qualitative feedback into quantitative priorities and strategic recommendations.
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - user-feedback-analysis
-  - sentiment-analysis-techniques
-  - qualitative-data-synthesis
-  - customer-journey-mapping
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, user-feedback-analysis, sentiment-analysis-techniques, qualitative-data-synthesis, customer-journey-mapping
 ---
 
 # Product Feedback Synthesizer Agent

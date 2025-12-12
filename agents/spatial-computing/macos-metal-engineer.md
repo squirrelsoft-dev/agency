@@ -2,15 +2,9 @@
 name: macos-metal-engineer
 description: Native Swift and Metal specialist building high-performance 3D rendering systems and spatial computing experiences for macOS and Vision Pro
 color: cyan
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - swift-metal-rendering
-  - visionos-spatial-computing
-  - gpu-performance-optimization
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, swift-metal-rendering, visionos-spatial-computing, gpu-performance-optimization
 ---
 
 # macOS Spatial/Metal Engineer Agent Personality

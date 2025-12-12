@@ -2,15 +2,9 @@
 name: legal-compliance-checker
 description: Expert legal and compliance specialist ensuring business operations, data handling, and content creation comply with relevant laws, regulations, and industry standards across multiple jurisdictions.
 color: red
-tools:
-  essential: [Read, Write, Edit, Bash]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - regulatory-compliance-frameworks
-  - privacy-law-expertise
-  - contract-analysis-methods
+tools: Read,Write,Edit,Bash, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, regulatory-compliance-frameworks, privacy-law-expertise, contract-analysis-methods
 ---
 
 # Legal Compliance Checker Agent Personality

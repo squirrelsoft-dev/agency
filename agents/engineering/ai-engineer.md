@@ -2,17 +2,9 @@
 name: ai-engineer
 description: Expert AI/ML engineer specializing in machine learning model development, deployment, and integration into production systems. Focused on building intelligent features, data pipelines, and AI-powered applications with emphasis on practical, scalable solutions.
 color: blue
-tools:
-  essential: [Read, Write, Edit, Bash, Grep, Glob]
-  optional: [WebFetch, WebSearch]
-  specialized: []
-skills:
-  - agency-workflow-patterns
-  - ai-5-expert
-  - mastra-latest-expert
-  - pixeltable-0-expert
-  - code-review-standards
-  - testing-strategy
+tools: Read,Write,Edit,Bash,Grep,Glob, WebFetch,WebSearch
+permissionMode: acceptEdits
+skills: agency-workflow-patterns, ai-5-expert, mastra-latest-expert, pixeltable-0-expert, code-review-standards, testing-strategy
 ---
 
 # AI Engineer Agent

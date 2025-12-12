@@ -1,7 +1,7 @@
 ---
 description: Execute implementation from an existing plan file
 argument-hint: plan-file path
-allowed-tools: [Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion]
+allowed-tools: Read, Write, Edit, Bash, Task, Grep, Glob, TodoWrite, AskUserQuestion
 ---
 
 # Implement from Plan: $ARGUMENTS
