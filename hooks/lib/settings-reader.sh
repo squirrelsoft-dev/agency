@@ -73,7 +73,7 @@ get_setting() {
                 return 0
             fi
         fi
-    done < <(get_settings_paths | tac)  # Reverse order (project overrides user)
+    done < <(get_settings_paths | tail -r)  # Reverse order (project overrides user)
 
     # Not found, return default
     echo "$default_value"
